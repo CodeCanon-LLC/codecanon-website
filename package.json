@@ -7,9 +7,11 @@
     "dev": "next dev",
     "start": "next start",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
-    "postinstall": "fumadocs-mdx"
+    "postinstall": "fumadocs-mdx",
+    "format": "prettier . --write"
   },
   "dependencies": {
+    "@codecanon/logos": "^1.0.4",
     "fumadocs-core": "16.5.2",
     "fumadocs-mdx": "14.2.7",
     "fumadocs-ui": "16.5.2",
@@ -26,6 +28,8 @@
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
     "postcss": "^8.5.6",
+    "prettier": "3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   }
