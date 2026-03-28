@@ -3,6 +3,7 @@
   "description": "Canva-like drag-and-drop design editor for React",
   "root": true,
   "pages": [
+    "---Introduction---",
     "index",
     "installation",
     "getting-started",
