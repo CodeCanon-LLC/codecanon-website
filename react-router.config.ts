@@ -1,5 +1,5 @@
 import type { Config } from "@react-router/dev/config";
-import { glob } from "node:fs/promises";
+import { readdirSync } from "node:fs";
 import { createGetUrl, getSlugs } from "fumadocs-core/source";
 import { getPageImagePath } from "./app/lib/og";
 
@@ -18,9 +18,12 @@ export default {
       if (!excluded.includes(path)) paths.push(path);
     }
 
-    for await (const entry of glob("**/*.mdx", { cwd: "content/docs" })) {
-      const slugs = getSlugs(entry);
+    const mdxFiles = (
+      readdirSync("content/docs", { recursive: true }) as string[]
+    ).filter((f) => f.endsWith(".mdx"));
 
+    for (const entry of mdxFiles) {
+      const slugs = getSlugs(entry);
       paths.push(getUrl(slugs));
       paths.push(getPageImagePath(slugs));
     }
