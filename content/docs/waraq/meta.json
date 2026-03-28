@@ -1,0 +1,15 @@
+{
+  "title": "@codecanon/waraq",
+  "root": true,
+  "pages": [
+    "index",
+    "installation",
+    "getting-started",
+    "components",
+    "ui-components",
+    "actions",
+    "hooks",
+    "types",
+    "customization"
+  ]
+}

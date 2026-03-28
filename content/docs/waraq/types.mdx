@@ -1,0 +1,284 @@
+---
+title: Types & constants
+description: TypeScript types, interfaces, and constants exported from @codecanon/waraq/lib.
+---
+
+All types and constants are imported from `@codecanon/waraq/lib`.
+
+```ts
+import type { Layer, LayerType, WaraqData, CSSVars } from "@codecanon/waraq/lib"
+import { DEFAULT_FRAME_SIZE, KEYBOARD_SHORTCUTS } from "@codecanon/waraq/lib"
+```
+
+---
+
+## Core types
+
+### WaraqData
+
+The serializable representation of a complete design. This is the shape of `data` / `onDataChange`.
+
+```ts
+interface WaraqData {
+  layers: Layer[]
+  frameSize: FrameSize
+  frameBackgroundColor: string
+}
+```
+
+Use `createWaraqData()` to produce a valid default value:
+
+```ts
+import { createWaraqData } from "@codecanon/waraq/lib"
+
+const initial = createWaraqData({
+  frameSize: { width: 1280, height: 720 },
+  frameBackgroundColor: "#ffffff",
+})
+```
+
+---
+
+### Layer
+
+A single design element.
+
+```ts
+interface Layer<TData extends LayerData = any> {
+  id: string
+  type: string            // Matches a LayerType.id
+  name: string
+
+  value?: string          // Text content or image src
+  cssVars?: Partial<CSSVars>
+  data?: TData            // Custom layer-type-specific data
+
+  parentStyle: React.CSSProperties   // Outer transform wrapper
+  contentStyle: React.CSSProperties  // Inner content wrapper
+  transform?: LayerTransform
+
+  visible?: boolean
+  locked?: boolean
+}
+```
+
+---
+
+### LayerType
+
+Defines a registrable layer type.
+
+```ts
+interface LayerType<TData extends LayerData = any> {
+  id: string
+  name: string
+  icon: React.JSX.Element
+
+  // Render the layer content (choose one)
+  render?: (layer: Layer<TData>) => React.JSX.Element | undefined
+  Component?: React.ComponentType<{ layer: Layer<TData> }>
+
+  keyboardShortcut?: KeyboardShortcut   // e.g. press "T" to add a text layer
+  keepRatio?: boolean                   // Maintain aspect ratio on resize
+
+  defaultValues?: {
+    value?: string
+    cssVars?: Partial<CSSVars>
+    data?: TData
+  }
+}
+```
+
+---
+
+### CSSVars
+
+Typed CSS custom properties used by the layer styling system.
+
+```ts
+type CSSVars = {
+  "--width": string | number
+  "--height": string | number
+  "--background-color": string
+  "--border-radius": string
+  "--font-size": string | number
+  "--font-weight": string | number
+  "--color": string
+  "--z-index": string | number
+} & { [K in `--${string}`]: string }
+```
+
+You can extend it with any `--custom-var` key using the index signature.
+
+---
+
+### LayerTransform
+
+Affine transform applied to a layer.
+
+```ts
+interface LayerTransform {
+  translate: [x: number, y: number]
+  rotate?: number           // degrees
+  scale?: [sx: number, sy: number]
+}
+```
+
+---
+
+### FrameSize
+
+Canvas dimensions in pixels.
+
+```ts
+interface FrameSize {
+  width: number
+  height: number
+}
+```
+
+---
+
+### Tool
+
+The active editing tool.
+
+```ts
+type Tool = "move" | "hand" | "select"
+```
+
+---
+
+### ActionType
+
+All dispatchable actions accepted by `waraqAction()`.
+
+```ts
+type ActionType =
+  | "ZOOM_IN" | "ZOOM_OUT" | "ZOOM_RESET" | "ZOOM_100" | "ZOOM_FIT"
+  | "REDRAW" | "UNSELECT_ALL"
+  | "HISTORY_UNDO" | "HISTORY_REDO"
+  | "DELETE_SELECTED" | "DUPLICATE_SELECTED"
+  | "TOGGLE_VISIBILITY" | "BRING_TO_FRONT" | "SEND_TO_BACK" | "TOGGLE_LOCK"
+  | "MOVE_UP" | "MOVE_DOWN" | "MOVE_LEFT" | "MOVE_RIGHT"
+  | "MOVE_UP_SMALL" | "MOVE_DOWN_SMALL" | "MOVE_LEFT_SMALL" | "MOVE_RIGHT_SMALL"
+  | "TOGGLE_LEFT_PANEL" | "TOGGLE_RIGHT_PANEL"
+```
+
+---
+
+### KeyboardShortcut
+
+A keyboard shortcut definition.
+
+```ts
+interface KeyboardShortcut {
+  action: ActionType | ((context: WaraqState) => void)
+  description: string
+  label?: string
+  keys: string[]         // e.g. ["ctrl", "z"]
+  options?: Options      // react-hotkeys-hook options
+  category?: string
+}
+```
+
+---
+
+## Font types
+
+```ts
+type FontWeight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
+type FontCategory = "serif" | "sans-serif" | "display" | "handwriting" | "monospace"
+
+const FONT_WEIGHTS: readonly FontWeight[]
+const FONT_CATEGORIES: readonly FontCategory[]
+```
+
+---
+
+## Document size presets
+
+```ts
+type DocumentSize =
+  | "default"
+  | "instagram-post" | "instagram-story"
+  | "facebook-cover" | "facebook-post"
+  | "twitter-post" | "linkedin-post"
+  | "youtube-thumbnail"
+  | "pinterest-pin"
+  | "a4" | "letter-portrait" | "letter-landscape"
+  | "presentation"
+  | "4-5"
+
+// Map of all presets with labels and FrameSize values
+const DOCUMENT_SIZES: [DocumentSize, { label: string; frameSize: FrameSize }][]
+
+// Convert FrameSize → DocumentSize (returns undefined if no exact match)
+function getDocumentSize(frameSize: FrameSize): DocumentSize | undefined
+
+// Convert DocumentSize → FrameSize
+function getFrameSize(option: DocumentSize): FrameSize | undefined
+```
+
+---
+
+## Constants
+
+| Constant | Value | Description |
+| --- | --- | --- |
+| `MAX_ZOOM` | `2` | Maximum zoom level |
+| `MIN_ZOOM` | `0.01` | Minimum zoom level |
+| `DEFAULT_FRAME_SIZE` | `{ width: 800, height: 600 }` | Default canvas size |
+| `DEFAULT_FRAME_BACKGROUND_COLOR` | `"#ffffff"` | Default canvas background |
+| `DEFAULT_LAYER_TRANSFORM` | `{ translate: [0, 0] }` | Default layer transform |
+| `DEFAULT_MIN_FRAME_SIZE` | `{ width: 1, height: 1 }` | Minimum canvas dimensions |
+| `DEFAULT_MAX_FRAME_SIZE` | `{ width: 10000, height: 10000 }` | Maximum canvas dimensions |
+| `KEYBOARD_SHORTCUTS` | `KeyboardShortcut[]` | All built-in shortcuts |
+
+---
+
+## Utility functions
+
+### createWaraqData
+
+```ts
+function createWaraqData(options?: Partial<WaraqData>): WaraqData
+```
+
+### Type guards
+
+```ts
+function isLayer(obj: any): obj is Layer
+function isFrameSize(obj: any): obj is FrameSize
+function isWaraqData(obj: any): obj is WaraqData
+```
+
+### CSS variable utilities
+
+```ts
+// Apply cssVars to an inline style object
+function cssVarsToStyles(cssVars?: Partial<CSSVars>): React.CSSProperties
+
+// Parse a numeric CSS var value
+function parseCssVar(value: string | number, defaultValue?: number): number
+
+// Get a CSS var from a layer
+function getLayerCssVar<T>(layer: Layer<T>, cssVar: keyof CSSVars, defaultValue?): string | number
+
+// Parse a numeric CSS var from a layer
+function parseLayerCssVar<T>(layer: Layer<T>, cssVar: keyof CSSVars, defaultValue?): number
+```
+
+### File utilities
+
+```ts
+function downloadFile(filename: string, data: string | Blob, format?: string): void
+function extractFormat(filename: string): "application/json" | "application/text"
+```
+
+### Font loading
+
+```ts
+function fetchGoogleFonts(apiKey: string): Promise<GoogleFont[]>
+function loadFont(fontFamily: string, variant?: string): Promise<void>
+```

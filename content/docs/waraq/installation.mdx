@@ -1,0 +1,58 @@
+---
+title: Installation
+description: Add @codecanon/waraq to your project.
+---
+
+## Requirements
+
+- React 19.2+
+- Tailwind CSS 4
+
+## Install
+
+```bash
+npm install @codecanon/waraq
+# or
+pnpm add @codecanon/waraq
+# or
+yarn add @codecanon/waraq
+```
+
+## Import the stylesheet
+
+Import the Waraq stylesheet once, at your app root (e.g. `app/layout.tsx` or `main.tsx`).
+
+```ts
+import "@codecanon/waraq/styles.css"
+```
+
+If you are using Tailwind CSS 4 with `@import "tailwindcss"`, place the Waraq import after your own Tailwind import so its utility classes take precedence when needed:
+
+```css title="global.css"
+@import "tailwindcss";
+@import "@codecanon/waraq/styles.css";
+```
+
+## Entry points
+
+The package ships three tree-shakable entry points:
+
+| Import | Use for |
+| --- | --- |
+| `@codecanon/waraq` | Editor layout components, action components, hooks, default layer types |
+| `@codecanon/waraq/ui` | Standalone UI primitives (Button, ColorPicker, InputNumber, …) |
+| `@codecanon/waraq/lib` | Type definitions, constants, utility functions |
+
+You only pay for what you import. If you only need the UI primitives you can import from `/ui` without pulling in the editor internals.
+
+## Next.js
+
+No extra configuration is needed. The package is ESM-only and Next.js handles it automatically.
+
+If you hit a `Cannot use import statement in a module` error for a transitive dependency, add it to `transpilePackages` in `next.config.mjs`:
+
+```js title="next.config.mjs"
+const config = {
+  transpilePackages: ["@codecanon/waraq"],
+}
+```

@@ -1,0 +1,38 @@
+---
+title: Waraq
+description: A Canva-like drag-and-drop design editor for React, built on ShadCN.
+---
+
+**@codecanon/waraq** is a headless-friendly design canvas library for React 19+. Drop it into any Next.js or Vite app and you get a fully-featured drag-and-drop editor: infinite canvas, layer management, 50+ property-editing action components, undo/redo, keyboard shortcuts, and serializable state — all styled with Tailwind and ShadCN primitives.
+
+## Highlights
+
+- **Composable layout** — assemble the editor from `<Waraq>`, `<WaraqStage>`, `<WaraqPanel>`, and `<WaraqToolbar>` exactly how you want it
+- **50+ Action components** — pre-built controls for position, size, typography, fill, border, shadow, image editing, and more
+- **Extensible layer system** — define custom layer types with your own rendering and default values
+- **Undo / redo** — built-in history management via `useStateWithHistory`
+- **Google Fonts** — first-class font picker backed by the Google Fonts API
+- **Serializable state** — import and export designs as JSON with `createWaraqData`
+- **Keyboard shortcuts** — 20+ built-in shortcuts, fully customizable
+- **Responsive** — panels collapse to drawers on mobile via a configurable breakpoint
+
+## Packages
+
+| Entry point | Contents |
+| --- | --- |
+| `@codecanon/waraq` | Editor components, action components, hooks, layer types |
+| `@codecanon/waraq/ui` | ShadCN-style UI primitives (Button, Input, ColorPicker, …) |
+| `@codecanon/waraq/lib` | Types, constants, and utility functions |
+| `@codecanon/waraq/styles.css` | Tailwind stylesheet — import once at the app root |
+
+## Quick navigation
+
+<Cards>
+  <Card title="Installation" href="/docs/waraq/installation" />
+  <Card title="Getting started" href="/docs/waraq/getting-started" />
+  <Card title="Components" href="/docs/waraq/components" />
+  <Card title="Action components" href="/docs/waraq/actions" />
+  <Card title="Hooks" href="/docs/waraq/hooks" />
+  <Card title="Types & constants" href="/docs/waraq/types" />
+  <Card title="Custom layers" href="/docs/waraq/customization" />
+</Cards>

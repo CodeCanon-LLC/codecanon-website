@@ -1,0 +1,11 @@
+export const PRIMARY_DEFAULT_COLOR = "#5B3B2C"
+export const SECONDARY_DEFAULT_COLOR = "#44291E"
+
+export const LETTER_DEFAULT_COLOR = "#6B4E3D"
+export const DIACRITIC_DEFAULT_COLOR = "#7D6A56"
+
+export const PRIMARY_DARK_COLOR = "#A38768"
+export const SECONDARY_DARK_COLOR = "#7E6347"
+
+export const LETTER_DARK_COLOR = "#A38768"
+export const DIACRITIC_DARK_COLOR = "#7E6347"

@@ -1,4 +1,4 @@
-# codecanon-website
+# CodeCanon Website
 
 This is a React Router application generated with
 [Create Fumadocs](https://github.com/fuma-nama/fumadocs).

@@ -1,0 +1,182 @@
+---
+title: Hooks
+description: React hooks exported by @codecanon/waraq.
+---
+
+All hooks are imported from `@codecanon/waraq` and must be used inside a `<Waraq>` provider.
+
+---
+
+## useWaraq
+
+Returns the full `WaraqState` context — the central source of truth for the editor.
+
+```tsx
+import { useWaraq } from "@codecanon/waraq"
+
+function MyComponent() {
+  const waraq = useWaraq()
+}
+```
+
+### State
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Stable editor instance ID |
+| `zoom` | `number` | Current zoom level (0.01–2) |
+| `frameSize` | `FrameSize` | Canvas width and height in px |
+| `frameBackgroundColor` | `string` | Canvas background color |
+| `layers` | `Layer[]` | All layers in the current design |
+| `layerTypes` | `LayerType[]` | Registered layer type definitions |
+| `tool` | `Tool` | Active tool: `"select"` \| `"move"` \| `"hand"` |
+| `selectedLayerCount` | `number` | Number of currently selected layers |
+| `leftPanelVisible` | `boolean` | Left panel open state |
+| `rightPanelVisible` | `boolean` | Right panel open state |
+| `keyboardShortcuts` | `KeyboardShortcut[]` | Active keyboard shortcut definitions |
+| `layersHistory` | `HistoryState<Layer[]>` | Undo/redo history object |
+
+### Setters
+
+| Method | Description |
+| --- | --- |
+| `setZoom(zoom)` | Set zoom level directly |
+| `setFrameSize(size)` | Resize the canvas frame |
+| `setFrameBackgroundColor(color)` | Change canvas background |
+| `setLayers(layers)` | Replace the entire layers array |
+| `setTool(tool)` | Switch the active tool |
+| `setLeftPanelVisible(v)` | Show/hide the left panel |
+| `setRightPanelVisible(v)` | Show/hide the right panel |
+
+### Layer methods
+
+| Method | Signature | Description |
+| --- | --- | --- |
+| `addLayer` | `(type: string, data?: Partial<Layer>) => void` | Add a new layer |
+| `updateLayer` | `({ id, ...partial }) => void` | Update a single layer |
+| `updateLayers` | `(items[]) => void` | Batch update multiple layers |
+| `getLayer` | `<T>(id: string) => Layer<T> \| undefined` | Get a layer by ID |
+| `select` | `(layerId: string) => Promise<void>` | Programmatically select a layer |
+| `getSelectedLayerIds` | `() => string[]` | IDs of currently selected layers |
+| `setSelectedTargets` | `(els[]) => Promise<void>` | Select by DOM elements |
+
+### Edit actions
+
+| Method | Description |
+| --- | --- |
+| `unselectAll()` | Clear selection |
+| `deleteSelected()` | Delete selected layers |
+| `duplicate()` | Duplicate selected layers |
+| `toggleVisibility()` | Show/hide selected layers |
+| `bringToFront()` | Move selected layers to top |
+| `sendToBack()` | Move selected layers to bottom |
+| `toggleLock()` | Lock/unlock selected layers |
+| `redraw()` | Force Moveable to recalculate handles |
+
+### Zoom actions
+
+| Method | Description |
+| --- | --- |
+| `zoomIn()` | Increase zoom by one step |
+| `zoomOut()` | Decrease zoom by one step |
+| `zoomReset()` | Reset to default zoom |
+| `zoom100()` | Set zoom to 100% |
+| `zoomFit()` | Fit canvas to viewport |
+
+### Panel actions
+
+| Method | Description |
+| --- | --- |
+| `toggleLeftPanel()` | Toggle left panel |
+| `toggleRightPanel()` | Toggle right panel |
+
+### Generic action dispatch
+
+```tsx
+waraq.waraqAction("ZOOM_FIT")
+waraq.waraqAction("HISTORY_UNDO")
+waraq.waraqAction("DELETE_SELECTED")
+```
+
+See [Types & constants — ActionType](/docs/waraq/types#actiontype) for all available action strings.
+
+### Refs
+
+| Ref | Type | Description |
+| --- | --- | --- |
+| `frameRef` | `RefObject<HTMLDivElement>` | The canvas frame DOM element |
+| `viewerRef` | `RefObject<InfiniteViewer>` | The pan/zoom viewer instance |
+| `selectoRef` | `RefObject<Selecto>` | The multi-select instance |
+| `moveableRef` | `RefObject<Moveable>` | The drag/resize handle instance |
+| `selectedLayerRefs` | `(HTMLElement \| SVGElement)[]` | DOM elements for selected layers |
+
+---
+
+## useWaraqAction
+
+A focused hook for editing the currently selected layer's properties. Use this inside custom action components.
+
+```tsx
+import { useWaraqAction } from "@codecanon/waraq"
+
+function MyCustomAction() {
+  const { layer, isMultiple, setLayer, getCSSVar, setCSSVar, setData, getData } =
+    useWaraqAction<MyLayerData>()
+
+  if (!layer) return null
+
+  return (
+    <input
+      value={getCSSVar("--color", "#000000")}
+      onChange={(e) => setCSSVar("--color", e.target.value)}
+    />
+  )
+}
+```
+
+### Return value
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `layer` | `Layer \| null` | The first selected layer (or `null` if nothing selected) |
+| `isMultiple` | `boolean` | `true` when multiple layers are selected |
+| `setLayer` | `(partial: Partial<Layer<T>>) => void` | Update the selected layer(s) |
+| `getCSSVar` | `(varName, defaultValue?) => string` | Read a CSS variable from the selected layer |
+| `setCSSVar` | `SetCSSVar` | Write a CSS variable to the selected layer(s) |
+| `parseCSSValue` | `(varName, defaultValue?) => number` | Read a CSS variable as a number |
+| `setData` | `<K>(key: K, value: T[K]) => void` | Write to the layer's custom `data` field |
+| `getData` | `<K>(key: K, defaultValue?) => T[K]` | Read from the layer's custom `data` field |
+
+---
+
+## useWaraqDocumentAction
+
+Read and write the canvas document properties (frame size and background color).
+
+```tsx
+import { useWaraqDocumentAction } from "@codecanon/waraq"
+
+function DocumentControls() {
+  const { width, height, setWidth, setHeight, backgroundColor, setBackgroundColor } =
+    useWaraqDocumentAction()
+
+  return (
+    <div>
+      <input type="number" value={width} onChange={(e) => setWidth(+e.target.value)} />
+      <input type="number" value={height} onChange={(e) => setHeight(+e.target.value)} />
+    </div>
+  )
+}
+```
+
+### Return value
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `width` | `number` | Canvas width in px |
+| `height` | `number` | Canvas height in px |
+| `setWidth` | `(width: number) => void` | Update canvas width |
+| `setHeight` | `(height: number) => void` | Update canvas height |
+| `backgroundColor` | `string` | Canvas background color |
+| `setBackgroundColor` | `Dispatch<SetStateAction<string>>` | Update canvas background |
+| `frameRef` | `RefObject<HTMLDivElement>` | Ref to the canvas frame DOM node |

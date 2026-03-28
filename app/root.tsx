@@ -32,6 +32,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="icon"
+          type="image/png"
+          href="/assets/light.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          href="/assets/dark.png"
+          media="(prefers-color-scheme: dark)"
+        />
         <Meta />
         <Links />
       </head>

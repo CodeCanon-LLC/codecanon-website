@@ -1,0 +1,252 @@
+---
+title: Components
+description: All layout and structural components exported by @codecanon/waraq.
+---
+
+## Waraq
+
+The root context provider. All other Waraq components must be rendered inside it.
+
+```tsx
+import { Waraq } from "@codecanon/waraq"
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Editor content |
+| `id` | `string` | auto | Stable ID used for multi-instance support |
+| `data` | `WaraqData \| null` | — | Controlled canvas state |
+| `onDataChange` | `(data: D) => void` | — | Called whenever layers, frame size, or background color change |
+| `initialLayers` | `Layer[]` | `[]` | Uncontrolled initial layers |
+| `initialTool` | `Tool` | `"select"` | Starting tool (`"select"`, `"move"`, `"hand"`) |
+| `layerTypes` | `LayerType[]` | built-in types | Custom or additional layer type definitions |
+| `keyboardShortcuts` | `KeyboardShortcut[]` | built-in shortcuts | Extra keyboard shortcuts to register |
+| `className` | `string` | — | Class applied to the root element |
+
+### WaraqProvider
+
+An alias for `<Waraq>` — useful when you want the context without the default layout wrapper.
+
+---
+
+## WaraqStage
+
+The scrollable infinite canvas viewport. Renders the frame and handles pan/zoom interaction.
+
+```tsx
+<WaraqStage>
+  <WaraqFrame />
+</WaraqStage>
+```
+
+`WaraqStage` has no public props beyond standard HTML div attributes.
+
+---
+
+## WaraqFrame
+
+The editable canvas frame where layers are rendered. Supports Moveable drag, resize, and rotate handles.
+
+```tsx
+<WaraqFrame />
+```
+
+Use `WaraqStaticFrame` for a non-interactive (preview-only) version that renders the same layers without edit handles.
+
+---
+
+## WaraqBackground
+
+Decorative canvas background with repeating pattern options. Rendered behind `WaraqStage`.
+
+```tsx
+<WaraqBackground variant="dots" gap={20} color="#e5e5e5" />
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"lines" \| "dots" \| "cross"` | `"dots"` | Pattern style |
+| `gap` | `number \| [number, number]` | `20` | Pattern repeat spacing in px |
+| `size` | `number` | `1` | Dot/line size in px |
+| `color` | `string` | — | Pattern stroke/fill color |
+| `bgColor` | `string` | — | Canvas background fill |
+
+---
+
+## WaraqPreview
+
+Renders the current design in a static, non-interactive frame. Useful for thumbnails or print previews.
+
+```tsx
+<WaraqPreview />
+```
+
+---
+
+## WaraqPanel
+
+A floating panel that can be positioned around the canvas. On mobile it collapses to a bottom drawer.
+
+```tsx
+<WaraqPanel position="top-right" collapsible>
+  <WaraqPane>…</WaraqPane>
+</WaraqPanel>
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` | `PanelPosition` | `"bottom-center"` | Where to place the panel |
+| `responsive` | `boolean` | `true` | Render as drawer on small screens |
+| `collapsible` | `boolean` | `false` | Show a collapse toggle |
+| `defaultCollapsed` | `boolean` | `false` | Start collapsed |
+| `icon` | `React.ComponentType` | — | Icon shown as the drawer trigger on mobile |
+
+`PanelPosition` values: `"top-left"` | `"top-center"` | `"top-right"` | `"center-left"` | `"center-right"` | `"bottom-left"` | `"bottom-center"` | `"bottom-right"`
+
+---
+
+## WaraqPane
+
+A content section inside a `WaraqPanel`. The `showFor` prop controls when the pane is visible based on the current selection.
+
+```tsx
+<WaraqPane showFor="layer">
+  …
+</WaraqPane>
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `showFor` | `ShowFor` | Visibility condition (see below) |
+
+### ShowFor
+
+| Value | Renders when |
+| --- | --- |
+| `"any"` (default) | Always |
+| `"layer"` | One or more layers are selected |
+| `"document"` | Nothing is selected |
+| `"text"` | A `text` layer is selected |
+| `string[]` | Any of the listed layer type IDs is selected |
+| `((layer) => boolean)[]` | Custom predicate returns `true` |
+
+---
+
+## WaraqPaneTitle
+
+Styled heading for a `WaraqPane`.
+
+```tsx
+<WaraqPaneTitle>Layer properties</WaraqPaneTitle>
+```
+
+---
+
+## WaraqPaneContent
+
+Content wrapper inside a `WaraqPane` that provides consistent padding and spacing.
+
+```tsx
+<WaraqPaneContent>
+  <ActionPosition />
+</WaraqPaneContent>
+```
+
+---
+
+## WaraqToolbar
+
+A toolbar panel — semantically identical to `WaraqPanel` but styled as a horizontal or vertical toolbar.
+
+```tsx
+<WaraqToolbar position="top-center">
+  <WaraqToolbarGroup>
+    <ActionToolbarTool />
+  </WaraqToolbarGroup>
+</WaraqToolbar>
+```
+
+---
+
+## WaraqToolbarGroup
+
+Groups related toolbar buttons with an optional separator between groups.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `showFor` | `ShowFor` | Same as `WaraqPane.showFor` |
+| `showSeparator` | `boolean` | Render a separator after this group |
+
+---
+
+## WaraqToolbarButton
+
+A button inside a toolbar. Extends `Button` with an `active` highlight state.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `active` | `boolean` | Highlight as the current active option |
+
+---
+
+## WaraqToolbarSeparator
+
+A thin visual divider between toolbar groups.
+
+---
+
+## WaraqLayerButton
+
+A clickable row in a layer list. Wraps a `Layer` object and handles selection on click.
+
+```tsx
+<WaraqLayerButton layer={layer}>
+  <WaraqLayerButtonContent layer={layer} />
+</WaraqLayerButton>
+```
+
+---
+
+## WaraqLayerContextMenu
+
+Adds a right-click context menu (rename, duplicate, lock, delete, …) around any layer element.
+
+```tsx
+<WaraqLayerContextMenu layer={layer}>
+  <WaraqLayerButton layer={layer} />
+</WaraqLayerContextMenu>
+```
+
+---
+
+## WaraqKeyboardShortcuts
+
+Opens a keyboard shortcut reference dialog. Drop it anywhere inside `<Waraq>`.
+
+```tsx
+<WaraqKeyboardShortcuts />
+```
+
+---
+
+## PaneAddLayer
+
+Pre-built panel content that shows all registered layer types as clickable add buttons.
+
+```tsx
+<PaneAddLayer filterLayers={(type) => type.id !== "frame"} />
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `filterLayers` | `(type: LayerType) => boolean` | Filter which layer types are shown |
+
+---
+
+## PaneLayerTree
+
+Pre-built panel content that renders a drag-sortable list of all layers with visibility, lock, and delete controls.
+
+```tsx
+<PaneLayerTree />
+```

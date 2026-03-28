@@ -1,0 +1,173 @@
+---
+title: Custom layers
+description: Define your own layer types with custom rendering, data, and controls.
+---
+
+Waraq's layer system is fully extensible. You can define any number of custom layer types and pass them via the `layerTypes` prop.
+
+## Defining a layer type
+
+A `LayerType` object has three required fields — `id`, `name`, `icon` — and a `Component` (or `render`) function that receives the `Layer` and returns JSX.
+
+```tsx
+import { type LayerType } from "@codecanon/waraq/lib"
+import { Shapes } from "lucide-react"
+
+const BadgeLayer: LayerType = {
+  id: "badge",
+  name: "Badge",
+  icon: <Shapes size={16} />,
+  keepRatio: false,
+  defaultValues: {
+    value: "New badge",
+    cssVars: {
+      "--width": "120px",
+      "--height": "36px",
+      "--background-color": "#3b82f6",
+      "--color": "#ffffff",
+      "--border-radius": "9999px",
+      "--font-size": "14px",
+      "--font-weight": "600",
+    },
+  },
+  Component: ({ layer }) => (
+    <div
+      className="flex h-full w-full items-center justify-center"
+      style={{ borderRadius: "inherit", background: "var(--background-color)" }}
+    >
+      <span style={{ color: "var(--color)", fontSize: "var(--font-size)", fontWeight: "var(--font-weight)" }}>
+        {layer.value}
+      </span>
+    </div>
+  ),
+}
+```
+
+## Registering layer types
+
+Pass your custom types to `<Waraq>`. They are merged with the built-in `FrameLayer`, `TextLayer`, and `ImageLayer` types.
+
+```tsx
+import { Waraq, DEFAULT_LAYER_TYPES } from "@codecanon/waraq"
+
+export default function Editor() {
+  return (
+    <Waraq layerTypes={[...DEFAULT_LAYER_TYPES, BadgeLayer]}>
+      {/* … */}
+    </Waraq>
+  )
+}
+```
+
+To replace the built-in types entirely, omit `DEFAULT_LAYER_TYPES`.
+
+## Custom data on a layer
+
+Generic `data` lets you store any additional fields on a layer without polluting CSS vars.
+
+```ts
+interface BadgeData {
+  variant: "filled" | "outline" | "ghost"
+  href?: string
+}
+
+const BadgeLayer: LayerType<BadgeData> = {
+  id: "badge",
+  // …
+  defaultValues: {
+    data: { variant: "filled" },
+  },
+  Component: ({ layer }) => {
+    const { variant, href } = layer.data ?? {}
+    // …
+  },
+}
+```
+
+## Custom action components
+
+Use `useWaraqAction` to build a property panel for your layer type.
+
+```tsx
+import { useWaraqAction } from "@codecanon/waraq"
+import { ToggleGroup, ToggleGroupItem } from "@codecanon/waraq/ui"
+
+function ActionBadgeVariant() {
+  const { layer, setData, getData } = useWaraqAction<BadgeData>()
+
+  if (!layer || layer.type !== "badge") return null
+
+  return (
+    <ToggleGroup
+      type="single"
+      value={getData("variant", "filled")}
+      onValueChange={(v) => v && setData("variant", v as BadgeData["variant"])}
+    >
+      <ToggleGroupItem value="filled">Filled</ToggleGroupItem>
+      <ToggleGroupItem value="outline">Outline</ToggleGroupItem>
+      <ToggleGroupItem value="ghost">Ghost</ToggleGroupItem>
+    </ToggleGroup>
+  )
+}
+```
+
+Then show it only for badge layers using `showFor`:
+
+```tsx
+<WaraqPane showFor={["badge"]}>
+  <WaraqPaneTitle>Badge style</WaraqPaneTitle>
+  <WaraqPaneContent>
+    <ActionBadgeVariant />
+    <ActionFill />
+    <ActionColor />
+  </WaraqPaneContent>
+</WaraqPane>
+```
+
+## Custom keyboard shortcuts
+
+Register extra shortcuts on the `<Waraq>` provider:
+
+```tsx
+import { Waraq, KEYBOARD_SHORTCUTS } from "@codecanon/waraq"
+
+const extraShortcuts = [
+  {
+    keys: ["b"],
+    description: "Add badge layer",
+    category: "Layers",
+    action: (ctx) => ctx.addLayer("badge"),
+  },
+]
+
+export default function Editor() {
+  return (
+    <Waraq keyboardShortcuts={[...KEYBOARD_SHORTCUTS, ...extraShortcuts]}>
+      {/* … */}
+    </Waraq>
+  )
+}
+```
+
+## Custom Moveable ables
+
+Ables extend the Moveable drag/resize handles with custom overlays — useful for link inputs, dimension labels, or action buttons attached to a selected layer.
+
+```tsx
+import { createAble } from "@codecanon/waraq/lib"
+
+const LinkAble = createAble({
+  name: "LinkAble",
+  layerType: "badge",   // Only show for badge layers
+  position: { left: "50%", top: "calc(100% + 8px)" },
+  Component: ({ layer }) => (
+    <input
+      placeholder="https://…"
+      defaultValue={layer?.data?.href ?? ""}
+      className="rounded border px-2 py-1 text-sm"
+    />
+  ),
+})
+```
+
+Pass the able to `<WaraqDimensionAble>` or directly to the Moveable ref via `waraq.moveableRef`.

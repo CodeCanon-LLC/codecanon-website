@@ -1,0 +1,298 @@
+---
+title: UI Components
+description: Standalone UI primitives exported from @codecanon/waraq/ui.
+---
+
+All components below are imported from `@codecanon/waraq/ui` and can be used independently from the editor.
+
+```ts
+import { Button, Input, ColorPicker, /* … */ } from "@codecanon/waraq/ui"
+```
+
+---
+
+## Button
+
+<ComponentPreview
+  name="ButtonPreview"
+  code={`import { Button } from "@codecanon/waraq/ui"
+
+<Button>Default</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="destructive">Destructive</Button>
+<Button variant="link">Link</Button>`}
+/>
+
+### Sizes
+
+<ComponentPreview
+  name="ButtonSizesPreview"
+  code={`<Button size="sm">Small</Button>
+<Button size="default">Default</Button>
+<Button size="lg">Large</Button>`}
+/>
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `variant` | `"default" \| "secondary" \| "outline" \| "ghost" \| "destructive" \| "link"` | `"default"` |
+| `size` | `"default" \| "sm" \| "lg" \| "icon" \| "icon-sm" \| "icon-lg"` | `"default"` |
+| `asChild` | `boolean` | `false` |
+| `tooltip` | `string` | — |
+| `tooltipSide` | `"top" \| "right" \| "bottom" \| "left"` | — |
+| `tooltipShortcut` | `string[]` | — |
+
+---
+
+## Input
+
+<ComponentPreview
+  name="InputPreview"
+  code={`import { Input } from "@codecanon/waraq/ui"
+
+<Input placeholder="Placeholder text" />
+<Input defaultValue="With a value" />
+<Input disabled placeholder="Disabled" />`}
+/>
+
+---
+
+## Textarea
+
+<ComponentPreview
+  name="TextareaPreview"
+  code={`import { Textarea } from "@codecanon/waraq/ui"
+
+<Textarea placeholder="Type something here…" rows={3} />`}
+/>
+
+---
+
+## ActionLabel
+
+<ComponentPreview
+  name="LabelPreview"
+  code={`import { ActionLabel, Input } from "@codecanon/waraq/ui"
+
+<ActionLabel htmlFor="name">Your name</ActionLabel>
+<Input id="name" placeholder="John Doe" />`}
+/>
+
+---
+
+## InputNumber
+
+Number input with optional stepper controls, min/max, suffix/prefix, and decimal scale.
+
+<ComponentPreview
+  name="InputNumberPreview"
+  code={`import { InputNumber } from "@codecanon/waraq/ui"
+
+<InputNumber
+  defaultValue={42}
+  suffix="px"
+  showControls
+  min={0}
+  max={1000}
+/>`}
+/>
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `value` | `number \| undefined` | Controlled value |
+| `onValueChange` | `(value: number \| undefined) => void` | Change handler |
+| `min` / `max` | `number` | Clamp bounds |
+| `stepper` | `number` | Step increment |
+| `suffix` / `prefix` | `string` | Unit label |
+| `showControls` | `boolean` | Show +/– spinner buttons |
+| `decimalScale` | `number` | Number of decimal places |
+
+---
+
+## InputGroup
+
+Wraps a label/addon next to an input.
+
+<ComponentPreview
+  name="InputGroupPreview"
+  code={`import { InputGroup, InputGroupAddon, InputNumber } from "@codecanon/waraq/ui"
+
+<InputGroup>
+  <InputGroupAddon>W</InputGroupAddon>
+  <InputNumber defaultValue={300} suffix="px" />
+</InputGroup>`}
+/>
+
+---
+
+## Slider
+
+<ComponentPreview
+  name="SliderPreview"
+  code={`import { Slider } from "@codecanon/waraq/ui"
+
+<Slider defaultValue={[40]} min={0} max={100} step={1} />`}
+/>
+
+---
+
+## Select
+
+<ComponentPreview
+  name="SelectPreview"
+  code={`import {
+  Select, SelectTrigger, SelectValue,
+  SelectContent, SelectItem,
+} from "@codecanon/waraq/ui"
+
+<Select defaultValue="solid">
+  <SelectTrigger className="w-40">
+    <SelectValue />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="solid">Solid</SelectItem>
+    <SelectItem value="dashed">Dashed</SelectItem>
+    <SelectItem value="dotted">Dotted</SelectItem>
+  </SelectContent>
+</Select>`}
+/>
+
+---
+
+## Tabs
+
+<ComponentPreview
+  name="TabsPreview"
+  code={`import { Tabs, TabsList, TabsTrigger, TabsContent } from "@codecanon/waraq/ui"
+
+<Tabs defaultValue="style">
+  <TabsList>
+    <TabsTrigger value="style">Style</TabsTrigger>
+    <TabsTrigger value="layout">Layout</TabsTrigger>
+    <TabsTrigger value="effects">Effects</TabsTrigger>
+  </TabsList>
+  <TabsContent value="style">Style panel</TabsContent>
+  <TabsContent value="layout">Layout panel</TabsContent>
+  <TabsContent value="effects">Effects panel</TabsContent>
+</Tabs>`}
+/>
+
+---
+
+## ToggleGroup
+
+Single or multiple selection toggle buttons.
+
+<ComponentPreview
+  name="ToggleGroupPreview"
+  code={`import { ToggleGroup, ToggleGroupItem } from "@codecanon/waraq/ui"
+
+<ToggleGroup type="single" defaultValue="left">
+  <ToggleGroupItem value="left">Left</ToggleGroupItem>
+  <ToggleGroupItem value="center">Center</ToggleGroupItem>
+  <ToggleGroupItem value="right">Right</ToggleGroupItem>
+  <ToggleGroupItem value="justify">Justify</ToggleGroupItem>
+</ToggleGroup>`}
+/>
+
+---
+
+## Separator
+
+<ComponentPreview
+  name="SeparatorPreview"
+  code={`import { Separator } from "@codecanon/waraq/ui"
+
+<Separator />`}
+/>
+
+---
+
+## ColorPicker
+
+Full color picker with hex input and optional eye dropper.
+
+<ComponentPreview
+  name="ColorPickerPreview"
+  code={`import { ColorPicker } from "@codecanon/waraq/ui"
+
+<ColorPicker
+  value="#3b82f6"
+  onChange={(color) => console.log(color)}
+  showInput
+  showPreview
+/>`}
+/>
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled hex color |
+| `onChange` | `(color: string) => void` | — | Change handler |
+| `showInput` | `boolean` | `false` | Show hex text input |
+| `showPreview` | `boolean` | `false` | Show color swatch preview |
+| `disabled` | `boolean` | `false` | Disable interaction |
+
+### Compact variants
+
+<ComponentPreview
+  name="ColorPickerCompactPreview"
+  code={`import { ColorPickerCompact, ColorPreview, ColorInput } from "@codecanon/waraq/ui"
+
+// Compact trigger button
+<ColorPickerCompact value="#f59e0b" onChange={setColor} />
+
+// Color swatch only
+<ColorPreview value="#f59e0b" />
+
+// Hex text input only
+<ColorInput value="#f59e0b" onChange={setColor} />`}
+/>
+
+---
+
+## Dialog
+
+<ComponentPreview
+  name="DialogPreview"
+  code={`import {
+  Dialog, DialogTrigger, DialogContent,
+  DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+} from "@codecanon/waraq/ui"
+import { Button } from "@codecanon/waraq/ui"
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you sure?</DialogTitle>
+      <DialogDescription>This action cannot be undone.</DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button variant="destructive">Confirm</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`}
+/>
+
+---
+
+## Popover
+
+<ComponentPreview
+  name="PopoverPreview"
+  code={`import { Popover, PopoverTrigger, PopoverContent } from "@codecanon/waraq/ui"
+import { Button } from "@codecanon/waraq/ui"
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open popover</Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-56 p-3 text-sm">
+    Popover content goes here.
+  </PopoverContent>
+</Popover>`}
+/>

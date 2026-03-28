@@ -1,0 +1,354 @@
+---
+title: Action components
+description: Pre-built property controls for document and layer editing.
+---
+
+Action components are ready-to-use UI controls that read from and write to the current Waraq selection. Drop them inside `<WaraqPane>` or anywhere inside `<Waraq>`.
+
+All action components are imported from `@codecanon/waraq`.
+
+```tsx
+import { ActionPosition, ActionSize, ActionFill } from "@codecanon/waraq"
+```
+
+---
+
+## Document actions
+
+These actions operate on the canvas document itself, not on individual layers.
+
+### ActionDocumentSize
+
+Width and height inputs for the canvas frame.
+
+```tsx
+<ActionDocumentSize minFrameSize={{ width: 100, height: 100 }} maxFrameSize={{ width: 8000, height: 8000 }} />
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `minFrameSize` | `FrameSize` | Minimum allowed frame dimensions |
+| `maxFrameSize` | `FrameSize` | Maximum allowed frame dimensions |
+
+### ActionDocumentSizePreset
+
+Dropdown to pick a preset canvas size (A4, Instagram, Twitter, YouTube, etc.).
+
+```tsx
+<ActionDocumentSizePreset />
+```
+
+### ActionDocumentBackground
+
+Color picker for the canvas background color.
+
+```tsx
+<ActionDocumentBackground />
+```
+
+### ActionOpenDocument
+
+Button that opens a file picker to load a previously exported JSON document.
+
+```tsx
+<ActionOpenDocument />
+```
+
+### ActionDownloadDocument
+
+Button that downloads the current design as a JSON file.
+
+```tsx
+<ActionDownloadDocument filename="my-design" />
+```
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `filename` | `string` | `"waraq"` | Downloaded file name (without extension) |
+
+### ActionPrintDocument
+
+Button that triggers the browser print dialog for the canvas frame.
+
+```tsx
+<ActionPrintDocument />
+```
+
+---
+
+## Position & size
+
+### ActionPosition
+
+X and Y coordinate inputs for the selected layer.
+
+```tsx
+<ActionPosition />
+```
+
+### ActionSize
+
+Width and height inputs for the selected layer.
+
+```tsx
+<ActionSize />
+```
+
+### ActionRotate
+
+Rotation angle input (degrees) for the selected layer.
+
+```tsx
+<ActionRotate />
+```
+
+### ActionFlip
+
+Horizontal and vertical flip toggles.
+
+```tsx
+<ActionFlip />
+```
+
+### ActionDirection
+
+Flex direction controls for container/frame layers.
+
+```tsx
+<ActionDirection />
+```
+
+### ActionAlignItems
+
+Alignment tools: align left, center, right, top, middle, bottom relative to the canvas.
+
+```tsx
+<ActionAlignItems />
+```
+
+### ActionPadding
+
+Padding inputs for the selected layer.
+
+```tsx
+<ActionPadding />
+```
+
+---
+
+## Fill & border
+
+### ActionFill
+
+Background color picker for the selected layer.
+
+```tsx
+<ActionFill />
+```
+
+### ActionColor
+
+Foreground (text) color picker.
+
+```tsx
+<ActionColor />
+```
+
+### ActionBorder
+
+Border style (solid/dashed/dotted/double/none), color, and width controls.
+
+```tsx
+<ActionBorder />
+```
+
+### ActionCorner
+
+Border radius inputs (all corners or individual).
+
+```tsx
+<ActionCorner />
+```
+
+### ActionBoxShadow
+
+Box shadow editor with X, Y, blur, spread, and color.
+
+```tsx
+<ActionBoxShadow />
+```
+
+---
+
+## Typography
+
+These actions apply to `text` layers (and any custom layer type that exposes font-related CSS vars).
+
+### ActionFont
+
+Google Fonts family picker. Requires a Google Fonts API key.
+
+```tsx
+<ActionFont apiKey="YOUR_GOOGLE_FONTS_API_KEY" />
+```
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `apiKey` | `string` | Google Fonts API key |
+| `queryClient` | `QueryClient` | Optional existing TanStack Query client |
+
+### ActionFontSize
+
+Font size number input.
+
+```tsx
+<ActionFontSize />
+```
+
+### ActionFontWeight
+
+Font weight selector (100–900).
+
+```tsx
+<ActionFontWeight />
+```
+
+### ActionFontStyle
+
+Italic / normal toggle.
+
+```tsx
+<ActionFontStyle />
+```
+
+### ActionTextAlign
+
+Text alignment: left, center, right, justify.
+
+```tsx
+<ActionTextAlign />
+```
+
+### ActionLineHeight
+
+Line height input.
+
+```tsx
+<ActionLineHeight />
+```
+
+### ActionLetterSpacing
+
+Letter spacing input.
+
+```tsx
+<ActionLetterSpacing />
+```
+
+### ActionTextDecoration
+
+Underline and strikethrough toggles.
+
+```tsx
+<ActionTextDecoration />
+```
+
+### ActionTextTransform
+
+Uppercase, lowercase, capitalize toggles.
+
+```tsx
+<ActionTextTransform />
+```
+
+### ActionTextShadow
+
+Text shadow editor with X, Y, blur, and color.
+
+```tsx
+<ActionTextShadow />
+```
+
+### ActionTextStroke
+
+Stroke (outline) width and color for text.
+
+```tsx
+<ActionTextStroke />
+```
+
+### ActionTextValue
+
+Textarea for editing the raw text content of a text layer.
+
+```tsx
+<ActionTextValue />
+```
+
+---
+
+## Image actions
+
+These apply to `image` layers.
+
+### ActionImageUrl
+
+URL input that updates the image source.
+
+```tsx
+<ActionImageUrl />
+```
+
+### ActionImageFit
+
+Fit mode selector: `cover`, `contain`, `fill`, `none`, `scale-down`.
+
+```tsx
+<ActionImageFit />
+```
+
+### ActionImageFilter
+
+Visual filters: brightness, contrast, saturation, grayscale, blur, etc.
+
+```tsx
+<ActionImageFilter />
+```
+
+### ActionImageEdit
+
+Opens a crop and transform dialog for the image.
+
+```tsx
+<ActionImageEdit />
+```
+
+---
+
+## Toolbar actions
+
+Designed for use inside `<WaraqToolbar>`.
+
+### ActionToolbarTool
+
+Toggle button group to switch between `select`, `move`, and `hand` tools.
+
+```tsx
+<ActionToolbarTool />
+```
+
+### ActionToolbarHistory
+
+Undo and redo buttons.
+
+```tsx
+<ActionToolbarHistory />
+```
+
+### ActionToolbarZoom
+
+Zoom out, zoom percentage display, and zoom in buttons with a fit shortcut.
+
+```tsx
+<ActionToolbarZoom />
+```

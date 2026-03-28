@@ -1,0 +1,179 @@
+---
+title: Getting started
+description: Build your first Waraq editor in minutes.
+---
+
+This guide walks you through assembling a minimal but fully functional design editor.
+
+## Minimal editor
+
+```tsx
+"use client"
+import "@codecanon/waraq/styles.css"
+import {
+  Waraq,
+  WaraqBackground,
+  WaraqStage,
+  WaraqFrame,
+  WaraqPanel,
+  WaraqPane,
+  WaraqPaneTitle,
+  WaraqPaneContent,
+  WaraqToolbar,
+  WaraqToolbarGroup,
+  PaneAddLayer,
+  PaneLayerTree,
+  ActionToolbarTool,
+  ActionToolbarHistory,
+  ActionToolbarZoom,
+  WaraqKeyboardShortcuts,
+  ActionPosition,
+  ActionSize,
+  ActionFill,
+  ActionBorder,
+  ActionCorner,
+} from "@codecanon/waraq"
+
+export default function Editor() {
+  return (
+    <Waraq>
+      {/* Canvas background pattern */}
+      <WaraqBackground variant="dots" />
+
+      {/* Top toolbar */}
+      <WaraqToolbar position="top-center">
+        <WaraqToolbarGroup>
+          <ActionToolbarTool />
+        </WaraqToolbarGroup>
+        <WaraqToolbarGroup>
+          <ActionToolbarHistory />
+        </WaraqToolbarGroup>
+        <WaraqToolbarGroup>
+          <ActionToolbarZoom />
+        </WaraqToolbarGroup>
+        <WaraqToolbarGroup>
+          <WaraqKeyboardShortcuts />
+        </WaraqToolbarGroup>
+      </WaraqToolbar>
+
+      {/* Left panel — layers */}
+      <WaraqPanel position="top-left">
+        <WaraqPane>
+          <WaraqPaneTitle>Add layer</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <PaneAddLayer />
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane>
+          <WaraqPaneTitle>Layers</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <PaneLayerTree />
+          </WaraqPaneContent>
+        </WaraqPane>
+      </WaraqPanel>
+
+      {/* Canvas */}
+      <WaraqStage>
+        <WaraqFrame />
+      </WaraqStage>
+
+      {/* Right panel — properties */}
+      <WaraqPanel position="top-right">
+        <WaraqPane showFor="layer">
+          <WaraqPaneTitle>Position & size</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <ActionPosition />
+            <ActionSize />
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor="layer">
+          <WaraqPaneTitle>Appearance</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <ActionFill />
+            <ActionCorner />
+            <ActionBorder />
+          </WaraqPaneContent>
+        </WaraqPane>
+      </WaraqPanel>
+    </Waraq>
+  )
+}
+```
+
+## Persisting state
+
+Pass `data` and `onDataChange` to sync the canvas with your own state or storage:
+
+```tsx
+import { createWaraqData, type WaraqData } from "@codecanon/waraq/lib"
+import { useState } from "react"
+
+export default function Editor() {
+  const [data, setData] = useState<WaraqData>(() => createWaraqData())
+
+  return (
+    <Waraq data={data} onDataChange={setData}>
+      {/* … */}
+    </Waraq>
+  )
+}
+```
+
+`WaraqData` is plain JSON, so you can serialize it to localStorage, a database, or a URL param.
+
+## Controlling the editor programmatically
+
+Use the `useWaraq()` hook inside any component that is a child of `<Waraq>`:
+
+```tsx
+"use client"
+import { useWaraq } from "@codecanon/waraq"
+import { Button } from "@codecanon/waraq/ui"
+
+function MyControls() {
+  const { addLayer, deleteSelected, zoomFit, layers } = useWaraq()
+
+  return (
+    <div className="flex gap-2">
+      <Button onClick={() => addLayer("text")}>Add text</Button>
+      <Button variant="destructive" onClick={deleteSelected}>Delete</Button>
+      <Button variant="outline" onClick={zoomFit}>Fit canvas</Button>
+      <span>{layers.length} layers</span>
+    </div>
+  )
+}
+```
+
+## Adding custom layer types
+
+See [Custom layers](/docs/waraq/customization) for a full guide.
+
+```tsx
+import { Waraq } from "@codecanon/waraq"
+import { Type } from "lucide-react"
+
+const myLayerTypes = [
+  {
+    id: "badge",
+    name: "Badge",
+    icon: <Type size={16} />,
+    defaultValues: {
+      value: "New badge",
+      cssVars: { "--width": "120px", "--height": "40px" },
+    },
+    Component: ({ layer }) => (
+      <div className="flex h-full items-center justify-center rounded-full bg-blue-500 px-4 text-white text-sm font-semibold">
+        {layer.value}
+      </div>
+    ),
+  },
+]
+
+export default function Editor() {
+  return (
+    <Waraq layerTypes={myLayerTypes}>
+      {/* … */}
+    </Waraq>
+  )
+}
+```
