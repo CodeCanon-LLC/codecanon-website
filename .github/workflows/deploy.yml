@@ -52,8 +52,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          # Upload build folder
-          path: './build'
+          # React Router v7 static output is in build/client
+          path: './build/client'
           
       - name: Deploy to GitHub Pages
         id: deployment
