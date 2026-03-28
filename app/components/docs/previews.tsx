@@ -49,7 +49,7 @@ import {
 
 export function PreviewBox({ children }: { children: React.ReactNode }) {
   return (
-    <div className="not-prose flex min-h-[140px] flex-wrap items-center justify-center gap-3 rounded-lg bg-fd-background p-8">
+    <div className="not-prose flex min-h-[140px] flex-wrap items-center justify-center gap-3 rounded-lg bg-background p-8">
       {children}
     </div>
   );
