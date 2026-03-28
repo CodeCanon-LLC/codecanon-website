@@ -1,5 +1,5 @@
-import type { Route } from './+types/docs';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+import type { Route } from "./+types/docs";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import {
   DocsBody,
   DocsDescription,
@@ -7,19 +7,19 @@ import {
   DocsTitle,
   MarkdownCopyButton,
   ViewOptionsPopover,
-} from 'fumadocs-ui/layouts/docs/page';
-import { getPageMarkdownUrl, source } from '@/lib/source';
-import browserCollections from 'collections/browser';
-import { baseOptions } from '@/lib/layout.shared';
-import { gitConfig } from '@/lib/shared';
-import { useFumadocsLoader } from 'fumadocs-core/source/client';
-import { getPageImagePath } from '@/lib/og';
-import { useMDXComponents } from '@/components/mdx';
+} from "fumadocs-ui/layouts/docs/page";
+import { getPageMarkdownUrl, source } from "@/lib/source";
+import browserCollections from "collections/browser";
+import { baseOptions } from "@/lib/layout.shared";
+import { gitConfig } from "@/lib/shared";
+import { useFumadocsLoader } from "fumadocs-core/source/client";
+import { getPageImagePath } from "@/lib/og";
+import { useMDXComponents } from "@/components/mdx";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const slugs = params['*'].split('/').filter((v) => v.length > 0);
+  const slugs = params["*"].split("/").filter((v) => v.length > 0);
   const page = source.getPage(slugs);
-  if (!page) throw new Response('Not found', { status: 404 });
+  if (!page) throw new Response("Not found", { status: 404 });
 
   return {
     path: page.path,
@@ -66,10 +66,21 @@ const clientLoader = browserCollections.docs.createClientLoader({
 });
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { path, pageTree, imagePath, markdownUrl } = useFumadocsLoader(loaderData);
+  const { path, pageTree, imagePath, markdownUrl } =
+    useFumadocsLoader(loaderData);
 
   return (
-    <DocsLayout {...baseOptions()} tree={pageTree}>
+    <DocsLayout
+      {...baseOptions()}
+      tree={pageTree}
+      tabs={[
+        {
+          title: "@codecanon/waraq",
+          url: "/docs/waraq",
+          description: "Design editor library",
+        },
+      ]}
+    >
       {clientLoader.useContent(path, { markdownUrl, path, imagePath })}
     </DocsLayout>
   );

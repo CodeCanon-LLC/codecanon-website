@@ -1,14 +1,17 @@
 {
   "title": "@codecanon/waraq",
+  "description": "Canva-like drag-and-drop design editor for React",
   "root": true,
   "pages": [
     "index",
     "installation",
     "getting-started",
+    "---Core---",
     "components",
-    "ui-components",
     "actions",
     "hooks",
+    "---Reference---",
+    "ui-components",
     "types",
     "customization"
   ]

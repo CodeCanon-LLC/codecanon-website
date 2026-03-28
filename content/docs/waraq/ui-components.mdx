@@ -3,7 +3,7 @@ title: UI Components
 description: Standalone UI primitives exported from @codecanon/waraq/ui.
 ---
 
-All components below are imported from `@codecanon/waraq/ui` and can be used independently from the editor.
+All components are imported from `@codecanon/waraq/ui` and can be used independently of the editor — drop them into any Tailwind + ShadCN project.
 
 ```ts
 import { Button, Input, ColorPicker, /* … */ } from "@codecanon/waraq/ui"
@@ -13,26 +13,25 @@ import { Button, Input, ColorPicker, /* … */ } from "@codecanon/waraq/ui"
 
 ## Button
 
-<ComponentPreview
-  name="ButtonPreview"
-  code={`import { Button } from "@codecanon/waraq/ui"
+```tsx
+import { Button } from "@codecanon/waraq/ui"
 
 <Button>Default</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="outline">Outline</Button>
 <Button variant="ghost">Ghost</Button>
 <Button variant="destructive">Destructive</Button>
-<Button variant="link">Link</Button>`}
-/>
+<Button variant="link">Link</Button>
+```
 
 ### Sizes
 
-<ComponentPreview
-  name="ButtonSizesPreview"
-  code={`<Button size="sm">Small</Button>
+```tsx
+<Button size="sm">Small</Button>
 <Button size="default">Default</Button>
-<Button size="lg">Large</Button>`}
-/>
+<Button size="lg">Large</Button>
+<Button size="icon"><Pencil size={16} /></Button>
+```
 
 | Prop | Type | Default |
 | --- | --- | --- |
@@ -47,37 +46,36 @@ import { Button, Input, ColorPicker, /* … */ } from "@codecanon/waraq/ui"
 
 ## Input
 
-<ComponentPreview
-  name="InputPreview"
-  code={`import { Input } from "@codecanon/waraq/ui"
+```tsx
+import { Input } from "@codecanon/waraq/ui"
 
 <Input placeholder="Placeholder text" />
 <Input defaultValue="With a value" />
-<Input disabled placeholder="Disabled" />`}
-/>
+<Input disabled placeholder="Disabled" />
+```
 
 ---
 
 ## Textarea
 
-<ComponentPreview
-  name="TextareaPreview"
-  code={`import { Textarea } from "@codecanon/waraq/ui"
+```tsx
+import { Textarea } from "@codecanon/waraq/ui"
 
-<Textarea placeholder="Type something here…" rows={3} />`}
-/>
+<Textarea placeholder="Type something here…" rows={3} />
+```
 
 ---
 
 ## ActionLabel
 
-<ComponentPreview
-  name="LabelPreview"
-  code={`import { ActionLabel, Input } from "@codecanon/waraq/ui"
+A small label variant used to caption form controls inside action panes.
+
+```tsx
+import { ActionLabel, Input } from "@codecanon/waraq/ui"
 
 <ActionLabel htmlFor="name">Your name</ActionLabel>
-<Input id="name" placeholder="John Doe" />`}
-/>
+<Input id="name" placeholder="John Doe" />
+```
 
 ---
 
@@ -85,9 +83,8 @@ import { Button, Input, ColorPicker, /* … */ } from "@codecanon/waraq/ui"
 
 Number input with optional stepper controls, min/max, suffix/prefix, and decimal scale.
 
-<ComponentPreview
-  name="InputNumberPreview"
-  code={`import { InputNumber } from "@codecanon/waraq/ui"
+```tsx
+import { InputNumber } from "@codecanon/waraq/ui"
 
 <InputNumber
   defaultValue={42}
@@ -95,8 +92,8 @@ Number input with optional stepper controls, min/max, suffix/prefix, and decimal
   showControls
   min={0}
   max={1000}
-/>`}
 />
+```
 
 | Prop | Type | Description |
 | --- | --- | --- |
@@ -112,36 +109,33 @@ Number input with optional stepper controls, min/max, suffix/prefix, and decimal
 
 ## InputGroup
 
-Wraps a label/addon next to an input.
+Wraps a label/addon next to an input for compact property rows.
 
-<ComponentPreview
-  name="InputGroupPreview"
-  code={`import { InputGroup, InputGroupAddon, InputNumber } from "@codecanon/waraq/ui"
+```tsx
+import { InputGroup, InputGroupAddon, InputNumber } from "@codecanon/waraq/ui"
 
 <InputGroup>
   <InputGroupAddon>W</InputGroupAddon>
   <InputNumber defaultValue={300} suffix="px" />
-</InputGroup>`}
-/>
+</InputGroup>
+```
 
 ---
 
 ## Slider
 
-<ComponentPreview
-  name="SliderPreview"
-  code={`import { Slider } from "@codecanon/waraq/ui"
+```tsx
+import { Slider } from "@codecanon/waraq/ui"
 
-<Slider defaultValue={[40]} min={0} max={100} step={1} />`}
-/>
+<Slider defaultValue={[40]} min={0} max={100} step={1} />
+```
 
 ---
 
 ## Select
 
-<ComponentPreview
-  name="SelectPreview"
-  code={`import {
+```tsx
+import {
   Select, SelectTrigger, SelectValue,
   SelectContent, SelectItem,
 } from "@codecanon/waraq/ui"
@@ -155,16 +149,15 @@ Wraps a label/addon next to an input.
     <SelectItem value="dashed">Dashed</SelectItem>
     <SelectItem value="dotted">Dotted</SelectItem>
   </SelectContent>
-</Select>`}
-/>
+</Select>
+```
 
 ---
 
 ## Tabs
 
-<ComponentPreview
-  name="TabsPreview"
-  code={`import { Tabs, TabsList, TabsTrigger, TabsContent } from "@codecanon/waraq/ui"
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@codecanon/waraq/ui"
 
 <Tabs defaultValue="style">
   <TabsList>
@@ -175,8 +168,8 @@ Wraps a label/addon next to an input.
   <TabsContent value="style">Style panel</TabsContent>
   <TabsContent value="layout">Layout panel</TabsContent>
   <TabsContent value="effects">Effects panel</TabsContent>
-</Tabs>`}
-/>
+</Tabs>
+```
 
 ---
 
@@ -184,28 +177,27 @@ Wraps a label/addon next to an input.
 
 Single or multiple selection toggle buttons.
 
-<ComponentPreview
-  name="ToggleGroupPreview"
-  code={`import { ToggleGroup, ToggleGroupItem } from "@codecanon/waraq/ui"
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@codecanon/waraq/ui"
 
 <ToggleGroup type="single" defaultValue="left">
   <ToggleGroupItem value="left">Left</ToggleGroupItem>
   <ToggleGroupItem value="center">Center</ToggleGroupItem>
   <ToggleGroupItem value="right">Right</ToggleGroupItem>
   <ToggleGroupItem value="justify">Justify</ToggleGroupItem>
-</ToggleGroup>`}
-/>
+</ToggleGroup>
+```
 
 ---
 
 ## Separator
 
-<ComponentPreview
-  name="SeparatorPreview"
-  code={`import { Separator } from "@codecanon/waraq/ui"
+```tsx
+import { Separator } from "@codecanon/waraq/ui"
 
-<Separator />`}
-/>
+<Separator />
+<Separator orientation="vertical" />
+```
 
 ---
 
@@ -213,17 +205,16 @@ Single or multiple selection toggle buttons.
 
 Full color picker with hex input and optional eye dropper.
 
-<ComponentPreview
-  name="ColorPickerPreview"
-  code={`import { ColorPicker } from "@codecanon/waraq/ui"
+```tsx
+import { ColorPicker } from "@codecanon/waraq/ui"
 
 <ColorPicker
   value="#3b82f6"
   onChange={(color) => console.log(color)}
   showInput
   showPreview
-/>`}
 />
+```
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -235,27 +226,25 @@ Full color picker with hex input and optional eye dropper.
 
 ### Compact variants
 
-<ComponentPreview
-  name="ColorPickerCompactPreview"
-  code={`import { ColorPickerCompact, ColorPreview, ColorInput } from "@codecanon/waraq/ui"
+```tsx
+import { ColorPickerCompact, ColorPreview, ColorInput } from "@codecanon/waraq/ui"
 
-// Compact trigger button
+// Compact trigger button — opens picker in a popover
 <ColorPickerCompact value="#f59e0b" onChange={setColor} />
 
 // Color swatch only
 <ColorPreview value="#f59e0b" />
 
 // Hex text input only
-<ColorInput value="#f59e0b" onChange={setColor} />`}
-/>
+<ColorInput value="#f59e0b" onChange={setColor} />
+```
 
 ---
 
 ## Dialog
 
-<ComponentPreview
-  name="DialogPreview"
-  code={`import {
+```tsx
+import {
   Dialog, DialogTrigger, DialogContent,
   DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@codecanon/waraq/ui"
@@ -275,16 +264,15 @@ import { Button } from "@codecanon/waraq/ui"
       <Button variant="destructive">Confirm</Button>
     </DialogFooter>
   </DialogContent>
-</Dialog>`}
-/>
+</Dialog>
+```
 
 ---
 
 ## Popover
 
-<ComponentPreview
-  name="PopoverPreview"
-  code={`import { Popover, PopoverTrigger, PopoverContent } from "@codecanon/waraq/ui"
+```tsx
+import { Popover, PopoverTrigger, PopoverContent } from "@codecanon/waraq/ui"
 import { Button } from "@codecanon/waraq/ui"
 
 <Popover>
@@ -294,5 +282,5 @@ import { Button } from "@codecanon/waraq/ui"
   <PopoverContent className="w-56 p-3 text-sm">
     Popover content goes here.
   </PopoverContent>
-</Popover>`}
-/>
+</Popover>
+```
