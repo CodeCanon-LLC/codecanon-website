@@ -1,3 +1,5 @@
+import { cn } from "@/lib/cn";
+import { LinkIcon } from "lucide-react";
 import type { Route } from "./+types/home";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { buttonVariants } from "fumadocs-ui/components/ui/button";
@@ -29,10 +31,6 @@ export default function Home() {
         </div>
 
         <div className="relative mx-auto max-w-3xl">
-          <div className="mb-5 inline-flex items-center rounded-full border bg-fd-muted px-4 py-1.5 text-xs font-medium text-fd-muted-foreground tracking-wide">
-            Open source · MIT license
-          </div>
-
           <h1 className="mb-5 text-5xl font-bold tracking-tight leading-tight md:text-6xl">
             Design tooling for
             <br />
@@ -46,7 +44,10 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link to="/docs/waraq" className={buttonVariants()}>
+            <Link
+              to="/docs/waraq"
+              className={buttonVariants({ variant: "primary" })}
+            >
               Get started →
             </Link>
             <Link to="/docs" className={buttonVariants({ variant: "outline" })}>
@@ -58,8 +59,8 @@ export default function Home() {
 
       {/* ── Live editor demo ──────────────────────────────────────────── */}
       <section className="px-6 py-20 border-b">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 text-center">
+        <div className="mx-auto max-w-6xl flex flex-col gap-4 items-center">
+          <div className="mb-10 text-center w-full">
             <p className="text-xs font-semibold uppercase tracking-widest text-fd-primary mb-2">
               @codecanon/waraq
             </p>
@@ -71,7 +72,7 @@ export default function Home() {
           </div>
 
           {/* Browser-chrome wrapper */}
-          <div className="overflow-hidden rounded-2xl border shadow-2xl shadow-black/10 dark:shadow-black/40">
+          <div className="overflow-hidden rounded-2xl border shadow-2xl shadow-black/10 dark:shadow-black/40 w-full">
             <div className="flex items-center gap-2 bg-fd-muted/70 px-4 py-3 border-b">
               <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
               <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
@@ -79,7 +80,7 @@ export default function Home() {
               <a
                 href="https://codecanon-llc.github.io/codecanon-waraq-demo/"
                 target={"_blank"}
-                className="ml-3 flex-1 rounded-md bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground"
+                className="ml-3 flex-1 rounded-md bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground hover:underline"
               >
                 https://codecanon-llc.github.io/codecanon-waraq-demo/
               </a>
@@ -89,6 +90,14 @@ export default function Home() {
               <WaraqEditorDemo />
             </div>
           </div>
+          <a
+            href="https://codecanon-llc.github.io/codecanon-waraq-demo/"
+            target={"_blank"}
+            className={cn(buttonVariants({ variant: "primary" }), "flex gap-2")}
+          >
+            <span>Open in Browser</span>
+            <LinkIcon className={"size-3"} />
+          </a>
         </div>
       </section>
 

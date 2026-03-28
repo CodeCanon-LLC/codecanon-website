@@ -29,7 +29,7 @@ export default function WaraqDemoInner() {
     <Waraq className="h-full w-full">
       <WaraqBackground variant="dots" />
 
-      <WaraqToolbar position="top-center">
+      <WaraqToolbar>
         <WaraqToolbarGroup>
           <ActionToolbarTool />
         </WaraqToolbarGroup>
@@ -38,9 +38,6 @@ export default function WaraqDemoInner() {
         </WaraqToolbarGroup>
         <WaraqToolbarGroup>
           <ActionToolbarZoom />
-        </WaraqToolbarGroup>
-        <WaraqToolbarGroup>
-          <WaraqKeyboardShortcuts />
         </WaraqToolbarGroup>
       </WaraqToolbar>
 
