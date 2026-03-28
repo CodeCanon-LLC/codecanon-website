@@ -1,11 +1,11 @@
-import { PRIMARY_DEFAULT_COLOR, SECONDARY_DEFAULT_COLOR } from "@/config"
-import * as React from "react"
+import { PRIMARY_DEFAULT_COLOR, SECONDARY_DEFAULT_COLOR } from "@/config";
+import * as React from "react";
 
 const SVGComponent = (props: React.ComponentProps<"svg">) => {
   const styles = `
 		.codecanon-primary { fill: var(--color-codecanon-primary, ${PRIMARY_DEFAULT_COLOR}); }
 		.codecanon-secondary { fill: var(--color-codecanon-secondary, ${SECONDARY_DEFAULT_COLOR}); }
-  `
+  `;
 
   return (
     <svg
@@ -170,7 +170,7 @@ const SVGComponent = (props: React.ComponentProps<"svg">) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
-export default SVGComponent
+export default SVGComponent;

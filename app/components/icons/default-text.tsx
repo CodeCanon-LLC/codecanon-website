@@ -3,8 +3,8 @@ import {
   DIACRITIC_DEFAULT_COLOR,
   LETTER_DARK_COLOR,
   LETTER_DEFAULT_COLOR,
-} from "@/config"
-import * as React from "react"
+} from "@/config";
+import * as React from "react";
 
 const SVGComponent = (props: React.ComponentProps<"svg">) => {
   const styles = `
@@ -12,7 +12,7 @@ const SVGComponent = (props: React.ComponentProps<"svg">) => {
     .codecanon-diacritic { fill: var(--color-codecanon-diacritic, var(--color-codecanon-secondary, ${DIACRITIC_DEFAULT_COLOR})); }
     .dark .codecanon-letter { fill: var(--color-codecanon-letter, var(--color-codecanon-primary, ${LETTER_DARK_COLOR})); }
     .dark .codecanon-diacritic { fill: var(--color-codecanon-diacritic, var(--color-codecanon-secondary, ${DIACRITIC_DARK_COLOR})); }
-  `
+  `;
 
   return (
     <svg
@@ -305,7 +305,7 @@ const SVGComponent = (props: React.ComponentProps<"svg">) => {
         y={393.5}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default SVGComponent
+export default SVGComponent;
