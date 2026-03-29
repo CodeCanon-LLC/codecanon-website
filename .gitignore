@@ -6,3 +6,5 @@
 /build/
 .source
 .idea
+.env*
+!.env.example

@@ -22,7 +22,7 @@ import {
   WaraqToolbar,
   WaraqToolbarGroup,
 } from "@codecanon/waraq";
-import type { Layer } from "@codecanon/waraq/lib";
+import { createWaraqData, type Layer } from "@codecanon/waraq/lib";
 
 const initialLayers: Layer[] = [
   {
