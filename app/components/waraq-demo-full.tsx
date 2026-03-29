@@ -50,9 +50,16 @@ import {
   WaraqToolbarGroup,
 } from "@codecanon/waraq";
 import type { Layer } from "@codecanon/waraq/lib";
-import { Button } from "@codecanon/waraq/ui";
-import { CircleQuestionMark, MoonIcon, PlusIcon, SunIcon } from "lucide-react";
+import { Button, ButtonText } from "@codecanon/waraq/ui";
+import {
+  CircleQuestionMark,
+  HomeIcon,
+  MoonIcon,
+  PlusIcon,
+  SunIcon,
+} from "lucide-react";
 import { useTheme } from "next-themes";
+import { Link } from "react-router";
 import { useIsBreakpoint } from "@/hooks/use-breakpoint";
 
 function Header() {
@@ -60,6 +67,13 @@ function Header() {
 
   return (
     <WaraqToolbar position="top-center">
+      <WaraqToolbarGroup>
+        <Button asChild tooltip="Home Page" size="icon" variant="ghost">
+          <Link to="/">
+            <HomeIcon />
+          </Link>
+        </Button>
+      </WaraqToolbarGroup>
       <WaraqToolbarGroup>
         <ActionOpenDocument />
       </WaraqToolbarGroup>
