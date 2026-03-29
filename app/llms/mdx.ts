@@ -3,6 +3,7 @@ import type { Route } from "./+types/mdx";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const slugs = params["*"].split("/").filter((v) => v.length > 0);
+  // remove the appended "content.md"
   slugs.pop();
   const page = source.getPage(slugs);
   if (!page) {

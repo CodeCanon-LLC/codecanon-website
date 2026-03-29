@@ -11,7 +11,6 @@ import {
 } from "fumadocs-ui/layouts/docs/page";
 import { useMDXComponents } from "@/components/mdx";
 import { baseOptions } from "@/lib/layout.shared";
-import { getPageImagePath } from "@/lib/og";
 import { gitConfig } from "@/lib/shared";
 import { getPageMarkdownUrl, source } from "@/lib/source";
 import type { Route } from "./+types/docs";
@@ -25,31 +24,25 @@ export async function loader({ params }: Route.LoaderArgs) {
     path: page.path,
     markdownUrl: getPageMarkdownUrl(page).url,
     pageTree: await source.serializePageTree(source.getPageTree()),
-    imagePath: getPageImagePath(slugs),
   };
 }
 
 const clientLoader = browserCollections.docs.createClientLoader({
-  component: function Component(
+  component(
     { toc, frontmatter, default: Mdx },
-    // you can define props for the `<Content />` component
+    // you can define props for the component
     {
       markdownUrl,
       path,
-      imagePath,
     }: {
       markdownUrl: string;
       path: string;
-      imagePath: string;
     },
   ) {
-    const components = useMDXComponents();
-
     return (
       <DocsPage toc={toc}>
         <title>{frontmatter.title}</title>
         <meta name="description" content={frontmatter.description} />
-        <meta property="og:image" content={imagePath} />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <div className="flex flex-row gap-2 items-center border-b -mt-4 pb-6">
@@ -60,7 +53,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
           />
         </div>
         <DocsBody>
-          <Mdx components={components} />
+          <Mdx components={useMDXComponents()} />
         </DocsBody>
       </DocsPage>
     );
@@ -68,8 +61,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
 });
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { path, pageTree, imagePath, markdownUrl } =
-    useFumadocsLoader(loaderData);
+  const { pageTree, path, markdownUrl } = useFumadocsLoader(loaderData);
 
   return (
     <DocsLayout
@@ -83,7 +75,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         },
       ]}
     >
-      {clientLoader.useContent(path, { markdownUrl, path, imagePath })}
+      {clientLoader.useContent(loaderData.path, {
+        markdownUrl,
+        path,
+      })}
     </DocsLayout>
   );
 }

@@ -9,8 +9,7 @@ import {
 } from "react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
-import { isMarkdownPreferred, rewritePath } from "fumadocs-core/negotiation";
-import { docsContentRoute, docsRoute } from "@/lib/shared";
+import SearchDialog from "@/components/search";
 import NotFound from "./routes/not-found";
 
 export const links: Route.LinksFunction = () => [
@@ -32,23 +31,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="icon"
-          type="image/png"
-          href="/assets/light.png"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          href="/assets/dark.png"
-          media="(prefers-color-scheme: dark)"
-        />
         <Meta />
         <Links />
       </head>
       <body className="flex flex-col min-h-screen">
-        <RootProvider>{children}</RootProvider>
+        <RootProvider search={{ SearchDialog }}>{children}</RootProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -86,28 +73,3 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     </main>
   );
 }
-
-const { rewrite: rewriteDocs } = rewritePath(
-  `${docsRoute}{/*path}`,
-  `${docsContentRoute}{/*path}/content.md`,
-);
-const { rewrite: rewriteSuffix } = rewritePath(
-  `${docsRoute}{/*path}.mdx`,
-  `${docsContentRoute}{/*path}/content.md`,
-);
-const serverMiddleware: Route.MiddlewareFunction = async (
-  { request },
-  next,
-) => {
-  const url = new URL(request.url);
-  const suffixPath = rewriteSuffix(url.pathname);
-  if (suffixPath) return Response.redirect(new URL(suffixPath, url));
-
-  if (isMarkdownPreferred(request)) {
-    const docsPath = rewriteDocs(url.pathname);
-    if (docsPath) return Response.redirect(new URL(docsPath, url));
-  }
-
-  return next();
-};
-export const middleware = [serverMiddleware];
