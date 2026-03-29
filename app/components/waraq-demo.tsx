@@ -47,7 +47,7 @@ const initialLayers: Layer[] = [
 
 export default function WaraqDemo() {
   return (
-    <Waraq className="h-full w-full" initialLayers={initialLayers}>
+    <Waraq className="size-full" initialLayers={initialLayers}>
       <WaraqBackground variant="dots" />
 
       <WaraqToolbar>

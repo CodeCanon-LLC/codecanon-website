@@ -13,7 +13,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@codecanon/waraq": "^2.0.6",
+    "@codecanon/waraq": "^2.0.7",
     "@orama/orama": "^3.1.18",
     "@react-router/node": "^7.13.2",
     "fumadocs-core": "16.7.7",

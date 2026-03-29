@@ -60,7 +60,7 @@ export function PreviewBox({ children }: { children: React.ReactNode }) {
 export function ButtonPreview() {
   return (
     <PreviewBox>
-      <Button variant="default">Default</Button>
+      <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="outline">Outline</Button>
       <Button variant="ghost">Ghost</Button>

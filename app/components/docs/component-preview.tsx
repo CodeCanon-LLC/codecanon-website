@@ -29,7 +29,7 @@ const registry: Record<string, { component: React.FC; code: string }> = {
     component: ButtonPreview,
     code: `import { Button } from "@codecanon/waraq/ui"
 
-<Button variant="default">Default</Button>
+<Button variant="primary">Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="outline">Outline</Button>
 <Button variant="ghost">Ghost</Button>

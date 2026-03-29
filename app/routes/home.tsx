@@ -79,7 +79,7 @@ export default function Home() {
           </div>
 
           {/* Browser-chrome wrapper */}
-          <Browser link="https://codecanon-llc.github.io/codecanon-waraq-demo/">
+          <Browser link="/waraq">
             {isMounted ? (
               <Suspense fallback={<Loader>Loading editor…</Loader>}>
                 <WaraqDemo />
@@ -88,15 +88,13 @@ export default function Home() {
               <Loader>Loading editor…</Loader>
             )}
           </Browser>
-          <a
-            href="https://codecanon-llc.github.io/codecanon-waraq-demo/"
-            target={"_blank"}
-            rel="noopener noreferrer"
+          <Link
+            to="/waraq"
             className={cn(buttonVariants({ variant: "primary" }), "flex gap-2")}
           >
             <span>Open in Browser</span>
             <LinkIcon className={"size-3"} />
-          </a>
+          </Link>
         </div>
       </section>
 

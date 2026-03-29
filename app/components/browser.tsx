@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import { cn } from "@/lib/cn";
 
 export function Browser({
@@ -6,6 +8,9 @@ export function Browser({
   className,
   ...props
 }: React.ComponentProps<"div"> & { link: string }) {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+
   return (
     <div
       className={cn(
@@ -18,14 +23,13 @@ export function Browser({
         <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
         <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
         <span className="h-3 w-3 rounded-full bg-[#28C840]" />
-        <a
-          href={link}
-          target={"_blank"}
-          rel="noopener"
+        <Link
+          to={link}
           className="ml-3 flex-1 rounded-md bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground hover:underline"
         >
+          {isMounted && window.location.origin}
           {link}
-        </a>
+        </Link>
       </div>
 
       <div className="h-145 bg-fd-background">{children}</div>
