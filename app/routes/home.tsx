@@ -130,7 +130,7 @@ export default function Home() {
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold mb-3">Libraries</h2>
             <p className="text-fd-muted-foreground">
-              Open-source packages ready to drop into any React project.
+              Packages ready to drop into any React project.
             </p>
           </div>
 
@@ -164,7 +164,7 @@ export default function Home() {
                 </span>
               </div>
               <p className="flex-1 text-sm text-fd-muted-foreground leading-relaxed">
-                More open-source libraries are in active development. Follow{" "}
+                More libraries are in active development. Follow{" "}
                 <a
                   href="https://github.com/CodeCanon-LLC"
                   className="underline underline-offset-2 hover:text-fd-foreground transition-colors"
