@@ -296,9 +296,12 @@ export function ColorPickerCompactPreview() {
   const [color, setColor] = useState("#f59e0b");
   return (
     <PreviewBox>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3">
+        <ActionLabel>Picker</ActionLabel>
         <ColorPickerCompact value={color} onChange={setColor} />
+        <ActionLabel>Preview</ActionLabel>
         <ColorPreview value={color} />
+        <ActionLabel>Input</ActionLabel>
         <ColorInput value={color} onChange={setColor} />
       </div>
     </PreviewBox>
