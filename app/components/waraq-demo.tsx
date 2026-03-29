@@ -22,10 +22,32 @@ import {
   WaraqToolbar,
   WaraqToolbarGroup,
 } from "@codecanon/waraq";
+import type { Layer } from "@codecanon/waraq/lib";
+
+const initialLayers: Layer[] = [
+  {
+    id: "codecanon-logo-initial",
+    type: "image",
+    name: "Code Canon Logo",
+    value: "/assets/light.png",
+    parentStyle: {},
+    contentStyle: {},
+    cssVars: {
+      "--width": "720px",
+      "--height": "960px",
+      "--object-fit": "contain",
+    },
+    transform: {
+      translate: [48, 48],
+      rotate: 0,
+      scale: [1, 1],
+    },
+  },
+];
 
 export default function WaraqDemo() {
   return (
-    <Waraq className="h-full w-full">
+    <Waraq className="h-full w-full" initialLayers={initialLayers}>
       <WaraqBackground variant="dots" />
 
       <WaraqToolbar>
