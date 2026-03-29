@@ -13,6 +13,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@codecanon/logos": "^1.0.5",
     "@codecanon/waraq": "^2.0.7",
     "@orama/orama": "^3.1.18",
     "@react-router/node": "^7.13.2",

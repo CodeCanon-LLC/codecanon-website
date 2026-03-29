@@ -5,6 +5,7 @@
     "": {
       "name": "codecanon-website",
       "dependencies": {
+        "@codecanon/logos": "^1.0.5",
         "@codecanon/waraq": "^2.0.7",
         "@orama/orama": "^3.1.18",
         "@react-router/node": "^7.13.2",
@@ -114,6 +115,8 @@
     "@bkrem/react-transition-group": ["@bkrem/react-transition-group@1.3.5", "", { "dependencies": { "chain-function": "^1.0.0", "dom-helpers": "^3.3.1", "loose-envify": "^1.3.1", "prop-types": "^15.5.6", "react-lifecycles-compat": "^3.0.4", "warning": "^3.0.0" }, "peerDependencies": { "react": "^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-lbBYhC42sxAeFEopxzd9oWdkkV0zirO5E9WyeOBxOrpXsf7m30Aj8vnbayZxFOwD9pvUQ2Pheb1gO79s0Qap3Q=="],
 
     "@cfcs/core": ["@cfcs/core@0.0.6", "", { "dependencies": { "@egjs/component": "^3.0.2" } }, "sha512-FxfJMwoLB8MEMConeXUCqtMGqxdtePQxRBOiGip9ULcYYam3WfCgoY6xdnMaSkYvRvmosp5iuG+TiPofm65+Pw=="],
+
+    "@codecanon/logos": ["@codecanon/logos@1.0.5", "", { "peerDependencies": { "react": ">=16.8.0" }, "optionalPeers": ["react"] }, "sha512-FsDI6AeNk9AgBiX20l+QXcCQvooN0E/ALnX+24VQgMvVRD0+9qA4Dkjy0sg0kEzqzpfeDIkbIFf6B59n86E5lA=="],
 
     "@codecanon/waraq": ["@codecanon/waraq@2.0.7", "", { "dependencies": { "@dnd-kit/core": "^6.3.1", "@dnd-kit/modifiers": "^9.0.0", "@dnd-kit/sortable": "^10.0.0", "@dnd-kit/utilities": "^3.2.2", "@radix-ui/react-avatar": "^1.1.11", "@radix-ui/react-context-menu": "^2.2.16", "@radix-ui/react-dialog": "^1.1.15", "@radix-ui/react-dropdown-menu": "^2.1.16", "@radix-ui/react-label": "^2.1.8", "@radix-ui/react-popover": "^1.1.15", "@radix-ui/react-select": "^2.2.6", "@radix-ui/react-separator": "^1.1.8", "@radix-ui/react-slider": "^1.3.6", "@radix-ui/react-slot": "^1.2.4", "@radix-ui/react-tabs": "^1.1.13", "@radix-ui/react-toggle-group": "^1.1.11", "@radix-ui/react-tooltip": "^1.2.8", "@tabler/icons-react": "^3.36.1", "@tanstack/react-query": "^5.90.21", "@tanstack/react-virtual": "^3.13.18", "class-variance-authority": "^0.7.1", "clsx": "^2.1.1", "cmdk": "^1.1.1", "lodash-es": "^4.17.23", "lucide-react": "^0.563.0", "react-colorful": "^5.6.1", "react-dropzone": "^15.0.0", "react-hotkeys-hook": "^5.2.1", "react-image-crop": "^11.0.10", "react-infinite-viewer": "^0.28.1", "react-moveable": "^0.56.0", "react-number-format": "^5.4.4", "react-selecto": "^1.26.3", "react-to-print": "^3.2.0", "sonner": "^2.0.7", "tailwind-merge": "^3.4.0", "vaul": "^1.1.2" }, "peerDependencies": { "react": "^19.2.0", "react-dom": "^19.2.0" } }, "sha512-G88s0SP1h5MVDCvo1eU8KbeylbAef377ofTGP18ly4hFzl6f7/YP80k/7ixQViK9R7s/LPG0bLrd/in8GV6h8A=="],
 
