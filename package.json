@@ -12,7 +12,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@codecanon/waraq": "^2.0.5",
+    "@codecanon/waraq": "^2.0.6",
     "@react-router/node": "^7.13.2",
     "@react-router/serve": "^7.13.2",
     "@takumi-rs/image-response": "^0.73.1",
