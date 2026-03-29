@@ -1,5 +1,5 @@
+import type * as React from "react";
 import { DIACRITIC_DARK_COLOR, LETTER_DARK_COLOR } from "@/config";
-import * as React from "react";
 
 const SVGComponent = (props: React.ComponentProps<"svg">) => {
   const styles = `
@@ -14,6 +14,7 @@ const SVGComponent = (props: React.ComponentProps<"svg">) => {
       height="24px"
       {...props}
     >
+      <title>Dark Text</title>
       <defs>
         <style dangerouslySetInnerHTML={{ __html: styles }} />
       </defs>

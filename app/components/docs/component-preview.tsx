@@ -2,6 +2,7 @@
 
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { useEffect, useState } from "react";
 import {
   ActionLabelPreview,
   ButtonPreview,
@@ -229,7 +230,8 @@ interface ComponentPreviewProps {
   name: string;
 }
 
-export function ComponentPreview({ name }: ComponentPreviewProps) {
+export default function ComponentPreview({ name }: ComponentPreviewProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const item = registry[name];
 
   if (!item) {
@@ -242,10 +244,12 @@ export function ComponentPreview({ name }: ComponentPreviewProps) {
 
   const Preview = item.component;
 
+  useEffect(() => setIsMounted(true), []);
+
   return (
     <Tabs items={["Preview", "Code"]} className="my-4">
       <Tab value="Preview">
-        <Preview />
+        {isMounted ? <Preview /> : <div className="min-h-35" />}
       </Tab>
       <Tab value="Code">
         <DynamicCodeBlock lang="tsx" code={item.code} />

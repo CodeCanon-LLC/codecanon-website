@@ -1,3 +1,4 @@
+import { RootProvider } from "fumadocs-ui/provider/react-router";
 import {
   isRouteErrorResponse,
   Links,
@@ -6,12 +7,11 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { RootProvider } from "fumadocs-ui/provider/react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
 import { isMarkdownPreferred, rewritePath } from "fumadocs-core/negotiation";
-import NotFound from "./routes/not-found";
 import { docsContentRoute, docsRoute } from "@/lib/shared";
+import NotFound from "./routes/not-found";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

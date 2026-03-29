@@ -1,5 +1,5 @@
-import { loader, type InferPageType } from "fumadocs-core/source";
 import { docs } from "collections/server";
+import { type InferPageType, loader } from "fumadocs-core/source";
 import { docsContentRoute, docsRoute } from "./shared";
 
 export const source = loader({

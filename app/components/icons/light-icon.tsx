@@ -1,5 +1,5 @@
+import type * as React from "react";
 import { PRIMARY_DEFAULT_COLOR, SECONDARY_DEFAULT_COLOR } from "@/config";
-import * as React from "react";
 
 const SVGComponent = (props: React.ComponentProps<"svg">) => {
   const styles = `
@@ -20,6 +20,7 @@ const SVGComponent = (props: React.ComponentProps<"svg">) => {
       height="24px"
       {...props}
     >
+      <title>Light Icon</title>
       <defs>
         <style dangerouslySetInnerHTML={{ __html: styles }} />
       </defs>

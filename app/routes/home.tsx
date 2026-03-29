@@ -1,13 +1,17 @@
-import { cn } from "@/lib/cn";
-import { LinkIcon } from "lucide-react";
-import type { Route } from "./+types/home";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { buttonVariants } from "fumadocs-ui/components/ui/button";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { LinkIcon } from "lucide-react";
+import { lazy, Suspense } from "react";
 import { Link } from "react-router";
+import { Browser } from "@/components/browser";
+import { Loader } from "@/components/loader";
+import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
-import { WaraqEditorDemo } from "@/components/waraq-demo";
+import type { Route } from "./+types/home";
 
-export function meta({}: Route.MetaArgs) {
+const WaraqDemo = lazy(() => import("@/components/waraq-demo"));
+
+export function meta(_: Route.MetaArgs) {
   return [
     { title: "CodeCanon — Software & Consultation" },
     {
@@ -27,7 +31,7 @@ export default function Home() {
           aria-hidden
           className="pointer-events-none absolute inset-0 flex items-start justify-center"
         >
-          <div className="h-[600px] w-[800px] rounded-full bg-fd-primary/5 blur-3xl -translate-y-1/3" />
+          <div className="h-150 w-200 rounded-full bg-fd-primary/5 blur-3xl -translate-y-1/3" />
         </div>
 
         <div className="relative mx-auto max-w-3xl">
@@ -72,27 +76,15 @@ export default function Home() {
           </div>
 
           {/* Browser-chrome wrapper */}
-          <div className="overflow-hidden rounded-2xl border shadow-2xl shadow-black/10 dark:shadow-black/40 w-full">
-            <div className="flex items-center gap-2 bg-fd-muted/70 px-4 py-3 border-b">
-              <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
-              <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
-              <span className="h-3 w-3 rounded-full bg-[#28C840]" />
-              <a
-                href="https://codecanon-llc.github.io/codecanon-waraq-demo/"
-                target={"_blank"}
-                className="ml-3 flex-1 rounded-md bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground hover:underline"
-              >
-                https://codecanon-llc.github.io/codecanon-waraq-demo/
-              </a>
-            </div>
-
-            <div className="h-[580px] bg-fd-background">
-              <WaraqEditorDemo />
-            </div>
-          </div>
+          <Browser link="https://codecanon-llc.github.io/codecanon-waraq-demo/">
+            <Suspense fallback={<Loader>Loading editor…</Loader>}>
+              <WaraqDemo />
+            </Suspense>
+          </Browser>
           <a
             href="https://codecanon-llc.github.io/codecanon-waraq-demo/"
             target={"_blank"}
+            rel="noopener noreferrer"
             className={cn(buttonVariants({ variant: "primary" }), "flex gap-2")}
           >
             <span>Open in Browser</span>

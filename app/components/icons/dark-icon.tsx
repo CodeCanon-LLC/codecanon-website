@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { PRIMARY_DARK_COLOR, SECONDARY_DARK_COLOR } from "@/config";
 
 const SVGComponent = (props: React.ComponentProps<"svg">) => {
@@ -20,6 +20,7 @@ const SVGComponent = (props: React.ComponentProps<"svg">) => {
       height="24px"
       {...props}
     >
+      <title>Dark Icon</title>
       <defs>
         <style dangerouslySetInnerHTML={{ __html: styles }} />
       </defs>

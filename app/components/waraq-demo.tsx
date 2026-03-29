@@ -1,22 +1,88 @@
-import { lazy, Suspense } from "react";
+import {
+  ActionBorder,
+  ActionCorner,
+  ActionDocumentBackground,
+  ActionDocumentSize,
+  ActionFill,
+  ActionPosition,
+  ActionSize,
+  ActionToolbarHistory,
+  ActionToolbarTool,
+  ActionToolbarZoom,
+  PaneAddLayer,
+  PaneLayerTree,
+  Waraq,
+  WaraqBackground,
+  WaraqFrame,
+  WaraqPane,
+  WaraqPaneContent,
+  WaraqPanel,
+  WaraqPaneTitle,
+  WaraqStage,
+  WaraqToolbar,
+  WaraqToolbarGroup,
+} from "@codecanon/waraq";
 
-const WaraqDemoInner = lazy(() => import("./waraq-demo-inner"));
-
-function WaraqDemoSkeleton() {
+export default function WaraqDemo() {
   return (
-    <div className="h-full w-full flex items-center justify-center bg-fd-muted/20">
-      <div className="flex flex-col items-center gap-3 text-fd-muted-foreground">
-        <div className="h-8 w-8 rounded-full border-2 border-fd-muted-foreground/30 border-t-fd-primary animate-spin" />
-        <span className="text-sm">Loading editor…</span>
-      </div>
-    </div>
-  );
-}
+    <Waraq className="h-full w-full">
+      <WaraqBackground variant="dots" />
 
-export function WaraqEditorDemo() {
-  return (
-    <Suspense fallback={<WaraqDemoSkeleton />}>
-      <WaraqDemoInner />
-    </Suspense>
+      <WaraqToolbar>
+        <WaraqToolbarGroup>
+          <ActionToolbarTool />
+        </WaraqToolbarGroup>
+        <WaraqToolbarGroup>
+          <ActionToolbarHistory />
+        </WaraqToolbarGroup>
+        <WaraqToolbarGroup>
+          <ActionToolbarZoom />
+        </WaraqToolbarGroup>
+      </WaraqToolbar>
+
+      <WaraqPanel position="top-left">
+        <WaraqPane>
+          <WaraqPaneTitle>Add layer</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <PaneAddLayer />
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane>
+          <WaraqPaneTitle>Layers</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <PaneLayerTree />
+          </WaraqPaneContent>
+        </WaraqPane>
+      </WaraqPanel>
+
+      <WaraqStage>
+        <WaraqFrame />
+      </WaraqStage>
+
+      <WaraqPanel position="top-right">
+        <WaraqPane showFor="document">
+          <WaraqPaneTitle>Document</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <ActionDocumentSize />
+            <ActionDocumentBackground />
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor="layer">
+          <WaraqPaneTitle>Position & size</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <ActionPosition />
+            <ActionSize />
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor="layer">
+          <WaraqPaneTitle>Appearance</WaraqPaneTitle>
+          <WaraqPaneContent>
+            <ActionFill />
+            <ActionCorner />
+            <ActionBorder />
+          </WaraqPaneContent>
+        </WaraqPane>
+      </WaraqPanel>
+    </Waraq>
   );
 }

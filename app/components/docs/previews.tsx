@@ -1,41 +1,40 @@
 "use client";
 
-import { useState } from "react";
 import {
-  Button,
-  Input,
-  Textarea,
   ActionLabel,
-  InputNumber,
-  InputGroup,
-  InputGroupAddon,
-  Slider,
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  Tabs as WaraqTabs,
-  TabsList as WaraqTabsList,
-  TabsTrigger as WaraqTabsTrigger,
-  TabsContent as WaraqTabsContent,
-  ToggleGroup,
-  ToggleGroupItem,
-  Separator,
+  Button,
+  ColorInput,
   ColorPicker,
   ColorPickerCompact,
   ColorPreview,
-  ColorInput,
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputNumber,
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Separator,
+  Slider,
+  Textarea,
+  ToggleGroup,
+  ToggleGroupItem,
+  Tabs as WaraqTabs,
+  TabsContent as WaraqTabsContent,
+  TabsList as WaraqTabsList,
+  TabsTrigger as WaraqTabsTrigger,
 } from "@codecanon/waraq/ui";
 import {
   AlignCenter,
@@ -44,12 +43,13 @@ import {
   AlignRight,
   Pencil,
 } from "lucide-react";
+import { useState } from "react";
 
 // ── Shared container ────────────────────────────────────────────────────────
 
 export function PreviewBox({ children }: { children: React.ReactNode }) {
   return (
-    <div className="not-prose flex min-h-[140px] flex-wrap items-center justify-center gap-3 rounded-lg bg-background p-8">
+    <div className="not-prose flex min-h-35 flex-wrap items-center justify-center gap-3 rounded-lg bg-background p-8">
       {children}
     </div>
   );

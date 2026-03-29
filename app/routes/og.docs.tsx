@@ -1,7 +1,7 @@
 import { ImageResponse } from "@takumi-rs/image-response";
-import type { Route } from "./+types/og.docs";
 import { generate as DefaultImage } from "fumadocs-ui/og/takumi";
 import { source } from "@/lib/source";
+import type { Route } from "./+types/og.docs";
 
 export function loader({ params }: Route.LoaderArgs) {
   const slugs = params["*"]

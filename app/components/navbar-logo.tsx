@@ -1,9 +1,9 @@
 import { useTheme } from "next-themes";
-import DarkText from "@/components/icons/dark-text";
-import DefaultText from "@/components/icons/default-text";
-import DarkIcon from "@/components/icons/dark-icon";
-import DefaultIcon from "@/components/icons/default-icon";
 import { Link } from "react-router";
+import DarkIcon from "@/components/icons/dark-icon";
+import DarkText from "@/components/icons/dark-text";
+import DefaultIcon from "@/components/icons/default-icon";
+import DefaultText from "@/components/icons/default-text";
 
 export function NavbarLogo() {
   return (
