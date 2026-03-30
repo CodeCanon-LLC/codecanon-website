@@ -5,8 +5,8 @@ import { getCanvasTemplate } from "@/apps/price-tag/lib/api";
 import { uuid } from "@/lib/uuid";
 
 export function CanvasTemplate() {
-  const { canvasTemplateId = uuid() } = useParams<{
-    canvasTemplateId: string;
+  const { id: canvasTemplateId = uuid() } = useParams<{
+    id: string;
   }>();
 
   const { data: canvas, isPending } = useQuery({

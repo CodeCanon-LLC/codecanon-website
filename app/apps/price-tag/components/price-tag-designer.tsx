@@ -428,7 +428,7 @@ export function CanvasDesigner({
   loading?: boolean;
 } & Partial<React.ComponentProps<typeof Designer>>) {
   const [data, setData] = useLocalStorage<Canvas>(
-    `canvas-tempalte-${canvasId}`,
+    `canvas-template-${canvasId}`,
     {
       id: canvasId,
       name: "New Template",
