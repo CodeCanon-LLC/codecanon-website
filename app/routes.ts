@@ -2,7 +2,15 @@ import { index, type RouteConfig, route } from "@react-router/dev/routes";
 
 export default [
   index("routes/home.tsx"),
-  route("waraq", "routes/waraq.tsx"),
+  route("waraq", "routes/waraq/layout.tsx", [
+    index("routes/waraq/index.tsx"),
+    route("demo", "routes/waraq/demo.tsx"),
+    route("price-tag", "routes/waraq/price-tag/layout.tsx", [
+      index("routes/waraq/price-tag/index.tsx"),
+      route("design/:id", "routes/waraq/price-tag/design.tsx"),
+      route("template/:id", "routes/waraq/price-tag/template.tsx"),
+    ]),
+  ]),
   route("docs/*", "routes/docs.tsx"),
   route("api/search", "routes/search.ts"),
 

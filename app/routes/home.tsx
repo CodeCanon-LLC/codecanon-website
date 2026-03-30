@@ -7,6 +7,7 @@ import { Browser } from "@/components/browser";
 import { Loader } from "@/components/loader";
 import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
+import { getWaraqDemoLink } from "@/lib/links";
 import type { Route } from "./+types/home";
 
 const WaraqDemo = lazy(() => import("@/components/waraq-demo"));
@@ -79,7 +80,7 @@ export default function Home() {
           </div>
 
           {/* Browser-chrome wrapper */}
-          <Browser link="/waraq">
+          <Browser link={getWaraqDemoLink()}>
             {isMounted ? (
               <Suspense fallback={<Loader>Loading editor…</Loader>}>
                 <WaraqDemo />
@@ -89,7 +90,7 @@ export default function Home() {
             )}
           </Browser>
           <Link
-            to="/waraq"
+            to={getWaraqDemoLink()}
             className={cn(buttonVariants({ variant: "primary" }), "flex gap-2")}
           >
             <span>Open in Browser</span>
