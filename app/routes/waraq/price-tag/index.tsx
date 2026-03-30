@@ -1,6 +1,8 @@
+import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@/apps/price-tag";
 import { Loader } from "@/components/loader";
+import { baseOptions } from "@/lib/layout.shared";
 import type { Route } from "../../+types/waraq-price-tag";
 
 export function meta(_: Route.MetaArgs) {
@@ -14,13 +16,15 @@ export default function Page() {
 
   return (
     <div className="size-full flex-1">
-      {isMounted ? (
-        <Suspense fallback={<Loader>Loading editor…</Loader>}>
-          <Canvas />
-        </Suspense>
-      ) : (
-        <Loader>Loading editor…</Loader>
-      )}
+      <HomeLayout {...baseOptions()}>
+        {isMounted ? (
+          <Suspense fallback={<Loader>Loading editor…</Loader>}>
+            <Canvas />
+          </Suspense>
+        ) : (
+          <Loader>Loading editor…</Loader>
+        )}
+      </HomeLayout>
     </div>
   );
 }
