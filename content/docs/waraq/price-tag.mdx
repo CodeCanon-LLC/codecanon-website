@@ -3,6 +3,21 @@ title: Price Tag
 description: The following components are used to display price tags in the Waraq editor.
 ---
 
-```tsx
-// Waiting for the implementation of the Price Tag component in the Waraq editor. This component will be used to display price tags in the editor, allowing users to easily identify and manage pricing information within their content.
-```
+## Price Tag
+
+import {CanvasDesignerDemo} from "@/apps/price-tag/components/price-tag-designer";
+
+<Browser link={getWaraqPriceTagTemplateLink('canvas-1')} className="not-prose">
+  <CanvasDesignerDemo />
+</Browser>
+
+## Grid
+
+import {CanvasDemo} from "@/apps/price-tag";
+import { getWaraqPriceTagLink, getWaraqPriceTagTemplateLink } from "@/lib/links";
+
+<Browser link={getWaraqPriceTagLink()} className="not-prose">
+  <div className="size-full flex overflow-auto bg-background not-prose">
+    <CanvasDemo />
+  </div>
+</Browser>

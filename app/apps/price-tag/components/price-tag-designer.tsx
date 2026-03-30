@@ -68,7 +68,7 @@ import {
   SunIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { CANVAS_ABLES } from "@/apps/price-tag/components/price-tag-layer-ables";
 import {
@@ -90,6 +90,11 @@ import { CANVAS_LAYER_TYPES } from "@/apps/price-tag/components/price-tag-layer-
 import type { ProductLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type";
 import type { UserLayerData } from "@/apps/price-tag/components/price-tag-user-layer-type";
 import { getCanvasDesigns } from "@/apps/price-tag/lib/api";
+import {
+  CANVAS_DESIGN_MOCKS,
+  CANVAS_TEMPLATE_MOCKS,
+} from "@/apps/price-tag/lib/mocks";
+import { Loader } from "@/components/loader";
 import {
   Empty,
   EmptyDescription,
@@ -225,7 +230,7 @@ function CanvasDesigns() {
   );
 }
 
-function LayersPanel() {
+function LayersPanel(props: React.ComponentProps<typeof DesignerPanel>) {
   const { tool } = useDesigner();
 
   if (tool === "select") {
@@ -233,7 +238,12 @@ function LayersPanel() {
   }
 
   return (
-    <DesignerPanel title="Layers" position="top-left" icon={PlusIcon}>
+    <DesignerPanel
+      title="Layers"
+      position="top-left"
+      icon={PlusIcon}
+      {...props}
+    >
       <DesignerPane>
         <DesignerPaneTitle>Add Layer</DesignerPaneTitle>
         <DesignerPaneContent>
@@ -250,9 +260,9 @@ function LayersPanel() {
   );
 }
 
-function PropertiesPanel() {
+function PropertiesPanel(props: React.ComponentProps<typeof DesignerPanel>) {
   return (
-    <DesignerPanel title="Properties" position="top-right">
+    <DesignerPanel title="Properties" position="top-right" {...props}>
       <DesignerPane showFor="document">
         <DesignerPaneTitle>Document</DesignerPaneTitle>
         <DesignerPaneContent>
@@ -466,6 +476,32 @@ export function CanvasDesigner({
         </DesignerFrame>
       </DesignerCanvas>
       <PropertiesPanel />
+      <CanvasToolbar />
+    </Designer>
+  );
+}
+
+export function CanvasDesignerDemo() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => setIsMounted(true), []);
+
+  if (!isMounted) {
+    return <Loader>Loading editor…</Loader>;
+  }
+
+  return (
+    <Designer
+      initialLayers={CANVAS_TEMPLATE_MOCKS[0].layers}
+      layerTypes={CANVAS_LAYER_TYPES}
+    >
+      <WaraqBackground />
+      <Header />
+      <LayersPanel defaultCollapsed />
+      <DesignerCanvas>
+        <DesignerFrame ables={CANVAS_ABLES} />
+      </DesignerCanvas>
+      <PropertiesPanel defaultCollapsed />
       <CanvasToolbar />
     </Designer>
   );

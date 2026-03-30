@@ -1,6 +1,7 @@
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
+import { Browser } from "@/components/browser";
 import ComponentPreview from "@/components/docs/component-preview";
 
 export function getMDXComponents(components?: MDXComponents) {
@@ -9,6 +10,7 @@ export function getMDXComponents(components?: MDXComponents) {
     Tab,
     Tabs,
     ComponentPreview,
+    Browser,
     ...components,
   } satisfies MDXComponents;
 }

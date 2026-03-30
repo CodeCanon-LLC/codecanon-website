@@ -32,7 +32,7 @@ export function Browser({
         </Link>
       </div>
 
-      <div className="h-145 bg-fd-background">{children}</div>
+      <div className="h-145 bg-fd-background overflow-auto">{children}</div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   CanvasCard,
@@ -20,6 +20,8 @@ import {
   getCanvasDesigns,
   getCanvasTemplates,
 } from "@/apps/price-tag/lib/api";
+import { CANVAS_TEMPLATE_MOCKS } from "@/apps/price-tag/lib/mocks";
+import { Loader } from "@/components/loader";
 import { Page, PageContent } from "@/components/ui/page";
 import {
   getWaraqPriceTagDesignLink,
@@ -116,6 +118,70 @@ export function Canvas() {
         onOpenChange={setIsTemplateSelectorOpen}
         onSelect={handleCreateDesign}
       />
+    </Page>
+  );
+}
+
+export function CanvasDemo() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  const records: CanvasType[] = [];
+  const templates = CANVAS_TEMPLATE_MOCKS;
+
+  useEffect(() => setIsMounted(true), []);
+
+  if (!isMounted) {
+    return <Loader>Loading editor…</Loader>;
+  }
+
+  return (
+    <Page>
+      <PageContent className="gap-8">
+        {/* Designs Section */}
+        <CanvasGrid>
+          <CanvasGridHeader>
+            <CanvasGridTitle>Designs</CanvasGridTitle>
+            <CanvasGridDescription>
+              Your canvas designs and documents
+            </CanvasGridDescription>
+          </CanvasGridHeader>
+
+          <CanvasGridContent>
+            <CanvasCardNew title="New Design" description="Create new design" />
+            {records?.map((canvas) => (
+              <CanvasCard
+                key={canvas.id}
+                canvas={canvas}
+                to={getWaraqPriceTagDesignLink(canvas.id)}
+              />
+            ))}
+          </CanvasGridContent>
+        </CanvasGrid>
+
+        {/* Templates Section */}
+        <CanvasGrid>
+          <CanvasGridHeader>
+            <CanvasGridTitle>Templates</CanvasGridTitle>
+            <CanvasGridDescription>
+              Create reusable design templates
+            </CanvasGridDescription>
+          </CanvasGridHeader>
+
+          <CanvasGridContent>
+            <CanvasCardNew
+              title="New Template"
+              description="Create new template"
+            />
+            {templates?.map((canvas) => (
+              <CanvasCard
+                key={canvas.id}
+                canvas={canvas}
+                to={getWaraqPriceTagTemplateLink(canvas.id)}
+              />
+            ))}
+          </CanvasGridContent>
+        </CanvasGrid>
+      </PageContent>
     </Page>
   );
 }
