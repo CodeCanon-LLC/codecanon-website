@@ -89,13 +89,6 @@ export default function Home() {
               <Loader>Loading editor…</Loader>
             )}
           </Browser>
-          <Link
-            to={getWaraqDemoLink()}
-            className={cn(buttonVariants({ variant: "primary" }), "flex gap-2")}
-          >
-            <span>Open in Browser</span>
-            <LinkIcon className={"size-3"} />
-          </Link>
         </div>
       </section>
 

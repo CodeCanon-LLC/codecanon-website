@@ -1,5 +1,7 @@
+import { LinkIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
 export function Browser({
@@ -30,6 +32,13 @@ export function Browser({
           {isMounted && window.location.origin}
           {link}
         </Link>
+
+        <Button asChild size="sm" className="h-6">
+          <Link to={link}>
+            <span>Open</span>
+            <LinkIcon className={"size-3"} />
+          </Link>
+        </Button>
       </div>
 
       <div className="h-145 bg-fd-background overflow-auto">{children}</div>
