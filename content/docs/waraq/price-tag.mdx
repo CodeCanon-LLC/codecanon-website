@@ -1,20 +1,388 @@
 ---
-title: Price Tag
-description: The following components are used to display price tags in the Waraq editor.
+title: Price Tag App
+description: A step-by-step walkthrough of building a price tag designer with custom layers, a nested canvas product layout, and a read-only grid view.
 ---
 
-## Price Tag
+This page walks through the key parts of the Price Tag app — a real-world example of how to extend Waraq with custom layer types, nest one Waraq canvas inside another, and render a read-only grid of saved designs.
 
 import {CanvasDesignerDemo} from "@/apps/price-tag/components/price-tag-designer";
+import {CanvasDemo} from "@/apps/price-tag";
+import { getWaraqPriceTagLink, getWaraqPriceTagTemplateLink } from "@/lib/links";
 
 <Browser link={getWaraqPriceTagTemplateLink('canvas-1')} className="not-prose">
   <CanvasDesignerDemo />
 </Browser>
 
-## Price Tag Grid
+---
 
-import {CanvasDemo} from "@/apps/price-tag";
-import { getWaraqPriceTagLink, getWaraqPriceTagTemplateLink } from "@/lib/links";
+## 1. QR Code layer
+
+A QR code layer renders an SVG QR code from `layer.value`. It uses the lightweight `render` function form (no hooks needed).
+
+```tsx
+import type { LayerType } from "@codecanon/waraq/lib";
+import { QRCodeSVG } from "qrcode.react";
+import { IconQrcode } from "@tabler/icons-react";
+
+export interface QRCodeLayerData {
+  qrLevel?: "L" | "M" | "Q" | "H";
+  qrFgColor?: string;
+}
+
+export const QRCodeLayerType: LayerType<QRCodeLayerData> = {
+  id: "qrcode",
+  name: "QR Code",
+  keepRatio: true,
+  icon: <IconQrcode size={16} />,
+  render: (layer) => {
+    const value = layer.value || "https://example.com";
+    const qrLevel = layer.data?.qrLevel || "M";
+    const qrFgColor = layer.data?.qrFgColor || "#000000";
+
+    return (
+      <QRCodeSVG
+        bgColor="transparent"
+        value={value}
+        level={qrLevel}
+        fgColor={qrFgColor}
+        style={{ ...layer.contentStyle, width: "100%", height: "100%" }}
+      />
+    );
+  },
+  defaultValues: {
+    value: "https://example.com",
+    cssVars: {
+      "--width": "200px",
+      "--height": "200px",
+      "--background-color": "#ffffff",
+    },
+    data: { qrLevel: "M", qrFgColor: "#000000" },
+  },
+  keyboardShortcut: {
+    description: "Add QR Code",
+    keys: ["Q"],
+    action: (context) => context.addLayer("qrcode"),
+    category: "Layer",
+  },
+};
+```
+
+The `keepRatio: true` flag locks the aspect ratio when resizing. `layer.contentStyle` applies the resolved CSS vars (padding, alignment, etc.) to the inner element.
+
+---
+
+## 2. Input layer
+
+The input layer renders an editable `<input>` or `<textarea>` directly on the canvas. It uses the `Component` form so it can call `useWaraq` to push value changes back.
+
+```tsx
+import { useWaraq } from "@codecanon/waraq";
+import type { LayerType } from "@codecanon/waraq/lib";
+import { IconTextSize } from "@tabler/icons-react";
+import { useState } from "react";
+
+export interface InputLayerData {
+  placeholder?: string;
+  multiLine?: boolean;
+  defaultValue?: string;
+}
+
+export const InputLayerType: LayerType<InputLayerData> = {
+  id: "input",
+  name: "Input",
+  icon: <IconTextSize size={16} />,
+  Component({ layer }) {
+    const [focused, setFocused] = useState(false);
+    const { updateLayer } = useWaraq();
+
+    const value = layer.value || "";
+    const defaultValue = layer.data?.defaultValue;
+    const displayValue = focused ? value : value.trim() || defaultValue;
+    const Comp = layer.data?.multiLine ? Textarea : Input;
+
+    return (
+      <Comp
+        style={layer.contentStyle}
+        value={displayValue}
+        placeholder={layer.data?.placeholder}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onChange={(e) => updateLayer({ id: layer.id, value: e.target.value })}
+      />
+    );
+  },
+  defaultValues: {
+    value: "",
+    cssVars: {
+      "--width": "300px",
+      "--height": "60px",
+      "--font-size": "16px",
+      "--padding-top": "12px",
+      "--padding-bottom": "12px",
+      "--padding-left": "16px",
+      "--padding-right": "16px",
+    },
+    data: { placeholder: "Enter text...", multiLine: false },
+  },
+  keyboardShortcut: {
+    description: "Add Input",
+    keys: ["⌘", "I"],
+    action: (context) => context.addLayer("input"),
+    category: "Layer",
+  },
+};
+```
+
+`useWaraq()` gives access to `updateLayer`, `addLayer`, and the rest of the editor state. It can only be called from a component rendered inside `<Waraq>`.
+
+---
+
+## 3. Product layer — a canvas within a canvas
+
+The product layer is the most advanced: when the display style is `"custom"`, each product is rendered by its own **nested Waraq canvas** (`WaraqProvider` + `WaraqStaticFrame`). This lets the user design a mini price-tag template that is stamped out once per product.
+
+### 3a. Layer type definition
+
+```tsx
+import type { WaraqData, LayerType } from "@codecanon/waraq/lib";
+import { IconShoppingCart } from "@tabler/icons-react";
+
+export interface ProductDisplay {
+  id: string;
+  name: string;
+  sku: string;
+  price: number;
+  image?: string;
+}
+
+export interface ProductLayerData {
+  displayStyle: "card" | "grid" | "table" | "list" | "custom";
+  products: ProductDisplay[];
+  customDesign?: WaraqData;           // the shared template canvas
+  productDesign?: Record<string, WaraqData>; // per-product override
+  maxSelectCount?: number;
+}
+
+export const ProductLayerType: LayerType<ProductLayerData> = {
+  id: "product",
+  name: "Products",
+  icon: <IconShoppingCart size={16} />,
+  Component({ layer }) {
+    const displayStyle = layer.data?.displayStyle || "card";
+    const products = layer.data?.products || [];
+
+    return (
+      <div style={layer.contentStyle}>
+        {products.length === 0 ? (
+          <ProductEmptyView />
+        ) : displayStyle === "custom" ? (
+          <ProductCustomView layer={layer} />
+        ) : (
+          // … other display styles (card, grid, table, list)
+        )}
+      </div>
+    );
+  },
+  defaultValues: {
+    cssVars: { "--width": "500px", "--height": "300px" },
+    data: { displayStyle: "card", products: [] },
+  },
+  keyboardShortcut: {
+    description: "Add Product",
+    keys: ["P"],
+    action: (context) => context.addLayer("product"),
+    category: "Layer",
+  },
+};
+```
+
+### 3b. Custom view — nested canvases
+
+`ProductCustomView` spins up a separate `WaraqProvider` for every product, feeds it the shared `customDesign` canvas data, and passes the current product in via `injectLayerData`. The static frame then renders that design as a read-only tile.
+
+```tsx
+import {
+  WaraqProvider,
+  WaraqStaticFrame,
+  useWaraq,
+} from "@codecanon/waraq";
+import type { Layer } from "@codecanon/waraq/lib";
+import type { ProductLayerData } from "./price-tag-product-layer-type";
+import { PRODUCT_CUSTOM_LAYER_TYPES } from "./product-custom-layer-types";
+
+export function ProductCustomView({
+  layer,
+}: {
+  layer: Layer<ProductLayerData>;
+}) {
+  const { updateLayer } = useWaraq();
+
+  return (
+    <div className="flex size-full flex-row flex-wrap content-start overflow-auto gap-2">
+      {layer.data!.products.map((product) => {
+        // Use per-product override if it exists, otherwise fall back to shared template
+        const design =
+          layer.data!.productDesign?.[product.id] || layer.data!.customDesign;
+
+        return (
+          <WaraqProvider
+            key={product.id}
+            data={design}
+            layerTypes={PRODUCT_CUSTOM_LAYER_TYPES}
+            onDataChange={(newDesign) => {
+              updateLayer({
+                id: layer.id,
+                data: {
+                  ...layer.data,
+                  productDesign: {
+                    ...layer.data!.productDesign,
+                    [product.id]: newDesign,
+                  },
+                },
+              });
+            }}
+          >
+            {/* injectLayerData makes `layer.data.product` available to every
+                product-* layer type inside this canvas */}
+            <WaraqStaticFrame
+              className="shrink-0 shadow-none"
+              injectLayerData={() => ({ product })}
+            />
+          </WaraqProvider>
+        );
+      })}
+    </div>
+  );
+}
+```
+
+Key points:
+- `WaraqProvider` is the headless provider — it holds the canvas state without rendering any UI chrome.
+- `WaraqStaticFrame` renders the canvas read-only, no drag or resize handles.
+- `injectLayerData` merges extra data into every layer at render time. The product-specific layer types (`product-name`, `product-price`, `product-image`, …) read `layer.data.product` to show the right values.
+
+### 3c. Product-specific layer types
+
+Inside the custom product canvas you register specialised layer types that pull data from `layer.data.product`. These layer types are only passed to the inner `WaraqProvider`, not the outer editor.
+
+```tsx
+import type { LayerType } from "@codecanon/waraq/lib";
+import { IconTag, IconHash, IconCurrencyDollar, IconPhoto } from "@tabler/icons-react";
+import type { ProductDisplay } from "./price-tag-product-layer-type";
+
+interface ProductPropertyLayerData {
+  product?: ProductDisplay;
+}
+
+export const ProductNameLayerType: LayerType<ProductPropertyLayerData> = {
+  id: "product-name",
+  name: "Product Name",
+  icon: <IconTag size={16} />,
+  render: (layer) => (
+    <span style={layer.contentStyle}>
+      {layer.data?.product?.name || "Product Name"}
+    </span>
+  ),
+  defaultValues: {
+    cssVars: { "--width": "450px", "--height": "41px", "--font-size": "24px", "--font-weight": "600" },
+  },
+};
+
+export const ProductPriceLayerType: LayerType<ProductPropertyLayerData> = {
+  id: "product-price",
+  name: "Product Price",
+  icon: <IconCurrencyDollar size={16} />,
+  render: (layer) => {
+    const price = layer.data?.product?.price;
+    return (
+      <span style={layer.contentStyle}>
+        {price != null ? `$${price.toFixed(2)}` : "$0.00"}
+      </span>
+    );
+  },
+  defaultValues: {
+    cssVars: { "--width": "161px", "--height": "60px", "--font-size": "28px", "--font-weight": "700", "--color": "#10b981" },
+  },
+};
+
+// ProductSKULayerType, ProductImageLayerType follow the same pattern.
+```
+
+---
+
+## 4. Registering all custom layer types
+
+Collect your custom types and spread them after `DEFAULT_LAYER_TYPES`:
+
+```tsx
+import { DEFAULT_LAYER_TYPES } from "@codecanon/waraq";
+import type { LayerType } from "@codecanon/waraq/lib";
+import { InputLayerType } from "./price-tag-input-layer-type";
+import { QRCodeLayerType } from "./price-tag-qrcode-layer-type";
+import { ProductLayerType } from "./price-tag-product-layer-type";
+
+export const CANVAS_LAYER_TYPES: LayerType[] = [
+  ...DEFAULT_LAYER_TYPES,
+  InputLayerType,
+  QRCodeLayerType,
+  ProductLayerType,
+];
+```
+
+Then pass this array to `<Waraq>`:
+
+```tsx
+import { Waraq, WaraqStage, WaraqFrame } from "@codecanon/waraq";
+import { CANVAS_LAYER_TYPES } from "./price-tag-layer-types";
+
+export function PriceTagEditor() {
+  return (
+    <Waraq layerTypes={CANVAS_LAYER_TYPES}>
+      <WaraqStage>
+        <WaraqFrame />
+      </WaraqStage>
+    </Waraq>
+  );
+}
+```
+
+---
+
+## 5. Price tag grid — read-only display with `WaraqStaticFrame`
+
+The grid page shows all saved designs as thumbnail cards. Each card uses `WaraqPreview` to scale the frame to fit its container, then `WaraqStaticFrame` to render the layers without any editor interactivity.
+
+```tsx
+import {
+  WaraqPreview,
+  WaraqStaticFrame,
+} from "@codecanon/waraq";
+import { CANVAS_LAYER_TYPES } from "./price-tag-layer-types";
+import type { Canvas } from "@/types/canvas";
+
+function CanvasCard({ canvas }: { canvas: Canvas }) {
+  return (
+    <div className="flex flex-col gap-2">
+      {/* WaraqPreview computes a scale transform so the frame fills the card */}
+      <WaraqPreview frameSize={canvas.frameSize}>
+        {(style) => (
+          <WaraqStaticFrame
+            data={canvas}
+            layerTypes={CANVAS_LAYER_TYPES}
+            style={style}
+          />
+        )}
+      </WaraqPreview>
+
+      <p className="text-sm font-medium">{canvas.name}</p>
+    </div>
+  );
+}
+```
+
+`WaraqStaticFrame` takes `data` (a `WaraqData` / `Canvas` object) and `layerTypes` directly — there is no surrounding `<Waraq>` provider required. This makes it ideal for thumbnails, print previews, and read-only embeds.
+
+### Full grid
 
 <Browser link={getWaraqPriceTagLink()} className="not-prose">
   <div className="size-full flex overflow-auto bg-background not-prose">
