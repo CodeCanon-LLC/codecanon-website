@@ -88,7 +88,7 @@ export function ProductCustomDesigner({
     >
       <DesignerContent>
         {/* Left Panel - Layer Types */}
-        <DesignerPanel title="Layers" icon={PlusIcon}>
+        <DesignerPanel title="Layers" position="top-left" icon={PlusIcon}>
           <DesignerPane>
             <DesignerPaneTitle>Add Product Layer</DesignerPaneTitle>
             <DesignerPaneContent>
@@ -118,7 +118,7 @@ export function ProductCustomDesigner({
         </DesignerCanvas>
 
         {/* Right Panel - Layer Properties */}
-        <DesignerPanel title="Properties">
+        <DesignerPanel title="Properties" position="top-right">
           <DesignerPane showFor="document">
             <DesignerPaneTitle>Area</DesignerPaneTitle>
             <DesignerPaneContent>
