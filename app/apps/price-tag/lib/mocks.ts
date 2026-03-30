@@ -112,6 +112,7 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
           "--font-size": "48px",
           "--font-weight": "400",
           "--text-align": "center",
+          "--align-items": "center",
         },
         transform: {
           translate: [48, 258.7],
@@ -135,6 +136,7 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
           "--font-weight": "700",
           "--color": "#e12426",
           "--text-align": "center",
+          "--align-items": "center",
         },
         transform: {
           translate: [48, 335.1],
@@ -392,6 +394,7 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
           "--font-size": "48px",
           "--font-weight": "400",
           "--text-align": "center",
+          "--align-items": "center",
         },
         transform: {
           translate: [48, 258.7],
@@ -415,6 +418,7 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
           "--font-weight": "700",
           "--color": "#e12426",
           "--text-align": "center",
+          "--align-items": "center",
           "--font-family": "Fira Code",
         },
         transform: {
