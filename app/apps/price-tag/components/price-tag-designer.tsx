@@ -438,11 +438,15 @@ export function CanvasDesigner({
     },
   );
 
+  /**
+   * biome-ignore lint/correctness/useExhaustiveDependencies: this causes the component to
+   * freeze when canvas changes, we only want to set data on initial load or when canvasId changes
+   */
   useEffect(() => {
     if (canvas) {
       setData(canvas);
     }
-  }, [canvas, setData]);
+  }, [canvas]);
 
   return (
     <Designer
