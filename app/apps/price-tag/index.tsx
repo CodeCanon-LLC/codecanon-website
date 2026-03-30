@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { HomeIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   CanvasCard,
   CanvasCardNew,
@@ -22,7 +24,9 @@ import {
 } from "@/apps/price-tag/lib/api";
 import { CANVAS_TEMPLATE_MOCKS } from "@/apps/price-tag/lib/mocks";
 import { Loader } from "@/components/loader";
+import { Button } from "@/components/ui/button";
 import { Page, PageContent } from "@/components/ui/page";
+import { baseOptions } from "@/lib/layout.shared";
 import {
   getWaraqPriceTagDesignLink,
   getWaraqPriceTagTemplateLink,
@@ -60,65 +64,67 @@ export function Canvas() {
   }
 
   return (
-    <Page>
-      <PageContent className="gap-8">
-        {/* Designs Section */}
-        <CanvasGrid>
-          <CanvasGridHeader>
-            <CanvasGridTitle>Designs</CanvasGridTitle>
-            <CanvasGridDescription>
-              Your canvas designs and documents
-            </CanvasGridDescription>
-          </CanvasGridHeader>
+    <HomeLayout {...baseOptions()}>
+      <Page>
+        <PageContent className="gap-8">
+          {/* Designs Section */}
+          <CanvasGrid>
+            <CanvasGridHeader>
+              <CanvasGridTitle>Designs</CanvasGridTitle>
+              <CanvasGridDescription>
+                Your canvas designs and documents
+              </CanvasGridDescription>
+            </CanvasGridHeader>
 
-          <CanvasGridContent>
-            <CanvasCardNew
-              onClick={() => setIsTemplateSelectorOpen(true)}
-              title="New Design"
-              description="Create new design"
-            />
-            {records?.map((canvas) => (
-              <CanvasCard
-                key={canvas.id}
-                canvas={canvas}
-                to={getWaraqPriceTagDesignLink(canvas.id)}
+            <CanvasGridContent>
+              <CanvasCardNew
+                onClick={() => setIsTemplateSelectorOpen(true)}
+                title="New Design"
+                description="Create new design"
               />
-            ))}
-          </CanvasGridContent>
-        </CanvasGrid>
+              {records?.map((canvas) => (
+                <CanvasCard
+                  key={canvas.id}
+                  canvas={canvas}
+                  to={getWaraqPriceTagDesignLink(canvas.id)}
+                />
+              ))}
+            </CanvasGridContent>
+          </CanvasGrid>
 
-        {/* Templates Section */}
-        <CanvasGrid>
-          <CanvasGridHeader>
-            <CanvasGridTitle>Templates</CanvasGridTitle>
-            <CanvasGridDescription>
-              Create reusable design templates
-            </CanvasGridDescription>
-          </CanvasGridHeader>
+          {/* Templates Section */}
+          <CanvasGrid>
+            <CanvasGridHeader>
+              <CanvasGridTitle>Templates</CanvasGridTitle>
+              <CanvasGridDescription>
+                Create reusable design templates
+              </CanvasGridDescription>
+            </CanvasGridHeader>
 
-          <CanvasGridContent>
-            <CanvasCardNew
-              onClick={handleCreateTemplate}
-              title="New Template"
-              description="Create new template"
-            />
-            {templates?.map((canvas) => (
-              <CanvasCard
-                key={canvas.id}
-                canvas={canvas}
-                to={getWaraqPriceTagTemplateLink(canvas.id)}
+            <CanvasGridContent>
+              <CanvasCardNew
+                onClick={handleCreateTemplate}
+                title="New Template"
+                description="Create new template"
               />
-            ))}
-          </CanvasGridContent>
-        </CanvasGrid>
-      </PageContent>
-      {/* Template Selector Dialog */}
-      <CanvasTemplateSelector
-        open={isTemplateSelectorOpen}
-        onOpenChange={setIsTemplateSelectorOpen}
-        onSelect={handleCreateDesign}
-      />
-    </Page>
+              {templates?.map((canvas) => (
+                <CanvasCard
+                  key={canvas.id}
+                  canvas={canvas}
+                  to={getWaraqPriceTagTemplateLink(canvas.id)}
+                />
+              ))}
+            </CanvasGridContent>
+          </CanvasGrid>
+        </PageContent>
+        {/* Template Selector Dialog */}
+        <CanvasTemplateSelector
+          open={isTemplateSelectorOpen}
+          onOpenChange={setIsTemplateSelectorOpen}
+          onSelect={handleCreateDesign}
+        />
+      </Page>
+    </HomeLayout>
   );
 }
 

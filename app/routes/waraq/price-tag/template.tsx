@@ -13,7 +13,7 @@ export default function Page() {
   useEffect(() => setIsMounted(true), []);
 
   return (
-    <div className="size-full flex-1 flex items-center justify-center">
+    <div className="size-full flex-1">
       {isMounted ? (
         <Suspense fallback={<Loader>Loading editor…</Loader>}>
           <CanvasTemplate />
