@@ -121,7 +121,7 @@ export function ActionLabelPreview() {
     <PreviewBox>
       <div className="flex w-48 flex-col gap-1.5">
         <ActionLabel htmlFor="preview-name">Your name</ActionLabel>
-        <Input id="preview-name" placeholder="John Doe" />
+        <Input id="preview-name" placeholder="Abdelrahman Salem" />
       </div>
     </PreviewBox>
   );

@@ -173,7 +173,7 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
         type: "user",
         id: "user-1765286253372-zgkyrxeh8",
         value:
-          '{"id":"user-1","name":"John Doe","email":"john.doe@example.com"}',
+          '{"id":"user-1","name":"Abdelrahman Salem","email":"codecanonllc@gmail.com"}',
         cssVars: {
           "--width": "211px",
           "--height": "42px",
@@ -456,7 +456,7 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
         type: "user",
         id: "user-1765286253372-zgkyrxeh8",
         value:
-          '{"id":"user-1","name":"John Doe","email":"john.doe@example.com"}',
+          '{"id":"user-1","name":"Abdelrahman Salem","email":"codecanonllc@gmail.com"}',
         cssVars: {
           "--width": "211px",
           "--height": "42px",

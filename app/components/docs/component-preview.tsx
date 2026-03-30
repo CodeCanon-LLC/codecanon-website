@@ -64,7 +64,7 @@ import { Pencil } from "lucide-react"
     code: `import { ActionLabel, Input } from "@codecanon/waraq/ui"
 
 <ActionLabel htmlFor="name">Your name</ActionLabel>
-<Input id="name" placeholder="John Doe" />`,
+<Input id="name" placeholder="Abdelrahman Salem" />`,
   },
   InputNumber: {
     component: InputNumberPreview,

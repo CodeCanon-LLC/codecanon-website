@@ -72,8 +72,8 @@ export const UserLayerType: LayerType<UserLayerData> = {
   defaultValues: {
     value: JSON.stringify({
       id: "user-1",
-      name: "John Doe",
-      email: "john.doe@example.com",
+      name: "Abdelrahman Salem",
+      email: "codecanonllc@gmail.com",
     }),
     cssVars: {
       "--width": "300px",
