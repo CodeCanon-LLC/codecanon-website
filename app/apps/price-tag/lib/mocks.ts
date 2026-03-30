@@ -285,7 +285,7 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
   },
   {
     id: "canvas-2",
-    name: "Price Tag 2",
+    name: "Price Tag with Custom Product Layer",
     frameSize: { width: 8.5 * 96, height: 11 * 96 },
     frameBackgroundColor: "#fff",
     layers: [
