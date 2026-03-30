@@ -4,8 +4,7 @@ import { createPreset } from "fumadocs-ui/tailwind-plugin";
 export default {
   presets: [
     createPreset({
-      cssPrefix: "fuma-", // here!
+      cssPrefix: "fuma-",
     }),
   ],
-  // other options
 };

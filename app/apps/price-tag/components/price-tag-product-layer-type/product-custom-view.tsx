@@ -24,10 +24,8 @@ export function ProductCustomView({ layer }: ProductCustomViewProps) {
   const { updateLayer } = useDesigner();
 
   if (
-    !layer.data ||
-    !layer.data.customDesign ||
-    !layer.data.customDesign.layers.length ||
-    !layer.data.products.length
+    !layer.data?.customDesign?.layers.length ||
+    !layer.data?.products.length
   ) {
     return <ProductCustomEmptyView />;
   }
@@ -39,7 +37,7 @@ export function ProductCustomView({ layer }: ProductCustomViewProps) {
     >
       {layer.data.products.map((product) => {
         const design =
-          layer.data!.productDesign?.[product.id] || layer.data!.customDesign;
+          layer.data?.productDesign?.[product.id] || layer.data?.customDesign;
 
         return (
           <DesignerProvider
@@ -52,7 +50,7 @@ export function ProductCustomView({ layer }: ProductCustomViewProps) {
                 data: {
                   ...layer.data,
                   productDesign: {
-                    ...layer.data!.productDesign,
+                    ...layer.data?.productDesign,
                     [product.id]: design,
                   },
                 },

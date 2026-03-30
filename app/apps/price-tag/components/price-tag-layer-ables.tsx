@@ -3,7 +3,7 @@ import { createAble } from "@codecanon/waraq/lib";
 
 import { IconChevronDown, IconEdit } from "@tabler/icons-react";
 import { Palette } from "lucide-react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { InputLayerData } from "@/apps/price-tag/components/price-tag-input-layer-type";
 import { ActionProductCustomDesign } from "@/apps/price-tag/components/price-tag-layer-actions";
 import {
@@ -77,6 +77,7 @@ export const InputLayerEditAble = createAble({
   Component({ layerId }) {
     if (!layerId) return null;
 
+    const id = useId();
     const { updateLayer, getLayer } = useDesigner();
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
@@ -123,8 +124,11 @@ export const InputLayerEditAble = createAble({
         <PopoverContent className="w-[300px]" align="start">
           <div className="space-y-3">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Edit Input Value</label>
+              <label className="text-sm font-medium" htmlFor={id}>
+                Edit Input Value
+              </label>
               <Comp
+                id={id}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}

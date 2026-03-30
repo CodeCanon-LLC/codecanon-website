@@ -1,2 +1,2 @@
 export const isMac =
-  typeof navigator !== "undefined" && /Mac/i.test(navigator.platform)
+  typeof navigator !== "undefined" && /Mac/i.test(navigator.platform);

@@ -21,7 +21,7 @@ export function CanvasCardContainer({
     <Comp
       to={to}
       className={cn(
-        "group relative flex cursor-pointer flex-col gap-2",
+        "group/price-tag-card flex cursor-pointer flex-col gap-2",
         className,
       )}
       {...props}
@@ -40,7 +40,7 @@ export function CanvasCardPreview({
     <div
       className={cn(
         "bg-muted relative overflow-hidden rounded-md border",
-        "group-hover:bg-accent transition-colors",
+        "group-hover/price-tag-card:bg-accent transition-colors",
         className,
       )}
       {...props}
@@ -101,9 +101,9 @@ export function CanvasCardNew({
   return (
     <CanvasCardContainer className={cn("flex flex-col", className)} {...props}>
       {/* Preview */}
-      <CanvasCardPreview className="bg-card group-hover:border-primary group-hover:bg-accent/50 relative flex aspect-video w-full flex-1 flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed transition-all">
-        <div className="bg-muted group-hover:border-primary group-hover:bg-primary/10 flex size-12 items-center justify-center rounded-full border-2 border-dashed transition-all">
-          <PlusIcon className="text-muted-foreground group-hover:text-primary size-6 transition-colors" />
+      <CanvasCardPreview className="bg-card group-hover/price-tag-card:border-primary group-hover/price-tag-card:bg-accent/50 relative flex aspect-video w-full flex-1 flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed transition-all">
+        <div className="bg-muted group-hover/price-tag-card:border-primary group-hover/price-tag-card:bg-primary/10 flex size-12 items-center justify-center rounded-full border-2 border-dashed transition-all">
+          <PlusIcon className="text-muted-foreground group-hover/price-tag-card:text-primary size-6 transition-colors" />
         </div>
       </CanvasCardPreview>
 

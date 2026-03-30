@@ -1,1 +1,1 @@
-export const PRODUCT_CUSTOM_VIEW_GAP = 12
+export const PRODUCT_CUSTOM_VIEW_GAP = 12;

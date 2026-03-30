@@ -56,7 +56,7 @@ import {
   DEFAULT_FRAME_SIZE,
   type Layer,
 } from "@codecanon/waraq/lib";
-import { Action, ActionControls, Button } from "@codecanon/waraq/ui";
+import { Action, Button } from "@codecanon/waraq/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import {
@@ -90,10 +90,7 @@ import { CANVAS_LAYER_TYPES } from "@/apps/price-tag/components/price-tag-layer-
 import type { ProductLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type";
 import type { UserLayerData } from "@/apps/price-tag/components/price-tag-user-layer-type";
 import { getCanvasDesigns } from "@/apps/price-tag/lib/api";
-import {
-  CANVAS_DESIGN_MOCKS,
-  CANVAS_TEMPLATE_MOCKS,
-} from "@/apps/price-tag/lib/mocks";
+import { CANVAS_TEMPLATE_MOCKS } from "@/apps/price-tag/lib/mocks";
 import { Loader } from "@/components/loader";
 import {
   Empty,
