@@ -27,7 +27,7 @@ export function Browser({
         <span className="h-3 w-3 rounded-full bg-[#28C840]" />
         <Link
           to={link}
-          className="overflow-hidden text-ellipsis ml-3 flex-1 rounded-md bg-[#e5e5e5] dark:bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground hover:text-fd-primary hover:underline"
+          className="truncate ml-3 flex-1 rounded-md bg-[#e5e5e5] dark:bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground hover:text-fd-primary hover:underline"
         >
           {isMounted && window.location.origin}
           {link}
