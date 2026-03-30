@@ -142,13 +142,13 @@ function Header() {
   );
 }
 
-function CanvasToolbar() {
+function CanvasToolbar(props: { hideTools?: boolean }) {
   const showTools = useIsBreakpoint("min-md");
   const { tool } = useDesigner();
 
   return (
     <DesignerToolbar>
-      {showTools && (
+      {showTools && !props.hideTools && (
         <DesignerToolbarGroup>
           <ActionToolbarTool />
         </DesignerToolbarGroup>
@@ -501,7 +501,7 @@ export function CanvasDesignerDemo() {
         <DesignerFrame ables={CANVAS_ABLES} />
       </DesignerCanvas>
       <PropertiesPanel defaultCollapsed />
-      <CanvasToolbar />
+      <CanvasToolbar hideTools />
     </Designer>
   );
 }
