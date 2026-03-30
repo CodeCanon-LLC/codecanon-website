@@ -496,7 +496,6 @@ export function CanvasDesignerDemo() {
       layerTypes={CANVAS_LAYER_TYPES}
     >
       <WaraqBackground />
-      <Header />
       <LayersPanel defaultCollapsed />
       <DesignerCanvas>
         <DesignerFrame ables={CANVAS_ABLES} />
