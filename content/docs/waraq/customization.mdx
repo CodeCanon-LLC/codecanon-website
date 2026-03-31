@@ -48,7 +48,8 @@ const BadgeLayer: LayerType = {
 Pass your custom types to `<Waraq>`. They are merged with the built-in `FrameLayer`, `TextLayer`, and `ImageLayer` types.
 
 ```tsx
-import { Waraq, DEFAULT_LAYER_TYPES } from "@codecanon/waraq"
+import { Waraq } from "@codecanon/waraq"
+import { DEFAULT_LAYER_TYPES } from "@codecanon/waraq/lib"
 
 export default function Editor() {
   return (
@@ -129,7 +130,8 @@ Then show it only for badge layers using `showFor`:
 Register extra shortcuts on the `<Waraq>` provider:
 
 ```tsx
-import { Waraq, KEYBOARD_SHORTCUTS } from "@codecanon/waraq"
+import { Waraq } from "@codecanon/waraq"
+import { KEYBOARD_SHORTCUTS } from "@codecanon/waraq/lib"
 
 const extraShortcuts = [
   {
