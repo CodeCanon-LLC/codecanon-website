@@ -46,12 +46,12 @@ A single design element.
 ```ts
 interface Layer<TData extends LayerData = any> {
   id: string
-  type: string            // Matches a LayerType.id
+  type: string                       // Matches a LayerType.id
   name: string
 
-  value?: string          // Text content or image src
+  value?: string                     // Text content or image src
   cssVars?: Partial<CSSVars>
-  data?: TData            // Custom layer-type-specific data
+  data?: TData                       // Custom layer-type-specific data
 
   parentStyle: React.CSSProperties   // Outer transform wrapper
   contentStyle: React.CSSProperties  // Inner content wrapper
@@ -78,8 +78,10 @@ interface LayerType<TData extends LayerData = any> {
   render?: (layer: Layer<TData>) => React.JSX.Element | undefined
   Component?: React.ComponentType<{ layer: Layer<TData> }>
 
-  keyboardShortcut?: KeyboardShortcut   // e.g. press "T" to add a text layer
-  keepRatio?: boolean                   // Maintain aspect ratio on resize
+  // e.g. press "T" to add a text layer
+  keyboardShortcut?: KeyboardShortcut
+  // Maintain aspect ratio on resize
+  keepRatio?: boolean
 
   defaultValues?: {
     value?: string
@@ -105,7 +107,11 @@ type CSSVars = {
   "--font-weight": string | number
   "--color": string
   "--z-index": string | number
-} & { [K in `--${string}`]: string }
+} & { 
+  // --custom-var 
+  // "--align-items": "center" (example)
+  [K in `--${string}`]: string 
+}
 ```
 
 You can extend it with any `--custom-var` key using the index signature.
@@ -119,8 +125,8 @@ Affine transform applied to a layer.
 ```ts
 interface LayerTransform {
   translate: [x: number, y: number]
-  rotate?: number           // degrees
   scale?: [sx: number, sy: number]
+  rotate?: number // degrees
 }
 ```
 
@@ -155,14 +161,31 @@ All dispatchable actions accepted by `waraqAction()`.
 
 ```ts
 type ActionType =
-  | "ZOOM_IN" | "ZOOM_OUT" | "ZOOM_RESET" | "ZOOM_100" | "ZOOM_FIT"
-  | "REDRAW" | "UNSELECT_ALL"
-  | "HISTORY_UNDO" | "HISTORY_REDO"
-  | "DELETE_SELECTED" | "DUPLICATE_SELECTED"
-  | "TOGGLE_VISIBILITY" | "BRING_TO_FRONT" | "SEND_TO_BACK" | "TOGGLE_LOCK"
-  | "MOVE_UP" | "MOVE_DOWN" | "MOVE_LEFT" | "MOVE_RIGHT"
-  | "MOVE_UP_SMALL" | "MOVE_DOWN_SMALL" | "MOVE_LEFT_SMALL" | "MOVE_RIGHT_SMALL"
-  | "TOGGLE_LEFT_PANEL" | "TOGGLE_RIGHT_PANEL"
+  | "ZOOM_IN" 
+  | "ZOOM_OUT" 
+  | "ZOOM_RESET" 
+  | "ZOOM_100" 
+  | "ZOOM_FIT"
+  | "REDRAW" 
+  | "UNSELECT_ALL"
+  | "HISTORY_UNDO" 
+  | "HISTORY_REDO"
+  | "DELETE_SELECTED" 
+  | "DUPLICATE_SELECTED"
+  | "TOGGLE_VISIBILITY" 
+  | "BRING_TO_FRONT" 
+  | "SEND_TO_BACK" 
+  | "TOGGLE_LOCK"
+  | "MOVE_UP" 
+  | "MOVE_DOWN" 
+  | "MOVE_LEFT" 
+  | "MOVE_RIGHT"
+  | "MOVE_UP_SMALL" 
+  | "MOVE_DOWN_SMALL" 
+  | "MOVE_LEFT_SMALL" 
+  | "MOVE_RIGHT_SMALL"
+  | "TOGGLE_LEFT_PANEL" 
+  | "TOGGLE_RIGHT_PANEL"
 ```
 
 ---
@@ -176,8 +199,8 @@ interface KeyboardShortcut {
   action: ActionType | ((context: WaraqState) => void)
   description: string
   label?: string
-  keys: string[]         // e.g. ["ctrl", "z"]
-  options?: Options      // react-hotkeys-hook options
+  keys: string[]     // e.g. ["ctrl", "z"]
+  options?: Options  // react-hotkeys-hook options
   category?: string
 }
 ```
@@ -201,12 +224,17 @@ const FONT_CATEGORIES: readonly FontCategory[]
 ```ts
 type DocumentSize =
   | "default"
-  | "instagram-post" | "instagram-story"
-  | "facebook-cover" | "facebook-post"
-  | "twitter-post" | "linkedin-post"
+  | "instagram-post" 
+  | "instagram-story"
+  | "facebook-cover" 
+  | "facebook-post"
+  | "twitter-post" 
+  | "linkedin-post"
   | "youtube-thumbnail"
   | "pinterest-pin"
-  | "a4" | "letter-portrait" | "letter-landscape"
+  | "a4" 
+  | "letter-portrait" 
+  | "letter-landscape"
   | "presentation"
   | "4-5"
 
