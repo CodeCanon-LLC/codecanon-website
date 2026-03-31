@@ -1,7 +1,8 @@
 import { Suspense, useEffect, useState } from "react";
 import { Loader } from "@/components/loader";
 import { WaraqDemoFull } from "@/components/waraq-demo-full";
-import type { Route } from "../+types/waraq-demo";
+import type { Route } from "./+types/demo";
+
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: "Waraq Demo" }];
