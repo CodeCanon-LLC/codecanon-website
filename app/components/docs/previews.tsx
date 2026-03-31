@@ -172,13 +172,14 @@ export function InputGroupPreview() {
 // ── Slider ──────────────────────────────────────────────────────────────────
 
 export function SliderPreview() {
-  const [val, setVal] = useState([40]);
+  const [val, setVal] = useState(40);
+
   return (
     <PreviewBox>
       <div className="w-64">
         <Slider value={val} onValueChange={setVal} min={0} max={100} step={1} />
         <p className="mt-2 text-center text-xs text-fd-muted-foreground">
-          {val[0]}%
+          {val}%
         </p>
       </div>
     </PreviewBox>

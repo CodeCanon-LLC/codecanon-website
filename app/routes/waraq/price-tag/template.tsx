@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { CanvasTemplate } from "@/apps/price-tag/price-tag-template";
 import { Loader } from "@/components/loader";
-import type { Route } from "../../+types/waraq-price-tag-design";
+import type { Route } from "./+types/template";
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: "Waraq Price Tag Demo" }];

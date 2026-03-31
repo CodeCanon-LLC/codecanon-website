@@ -32,7 +32,6 @@ import {
   ActionToolbarZoom,
   Waraq as Designer,
   WaraqStage as DesignerCanvas,
-  WaraqContent as DesignerContent,
   WaraqFrame as DesignerFrame,
   WaraqPane as DesignerPane,
   WaraqPaneContent as DesignerPaneContent,
@@ -86,7 +85,7 @@ export function ProductCustomDesigner({
       onDataChange={onDataChange}
       layerTypes={PRODUCT_CUSTOM_LAYER_TYPES}
     >
-      <DesignerContent>
+      
         {/* Left Panel - Layer Types */}
         <DesignerPanel title="Layers" position="top-left" icon={PlusIcon}>
           <DesignerPane>
@@ -264,7 +263,7 @@ export function ProductCustomDesigner({
           >
             <DesignerPaneTitle>Text</DesignerPaneTitle>
             <DesignerPaneContent>
-              <ActionFont />
+            <ActionFont apiKey={import.meta.env.VITE_GOOGLE_FONTS_API_KEY} />
               <ActionFontWeight />
               <ActionColor />
               <ActionFontSize />
@@ -293,7 +292,6 @@ export function ProductCustomDesigner({
             </DesignerPaneContent>
           </DesignerPane>
         </DesignerPanel>
-      </DesignerContent>
 
       {/* Toolbar */}
       <DesignerToolbar>
