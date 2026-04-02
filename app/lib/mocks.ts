@@ -5488,6 +5488,4 @@ export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
   PRICE_TAG_CUSTOM_MOCK,
 ];
 
-export const CANVAS_DESIGN_MOCKS: Canvas[] = [
-  PEROFRMANCE_MOCK
-];
+export const CANVAS_DESIGN_MOCKS: Canvas[] = [PEROFRMANCE_MOCK];

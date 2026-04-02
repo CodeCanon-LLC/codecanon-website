@@ -20,8 +20,7 @@ import {
   getCanvasDesigns,
   getCanvasTemplates,
 } from "@/apps/price-tag/lib/api";
-import { CANVAS_TEMPLATE_MOCKS } from "@/lib/mocks";
-import { Loader } from "@/components/loader";
+import { CANVAS_DESIGN_MOCKS, CANVAS_TEMPLATE_MOCKS } from "@/lib/mocks";
 import { Page, PageContent } from "@/components/ui/page";
 import {
   getWaraqPriceTagDesignLink,
@@ -123,7 +122,7 @@ export function Canvas() {
 }
 
 export function CanvasDemo() {
-  const records: CanvasType[] = [];
+  const records: CanvasType[] = CANVAS_DESIGN_MOCKS;
   const templates = CANVAS_TEMPLATE_MOCKS;
 
   return (
