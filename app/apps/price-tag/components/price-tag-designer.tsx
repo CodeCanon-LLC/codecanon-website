@@ -90,7 +90,7 @@ import { CANVAS_LAYER_TYPES } from "@/apps/price-tag/components/price-tag-layer-
 import type { ProductLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type";
 import type { UserLayerData } from "@/apps/price-tag/components/price-tag-user-layer-type";
 import { getCanvasDesigns } from "@/apps/price-tag/lib/api";
-import { CANVAS_TEMPLATE_MOCKS } from "@/apps/price-tag/lib/mocks";
+import { PRICE_TAG_MOCK } from "@/lib/mocks";
 import { Loader } from "@/components/loader";
 import {
   Empty,
@@ -489,7 +489,7 @@ export function CanvasDesignerDemo() {
 
   return (
     <Designer
-      initialLayers={CANVAS_TEMPLATE_MOCKS[0].layers}
+      initialLayers={PRICE_TAG_MOCK.layers}
       layerTypes={CANVAS_LAYER_TYPES}
     >
       <WaraqBackground />

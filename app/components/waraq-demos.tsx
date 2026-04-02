@@ -48,6 +48,7 @@ import {
   WaraqStage,
   WaraqToolbar,
   WaraqToolbarGroup,
+  type WaraqProps,
 } from "@codecanon/waraq";
 import type { Layer } from "@codecanon/waraq/lib";
 import { Button, ButtonText } from "@codecanon/waraq/ui";
@@ -61,6 +62,9 @@ import {
 import { useTheme } from "next-themes";
 import { Link } from "react-router";
 import { useIsBreakpoint } from "@/hooks/use-breakpoint";
+import { CODE_CANON_LOGO_IMAGE_LAYER, PEROFRMANCE_MOCK } from "@/lib/mocks";
+import { useMarkdown } from "@/hooks/use-markdown";
+import { cn } from "@/lib/utils";
 
 function Header() {
   const { setTheme } = useTheme();
@@ -128,8 +132,14 @@ function Toolbar() {
 }
 
 function LayersPanel() {
+  const markdown = useMarkdown();
+
   return (
-    <WaraqPanel position="top-left" icon={PlusIcon}>
+    <WaraqPanel
+      position="top-left"
+      icon={PlusIcon}
+      defaultCollapsed={markdown.isMarkdown}
+    >
       <WaraqPane>
         <WaraqPaneTitle>Add Layer</WaraqPaneTitle>
         <WaraqPaneContent>
@@ -147,8 +157,10 @@ function LayersPanel() {
 }
 
 function PropertiesPanel() {
+  const markdown = useMarkdown();
+
   return (
-    <WaraqPanel position="top-right">
+    <WaraqPanel position="top-right" defaultCollapsed={markdown.isMarkdown}>
       <WaraqPane showFor="document">
         <WaraqPaneTitle>Document</WaraqPaneTitle>
         <WaraqPaneContent>
@@ -221,32 +233,18 @@ function PropertiesPanel() {
   );
 }
 
-const initialLayers: Layer[] = [
-  {
-    id: "codecanon-logo-initial",
-    type: "image",
-    name: "Code Canon Logo",
-    value: "/assets/light.png",
-    parentStyle: {},
-    contentStyle: {},
-    cssVars: {
-      "--width": "720px",
-      "--height": "960px",
-      "--object-fit": "contain",
-    },
-    transform: {
-      translate: [48, 48],
-      rotate: 0,
-      scale: [1, 1],
-    },
-  },
-];
+export function WaraqDemo({
+  initialLayers = [CODE_CANON_LOGO_IMAGE_LAYER],
+}: Pick<WaraqProps, "initialLayers">) {
+  const markdown = useMarkdown();
 
-export function WaraqDemoFull() {
   return (
-    <Waraq className="h-screen w-screen" initialLayers={initialLayers}>
+    <Waraq
+      className={cn(!markdown.isMarkdown && "h-screen w-screen")}
+      initialLayers={initialLayers}
+    >
       <WaraqBackground />
-      <Header />
+      {!markdown.isMarkdown && <Header />}
       <LayersPanel />
       <WaraqStage>
         <WaraqFrame />
@@ -255,4 +253,8 @@ export function WaraqDemoFull() {
       <Toolbar />
     </Waraq>
   );
+}
+
+export function WaraqPerformanceDemo() {
+  return <WaraqDemo initialLayers={PEROFRMANCE_MOCK.layers} />;
 }

@@ -20,7 +20,7 @@ import {
   getCanvasDesigns,
   getCanvasTemplates,
 } from "@/apps/price-tag/lib/api";
-import { CANVAS_TEMPLATE_MOCKS } from "@/apps/price-tag/lib/mocks";
+import { CANVAS_TEMPLATE_MOCKS } from "@/lib/mocks";
 import { Loader } from "@/components/loader";
 import { Page, PageContent } from "@/components/ui/page";
 import {

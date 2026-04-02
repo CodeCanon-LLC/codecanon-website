@@ -1,5 +1,5 @@
 import { useWaraq as useDesigner } from "@codecanon/waraq";
-import { DEFAULT_ABLES } from '@codecanon/waraq/lib'
+import { DEFAULT_ABLES } from "@codecanon/waraq/lib";
 import { createAble } from "@codecanon/waraq/lib";
 
 import { IconChevronDown, IconEdit } from "@tabler/icons-react";

@@ -2,10 +2,7 @@ import {
   DEFAULT_FRAME_BACKGROUND_COLOR,
   DEFAULT_FRAME_SIZE,
 } from "@codecanon/waraq/lib";
-import {
-  CANVAS_DESIGN_MOCKS,
-  CANVAS_TEMPLATE_MOCKS,
-} from "@/apps/price-tag/lib/mocks";
+import { CANVAS_DESIGN_MOCKS, CANVAS_TEMPLATE_MOCKS } from "@/lib/mocks";
 import { simulateDelay } from "@/lib/mock-api-utils";
 import { uuid } from "@/lib/uuid";
 import type { Canvas } from "@/types/canvas";

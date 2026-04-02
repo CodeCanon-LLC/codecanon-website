@@ -14,6 +14,7 @@ import { baseOptions } from "@/lib/layout.shared";
 import { gitConfig } from "@/lib/shared";
 import { getPageMarkdownUrl, source } from "@/lib/source";
 import type { Route } from "./+types/docs";
+import { Markdown } from "@/hooks/use-markdown";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const slugs = params["*"].split("/").filter((v) => v.length > 0);
@@ -53,7 +54,9 @@ const clientLoader = browserCollections.docs.createClientLoader({
           />
         </div>
         <DocsBody>
-          <Mdx components={useMDXComponents()} />
+          <Markdown>
+            <Mdx components={useMDXComponents()} />
+          </Markdown>
         </DocsBody>
       </DocsPage>
     );
