@@ -1,6 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
 import { CanvasTemplate } from "@/apps/price-tag/price-tag-template";
-import { Loader } from "@/components/loader";
 import type { Route } from "./+types/template";
 
 export function meta(_: Route.MetaArgs) {
@@ -8,19 +6,9 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export default function Page() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => setIsMounted(true), []);
-
   return (
     <div className="size-full flex-1">
-      {isMounted ? (
-        <Suspense fallback={<Loader>Loading editor…</Loader>}>
-          <CanvasTemplate />
-        </Suspense>
-      ) : (
-        <Loader>Loading editor…</Loader>
-      )}
+      <CanvasTemplate />
     </div>
   );
 }

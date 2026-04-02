@@ -479,14 +479,6 @@ export function CanvasDesigner({
 }
 
 export function CanvasDesignerDemo() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => setIsMounted(true), []);
-
-  if (!isMounted) {
-    return <Loader>Loading editor…</Loader>;
-  }
-
   return (
     <Designer
       initialLayers={PRICE_TAG_MOCK.layers}

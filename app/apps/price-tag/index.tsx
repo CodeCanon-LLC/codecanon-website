@@ -123,16 +123,8 @@ export function Canvas() {
 }
 
 export function CanvasDemo() {
-  const [isMounted, setIsMounted] = useState(false);
-
   const records: CanvasType[] = [];
   const templates = CANVAS_TEMPLATE_MOCKS;
-
-  useEffect(() => setIsMounted(true), []);
-
-  if (!isMounted) {
-    return <Loader>Loading editor…</Loader>;
-  }
 
   return (
     <Page>

@@ -1,11 +1,9 @@
 import { buttonVariants } from "fumadocs-ui/components/ui/button";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { LinkIcon } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { Link } from "react-router";
 import { Browser } from "@/components/browser";
 import { Loader } from "@/components/loader";
-import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
 import { getWaraqDemoLink } from "@/lib/links";
 import type { Route } from "./+types/home";
@@ -24,9 +22,6 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export default function Home() {
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => setIsMounted(true), []);
-
   return (
     <HomeLayout {...baseOptions()}>
       {/* ── Hero ───────────────────────────────────────────────────────── */}
@@ -81,13 +76,9 @@ export default function Home() {
 
           {/* Browser-chrome wrapper */}
           <Browser link={getWaraqDemoLink()}>
-            {isMounted ? (
-              <Suspense fallback={<Loader>Loading editor…</Loader>}>
-                <WaraqDemo />
-              </Suspense>
-            ) : (
-              <Loader>Loading editor…</Loader>
-            )}
+            <Suspense fallback={<Loader>Loading editor…</Loader>}>
+              <WaraqDemo />
+            </Suspense>
           </Browser>
         </div>
       </section>

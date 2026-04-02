@@ -205,11 +205,11 @@ function Scroller(props: ScrollerProps) {
 
     onScroll();
     container.addEventListener("scroll", onScroll);
-    window.addEventListener("resize", onScroll);
+    globalThis.addEventListener("resize", onScroll);
 
     return () => {
       container.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      globalThis.removeEventListener("resize", onScroll);
     };
   }, [orientation, offset, withNavigation]);
 
@@ -313,19 +313,19 @@ function ScrollButton(props: ScrollButtonProps) {
     ...buttonProps
   } = props;
 
-  const [autoScrollTimer, setAutoScrollTimer] = React.useState<number | null>(
-    null,
-  );
+  const [autoScrollTimer, setAutoScrollTimer] = React.useState<
+    number | NodeJS.Timeout | null
+  >(null);
 
   const onAutoScrollStart = React.useCallback(
     (event?: React.MouseEvent<HTMLButtonElement>) => {
       if (autoScrollTimer !== null) return;
 
       if (triggerMode === "press") {
-        const timer = window.setInterval(onClick ?? (() => {}), 50);
+        const timer = globalThis.setInterval(onClick ?? (() => {}), 50);
         setAutoScrollTimer(timer);
       } else if (triggerMode === "hover") {
-        const timer = window.setInterval(() => {
+        const timer = globalThis.setInterval(() => {
           if (event) onClick?.(event);
         }, 50);
         setAutoScrollTimer(timer);
@@ -337,7 +337,7 @@ function ScrollButton(props: ScrollButtonProps) {
   const onAutoScrollStop = React.useCallback(() => {
     if (autoScrollTimer === null) return;
 
-    window.clearInterval(autoScrollTimer);
+    globalThis.clearInterval(autoScrollTimer);
     setAutoScrollTimer(null);
   }, [autoScrollTimer]);
 

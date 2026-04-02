@@ -10,9 +10,6 @@ export function Browser({
   className,
   ...props
 }: React.ComponentProps<"div"> & { link: string }) {
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => setIsMounted(true), []);
-
   return (
     <div
       className={cn(
@@ -29,7 +26,7 @@ export function Browser({
           to={link}
           className="truncate ml-3 flex-1 rounded-md bg-[#e5e5e5] dark:bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground hover:text-fd-primary hover:underline"
         >
-          {isMounted && window.location.origin}
+          {globalThis.location?.origin}
           {link}
         </Link>
 
