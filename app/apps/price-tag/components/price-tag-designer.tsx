@@ -177,7 +177,7 @@ function CanvasDesigns() {
   });
 
   return (
-    <DesignerPanel title="Properties" position="top-right">
+    <DesignerPanel title="Properties" position="top-left">
       <DesignerPane>
         <DesignerPaneTitle>Select</DesignerPaneTitle>
         <DesignerPaneContent>
