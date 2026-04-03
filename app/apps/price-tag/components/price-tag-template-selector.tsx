@@ -6,17 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
-import { CanvasCard } from "@/apps/price-tag/components/price-tag-card";
+import { PriceTagCard } from "@/apps/price-tag/components/price-tag-card";
 import {
-  CanvasGrid,
-  CanvasGridContent,
-  CanvasGridDescription,
-  CanvasGridEmpty,
-  CanvasGridHeader,
-  CanvasGridTitle,
+  PriceTagGrid,
+  PriceTagGridContent,
+  PriceTagGridDescription,
+  PriceTagGridEmpty,
+  PriceTagGridHeader,
+  PriceTagGridTitle,
 } from "@/apps/price-tag/components/price-tag-grid";
-import { CanvasGridSkeleton } from "@/apps/price-tag/components/price-tag-grid-skeleton";
-import { getCanvasTemplates } from "@/apps/price-tag/lib/api";
+import { PriceTagGridSkeleton } from "@/apps/price-tag/components/price-tag-grid-skeleton";
+import { getPriceTagTemplates } from "@/apps/price-tag/lib/api";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -31,9 +31,9 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/cn";
 import { getWaraqPriceTagTemplateLink } from "@/lib/links";
 import { uuid } from "@/lib/uuid";
-import type { Canvas } from "@/types/canvas";
+import type { PriceTag } from "@/types/price-tag";
 
-const CANVAS_BUILTIN_TEMPLATES: Canvas[] = DOCUMENT_SIZES.map(
+const PRICE_TAG_BUILTIN_TEMPLATES: PriceTag[] = DOCUMENT_SIZES.map(
   ([id, { label, frameSize }]) => ({
     id,
     name: label,
@@ -43,28 +43,28 @@ const CANVAS_BUILTIN_TEMPLATES: Canvas[] = DOCUMENT_SIZES.map(
   }),
 );
 
-interface CanvasTemplateSelectorProps {
+interface PriceTagTemplateSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSelect: (template: Canvas) => void;
+  onSelect: (template: PriceTag) => void;
 }
 
-export function CanvasTemplateSelector({
+export function PriceTagTemplateSelector({
   open,
   onOpenChange,
   onSelect,
-}: CanvasTemplateSelectorProps) {
+}: PriceTagTemplateSelectorProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
   const { data: templates = [], isPending } = useQuery({
-    queryKey: ["canvas-templates"],
-    queryFn: () => getCanvasTemplates(),
+    queryKey: ["price-tag-templates"],
+    queryFn: () => getPriceTagTemplates(),
   });
 
   const handleSelect = () => {
     const selectedTemplate =
       templates.find((t) => t.id === selected) ||
-      CANVAS_BUILTIN_TEMPLATES.find((t) => t.id === selected);
+      PRICE_TAG_BUILTIN_TEMPLATES.find((t) => t.id === selected);
 
     if (selectedTemplate) {
       onSelect(selectedTemplate);
@@ -88,27 +88,27 @@ export function CanvasTemplateSelector({
         <Separator />
         <Scroller className="min-h-0 flex-1 space-y-8 px-2 pb-8">
           {isPending ? (
-            <CanvasGridSkeleton
+            <PriceTagGridSkeleton
               title="Custom Templates"
               description="Use pre-made templates or your own saved templates to start designing quickly."
               count={3}
             />
           ) : (
-            <CanvasGrid>
-              <CanvasGridHeader>
-                <CanvasGridTitle>Custom Templates</CanvasGridTitle>
-                <CanvasGridDescription>
+            <PriceTagGrid>
+              <PriceTagGridHeader>
+                <PriceTagGridTitle>Custom Templates</PriceTagGridTitle>
+                <PriceTagGridDescription>
                   Use pre-made templates or your own saved templates to start
                   designing quickly.
-                </CanvasGridDescription>
-              </CanvasGridHeader>
+                </PriceTagGridDescription>
+              </PriceTagGridHeader>
 
-              <CanvasGridContent>
+              <PriceTagGridContent>
                 {templates.length ? (
                   templates.map((template) => (
-                    <CanvasCard
+                    <PriceTagCard
                       key={template.id}
-                      canvas={template}
+                      priceTag={template}
                       onClick={() => setSelected(template.id)}
                       className={cn(
                         "ring-primary ring-offset-background rounded-md rounded-bl-xs ring-offset-4",
@@ -117,7 +117,7 @@ export function CanvasTemplateSelector({
                     />
                   ))
                 ) : (
-                  <CanvasGridEmpty
+                  <PriceTagGridEmpty
                     title="No templates"
                     description="Create your first custom template"
                   >
@@ -127,24 +127,24 @@ export function CanvasTemplateSelector({
                         <span>Create Template</span>
                       </Link>
                     </Button>
-                  </CanvasGridEmpty>
+                  </PriceTagGridEmpty>
                 )}
-              </CanvasGridContent>
-            </CanvasGrid>
+              </PriceTagGridContent>
+            </PriceTagGrid>
           )}
-          <CanvasGrid>
-            <CanvasGridHeader>
-              <CanvasGridTitle>Built-in Templates</CanvasGridTitle>
-              <CanvasGridDescription>
+          <PriceTagGrid>
+            <PriceTagGridHeader>
+              <PriceTagGridTitle>Built-in Templates</PriceTagGridTitle>
+              <PriceTagGridDescription>
                 Create reusable design templates
-              </CanvasGridDescription>
-            </CanvasGridHeader>
+              </PriceTagGridDescription>
+            </PriceTagGridHeader>
 
-            <CanvasGridContent>
-              {CANVAS_BUILTIN_TEMPLATES.map((template) => (
-                <CanvasCard
+            <PriceTagGridContent>
+              {PRICE_TAG_BUILTIN_TEMPLATES.map((template) => (
+                <PriceTagCard
                   key={template.id}
-                  canvas={template}
+                  priceTag={template}
                   onClick={() => setSelected(template.id)}
                   className={cn(
                     "ring-primary ring-offset-background rounded-md rounded-bl-xs ring-offset-4",
@@ -152,8 +152,8 @@ export function CanvasTemplateSelector({
                   )}
                 />
               ))}
-            </CanvasGridContent>
-          </CanvasGrid>
+            </PriceTagGridContent>
+          </PriceTagGrid>
         </Scroller>
 
         <DialogFooter>

@@ -1,4 +1,4 @@
-import { useWaraqAction as useDesignerAction } from "@codecanon/waraq";
+import { useWaraqAction } from "@codecanon/waraq";
 import { Textarea } from "@codecanon/waraq/ui";
 import type { ProductInputLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type/product-custom-layer-types";
 import {
@@ -19,7 +19,7 @@ const PRODUCT_PROPERTIES = [
 
 // Product QR Code Value Action with mention support
 export const ActionProductQRCodeValue = () => {
-  const { layer, setLayer } = useDesignerAction();
+  const { layer, setLayer } = useWaraqAction();
 
   const value = layer?.value || "";
 
@@ -55,7 +55,7 @@ export const ActionProductQRCodeValue = () => {
 
 // Product Input Default Value Action with mention support
 export const ActionProductInputDefaultValue = () => {
-  const { setData, getData } = useDesignerAction<ProductInputLayerData>();
+  const { setData, getData } = useWaraqAction<ProductInputLayerData>();
 
   const defaultValue = getData("defaultValue", "");
 

@@ -1,4 +1,4 @@
-import { CanvasDesign } from "@/apps/price-tag/price-tag-design";
+import { PriceTagDesign } from "@/apps/price-tag/price-tag-design";
 import type { Route } from "./+types/design";
 
 export function meta(_: Route.MetaArgs) {
@@ -6,5 +6,5 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export default function Page() {
-  return <CanvasDesign />;
+  return <PriceTagDesign />;
 }

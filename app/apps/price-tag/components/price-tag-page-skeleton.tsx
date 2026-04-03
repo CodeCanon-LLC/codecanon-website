@@ -1,21 +1,21 @@
-import { CanvasGridSkeleton } from "@/apps/price-tag/components/price-tag-grid-skeleton";
+import { PriceTagGridSkeleton } from "@/apps/price-tag/components/price-tag-grid-skeleton";
 import { Page, PageContent } from "@/components/ui/page";
 
-export function CanvasPageSkeleton() {
+export function PriceTagPageSkeleton() {
   return (
     <Page>
       <PageContent className="gap-8">
         {/* Templates Section */}
-        <CanvasGridSkeleton
+        <PriceTagGridSkeleton
           title="Templates"
           description="Create reusable design templates"
           count={4}
         />
 
         {/* Designs Section */}
-        <CanvasGridSkeleton
+        <PriceTagGridSkeleton
           title="Designs"
-          description="Your canvas designs and documents"
+          description="Your price tag designs and templates"
           count={4}
         />
       </PageContent>

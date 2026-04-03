@@ -27,7 +27,7 @@ export const SelectLayerType: LayerType<SelectLayerData> = {
         {layer.locked && (
           <div
             className={cn(
-              "transition-opactiy absolute top-0 right-0 opacity-0 group-hover/canvas-layer-select:opacity-100 focus:opacity-100",
+              "transition-opactiy absolute top-0 right-0 opacity-0 group-hover/price-tag-layer-select:opacity-100 focus:opacity-100",
               open && "opacity-100",
             )}
           >

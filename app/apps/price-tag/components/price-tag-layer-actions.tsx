@@ -1,7 +1,7 @@
-import { useWaraqAction as useDesignerAction } from "@codecanon/waraq";
+import { useWaraqAction } from "@codecanon/waraq";
 import {
-  createWaraqData as createDesignerData,
-  type WaraqData as DesignerData,
+  createWaraqData as createWaraqData,
+  type WaraqData,
   parseLayerCssVar,
 } from "@codecanon/waraq/lib";
 import {
@@ -58,7 +58,7 @@ import { cn } from "@/lib/cn";
 
 // Date Format Action for TodaysDate layer type
 export const ActionDateFormat = () => {
-  const { layer, setLayer } = useDesignerAction();
+  const { layer, setLayer } = useWaraqAction();
 
   const dateFormat = layer?.value || "MM/dd/yyyy";
 
@@ -126,7 +126,7 @@ export const ActionDateFormat = () => {
 
 // Select Options Action for Select layer type
 export const ActionSelectOptions = () => {
-  const { getData, setData } = useDesignerAction<SelectLayerData>();
+  const { getData, setData } = useWaraqAction<SelectLayerData>();
 
   // Parse options from layer data
   const [options, setOptions] = useState(getData("options", []));
@@ -218,7 +218,7 @@ export type ProductDisplayStyleOption = Omit<ComboboxOption, "value"> & {
 
 // Product Max Select Count Action
 export const ActionProductMaxSelectCount = () => {
-  const { getData, setData } = useDesignerAction<ProductLayerData>();
+  const { getData, setData } = useWaraqAction<ProductLayerData>();
 
   const maxSelectCount = getData("maxSelectCount", 0);
 
@@ -243,7 +243,7 @@ export const ActionProductMaxSelectCount = () => {
 
 // Product Display Style Action
 export const ActionProductDisplayStyle = () => {
-  const { getData, setData } = useDesignerAction<ProductLayerData>();
+  const { getData, setData } = useWaraqAction<ProductLayerData>();
 
   const displayStyle = getData("displayStyle", "card");
 
@@ -313,7 +313,7 @@ export const ActionProductDisplayStyle = () => {
 
 // Product Custom Design Action
 export const ActionProductCustomDesign = ({ children }: PropsWithChildren) => {
-  const { layer, getData, setData } = useDesignerAction<ProductLayerData>();
+  const { layer, getData, setData } = useWaraqAction<ProductLayerData>();
 
   if (layer?.data?.displayStyle !== "custom") return null;
 
@@ -338,7 +338,7 @@ export const ActionProductCustomDesign = ({ children }: PropsWithChildren) => {
 
   const customDesign = getData(
     "customDesign",
-    createDesignerData({
+    createWaraqData({
       frameSize: {
         width: maxWidth,
         height: Math.min(maxHeight, 100),
@@ -346,7 +346,7 @@ export const ActionProductCustomDesign = ({ children }: PropsWithChildren) => {
     }),
   );
 
-  const handleDataChange = (data: DesignerData) => {
+  const handleDataChange = (data: WaraqData) => {
     setData("customDesign", data);
   };
 
@@ -367,7 +367,7 @@ export const ActionProductCustomDesign = ({ children }: PropsWithChildren) => {
 };
 
 export const ActionInputPlaceholder = () => {
-  const { setData, getData } = useDesignerAction<InputLayerData>();
+  const { setData, getData } = useWaraqAction<InputLayerData>();
 
   const placeholder = getData("placeholder", "Enter text...");
 
@@ -386,7 +386,7 @@ export const ActionInputPlaceholder = () => {
 };
 
 export const ActionInputDefaultValue = () => {
-  const { setData, getData } = useDesignerAction<InputLayerData>();
+  const { setData, getData } = useWaraqAction<InputLayerData>();
 
   const defaultValue = getData("defaultValue", "");
   const multiLine = getData("multiLine", false);
@@ -421,7 +421,7 @@ export const ActionInputDefaultValue = () => {
 };
 
 export const ActionInputMode = () => {
-  const { setData, getData } = useDesignerAction<InputLayerData>();
+  const { setData, getData } = useWaraqAction<InputLayerData>();
 
   const multiLine = getData("multiLine", false);
 
@@ -448,7 +448,7 @@ export const ActionInputMode = () => {
 
 // QR Code Value Action
 export const ActionQRCodeValue = () => {
-  const { layer, setLayer } = useDesignerAction();
+  const { layer, setLayer } = useWaraqAction();
 
   const value = layer?.value;
 
@@ -463,7 +463,7 @@ export const ActionQRCodeValue = () => {
 
 // QR Code Error Correction Level Action
 export const ActionQRCodeLevel = () => {
-  const { getData, setData } = useDesignerAction<QRCodeLayerData>();
+  const { getData, setData } = useWaraqAction<QRCodeLayerData>();
 
   const qrLevel = getData("qrLevel", "M");
 
@@ -508,7 +508,7 @@ export const ActionQRCodeLevel = () => {
 
 // QR Code Foreground Color Action
 export const ActionQRCodeFgColor = () => {
-  const { getData, setData } = useDesignerAction<QRCodeLayerData>();
+  const { getData, setData } = useWaraqAction<QRCodeLayerData>();
 
   const qrFgColor = getData("qrFgColor", "#000000");
   const hasColor = qrFgColor !== "";
@@ -561,7 +561,7 @@ interface UserDisplayStyleOption extends ComboboxOption {
 
 // User Display Style Action
 export const ActionUserDisplayStyle = () => {
-  const { getData, setData } = useDesignerAction<UserLayerData>();
+  const { getData, setData } = useWaraqAction<UserLayerData>();
 
   const displayStyle = getData("displayStyle", "profile");
 
@@ -637,7 +637,7 @@ export const ActionUserDisplayStyle = () => {
 
 // User Size Action
 export const ActionUserSize = () => {
-  const { getData, setData } = useDesignerAction<UserLayerData>();
+  const { getData, setData } = useWaraqAction<UserLayerData>();
 
   const size = getData("size", "default");
 

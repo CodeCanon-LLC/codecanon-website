@@ -34,19 +34,17 @@ import {
   ActionToolbarHistory,
   ActionToolbarTool,
   ActionToolbarZoom,
-  Waraq as Designer,
-  WaraqStage as DesignerCanvas,
-  WaraqFrame as DesignerFrame,
-  WaraqKeyboardShortcuts as DesignerKeyboardShortcuts,
-  WaraqPane as DesignerPane,
-  WaraqPaneContent as DesignerPaneContent,
-  WaraqPanel as DesignerPanel,
-  WaraqPaneTitle as DesignerPaneTitle,
-  WaraqToolbar as DesignerToolbar,
-  WaraqToolbarGroup as DesignerToolbarGroup,
+  Waraq,
+  WaraqStage,
+  WaraqFrame,
+  WaraqKeyboardShortcuts,
+  WaraqPane,
+  WaraqPaneContent,
+  WaraqPanel,
+  WaraqPaneTitle,
   PaneAddLayer,
   PaneLayerTree,
-  useWaraq as useDesigner,
+  useWaraq,
   WaraqBackground,
   WaraqToolbar,
   WaraqToolbarGroup,
@@ -70,7 +68,7 @@ import {
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
-import { CANVAS_ABLES } from "@/apps/price-tag/components/price-tag-layer-ables";
+import { PRICE_TAG_ABLES } from "@/apps/price-tag/components/price-tag-layer-ables";
 import {
   ActionDateFormat,
   ActionInputDefaultValue,
@@ -86,10 +84,10 @@ import {
   ActionUserDisplayStyle,
   ActionUserSize,
 } from "@/apps/price-tag/components/price-tag-layer-actions";
-import { CANVAS_LAYER_TYPES } from "@/apps/price-tag/components/price-tag-layer-types";
+import { PRICE_TAG_LAYER_TYPES } from "@/apps/price-tag/components/price-tag-layer-types";
 import type { ProductLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type";
 import type { UserLayerData } from "@/apps/price-tag/components/price-tag-user-layer-type";
-import { getCanvasDesigns } from "@/apps/price-tag/lib/api";
+import { getPriceTagDesigns } from "@/apps/price-tag/lib/api";
 import { PRICE_TAG_MOCK } from "@/lib/mocks";
 import { Loader } from "@/components/loader";
 import {
@@ -102,7 +100,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIsBreakpoint } from "@/hooks/use-breakpoint";
 import { getWaraqPriceTagDesignLink, getWaraqPriceTagLink } from "@/lib/links";
-import type { Canvas } from "@/types/canvas";
+import type { PriceTag } from "@/types/price-tag";
 
 function Header() {
   const { setTheme } = useTheme();
@@ -139,48 +137,48 @@ function Header() {
   );
 }
 
-function CanvasToolbar(props: { hideTools?: boolean }) {
+function Toolbar(props: { hideTools?: boolean }) {
   const showTools = useIsBreakpoint("min-md");
-  const { tool } = useDesigner();
+  const { tool } = useWaraq();
 
   return (
-    <DesignerToolbar>
+    <WaraqToolbar>
       {showTools && !props.hideTools && (
-        <DesignerToolbarGroup>
+        <WaraqToolbarGroup>
           <ActionToolbarTool />
-        </DesignerToolbarGroup>
+        </WaraqToolbarGroup>
       )}
 
       {tool !== "select" && (
-        <DesignerToolbarGroup>
+        <WaraqToolbarGroup>
           <ActionToolbarHistory />
-        </DesignerToolbarGroup>
+        </WaraqToolbarGroup>
       )}
 
-      <DesignerToolbarGroup>
+      <WaraqToolbarGroup>
         <ActionToolbarZoom />
 
-        <DesignerKeyboardShortcuts asChild>
+        <WaraqKeyboardShortcuts asChild>
           <Button size="icon" variant="ghost" tooltip="Keyboard Shortcuts">
             <CircleQuestionMark className="size-3.5" />
           </Button>
-        </DesignerKeyboardShortcuts>
-      </DesignerToolbarGroup>
-    </DesignerToolbar>
+        </WaraqKeyboardShortcuts>
+      </WaraqToolbarGroup>
+    </WaraqToolbar>
   );
 }
 
-function CanvasDesigns() {
+function PriceTagDesigns() {
   const { data: docs, isPending } = useQuery({
-    queryKey: ["canvas-docs"],
-    queryFn: () => getCanvasDesigns(),
+    queryKey: ["price-tag-designs"],
+    queryFn: () => getPriceTagDesigns(),
   });
 
   return (
-    <DesignerPanel title="Properties" position="top-left">
-      <DesignerPane>
-        <DesignerPaneTitle>Select</DesignerPaneTitle>
-        <DesignerPaneContent>
+    <WaraqPanel title="Properties" position="top-left">
+      <WaraqPane>
+        <WaraqPaneTitle>Select</WaraqPaneTitle>
+        <WaraqPaneContent>
           {isPending ? (
             <Action orientation="vertical">
               <Skeleton className="h-7 w-full" />
@@ -221,164 +219,159 @@ function CanvasDesigns() {
               </EmptyHeader>
             </Empty>
           )}
-        </DesignerPaneContent>
-      </DesignerPane>
-    </DesignerPanel>
+        </WaraqPaneContent>
+      </WaraqPane>
+    </WaraqPanel>
   );
 }
 
-function LayersPanel(props: React.ComponentProps<typeof DesignerPanel>) {
-  const { tool } = useDesigner();
+function LayersPanel(props: React.ComponentProps<typeof WaraqPanel>) {
+  const { tool } = useWaraq();
 
   if (tool === "select") {
-    return <CanvasDesigns />;
+    return <PriceTagDesigns />;
   }
 
   return (
-    <DesignerPanel
-      title="Layers"
-      position="top-left"
-      icon={PlusIcon}
-      {...props}
-    >
-      <DesignerPane>
-        <DesignerPaneTitle>Add Layer</DesignerPaneTitle>
-        <DesignerPaneContent>
+    <WaraqPanel title="Layers" position="top-left" icon={PlusIcon} {...props}>
+      <WaraqPane>
+        <WaraqPaneTitle>Add Layer</WaraqPaneTitle>
+        <WaraqPaneContent>
           <PaneAddLayer />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane>
-        <DesignerPaneTitle>Layers</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane>
+        <WaraqPaneTitle>Layers</WaraqPaneTitle>
+        <WaraqPaneContent>
           <PaneLayerTree />
-        </DesignerPaneContent>
-      </DesignerPane>
-    </DesignerPanel>
+        </WaraqPaneContent>
+      </WaraqPane>
+    </WaraqPanel>
   );
 }
 
-function PropertiesPanel(props: React.ComponentProps<typeof DesignerPanel>) {
+function PropertiesPanel(props: React.ComponentProps<typeof WaraqPanel>) {
   return (
-    <DesignerPanel title="Properties" position="top-right" {...props}>
-      <DesignerPane showFor="document">
-        <DesignerPaneTitle>Document</DesignerPaneTitle>
-        <DesignerPaneContent>
+    <WaraqPanel title="Properties" position="top-right" {...props}>
+      <WaraqPane showFor="document">
+        <WaraqPaneTitle>Document</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionDocumentSize />
           <ActionDocumentSizePreset />
           <ActionDocumentBackground />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor="layer">
-        <DesignerPaneTitle>Layer</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor="layer">
+        <WaraqPaneTitle>Layer</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionPosition />
           <ActionSize />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor="layer">
-        <DesignerPaneTitle>Styles</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor="layer">
+        <WaraqPaneTitle>Styles</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionCorner />
           <ActionBorder />
           <ActionBoxShadow />
           <ActionPadding />
           <ActionFill />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor="layer">
-        <DesignerPaneTitle>Transform</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor="layer">
+        <WaraqPaneTitle>Transform</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionRotate />
           <ActionFlip />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["todays-date"]}>
-        <DesignerPaneTitle>Date</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["todays-date"]}>
+        <WaraqPaneTitle>Date</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionDateFormat />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["select"]}>
-        <DesignerPaneTitle>Select Options</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["select"]}>
+        <WaraqPaneTitle>Select Options</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionSelectOptions />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["product"]}>
-        <DesignerPaneTitle>Products</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["product"]}>
+        <WaraqPaneTitle>Products</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionProductDisplayStyle />
           <ActionProductMaxSelectCount />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane
         showFor={[
           (layer: Layer<ProductLayerData>) =>
             layer.type === "product" && layer.data?.displayStyle === "custom",
         ]}
       >
-        <DesignerPaneTitle>Custom Layout</DesignerPaneTitle>
-        <DesignerPaneContent>
+        <WaraqPaneTitle>Custom Layout</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionProductCustomDesign />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["user"]}>
-        <DesignerPaneTitle>User</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["user"]}>
+        <WaraqPaneTitle>User</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionUserDisplayStyle />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane
         showFor={[
           (layer: Layer<UserLayerData>) =>
             layer.type === "user" &&
             (layer.data?.displayStyle || "profile") === "profile",
         ]}
       >
-        <DesignerPaneTitle>User</DesignerPaneTitle>
-        <DesignerPaneContent>
+        <WaraqPaneTitle>User</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionUserSize />
           <ActionColor />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane
         showFor={[
           (layer: Layer<UserLayerData>) =>
             layer.type === "user" && layer.data?.displayStyle === "avatar",
         ]}
       >
-        <DesignerPaneTitle>User</DesignerPaneTitle>
-        <DesignerPaneContent>
+        <WaraqPaneTitle>User</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionUserSize />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["input"]}>
-        <DesignerPaneTitle>Input</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["input"]}>
+        <WaraqPaneTitle>Input</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionInputPlaceholder />
           <ActionInputMode />
           <ActionInputDefaultValue />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["qrcode"]}>
-        <DesignerPaneTitle>QR Code Value</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["qrcode"]}>
+        <WaraqPaneTitle>QR Code Value</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionQRCodeValue />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["qrcode"]}>
-        <DesignerPaneTitle>QR Code Style</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["qrcode"]}>
+        <WaraqPaneTitle>QR Code Style</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionQRCodeFgColor />
           <ActionQRCodeLevel />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["text"]}>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["text"]}>
+        <WaraqPaneContent>
           <ActionTextValue />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane
         showFor={[
           "text",
           "todays-date",
@@ -390,8 +383,8 @@ function PropertiesPanel(props: React.ComponentProps<typeof DesignerPanel>) {
               layer.data?.displayStyle === "name"),
         ]}
       >
-        <DesignerPaneTitle>Text</DesignerPaneTitle>
-        <DesignerPaneContent>
+        <WaraqPaneTitle>Text</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionFont apiKey={import.meta.env.VITE_GOOGLE_FONTS_API_KEY} />
           <ActionFontWeight />
           <ActionColor />
@@ -405,39 +398,39 @@ function PropertiesPanel(props: React.ComponentProps<typeof DesignerPanel>) {
           <ActionTextTransform />
           <ActionTextShadow />
           <ActionTextStroke />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["image"]}>
-        <DesignerPaneTitle>Image</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["image"]}>
+        <WaraqPaneTitle>Image</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionImageEdit />
           <ActionImageFit />
-        </DesignerPaneContent>
-      </DesignerPane>
-      <DesignerPane showFor={["image"]}>
-        <DesignerPaneTitle>Filters</DesignerPaneTitle>
-        <DesignerPaneContent>
+        </WaraqPaneContent>
+      </WaraqPane>
+      <WaraqPane showFor={["image"]}>
+        <WaraqPaneTitle>Filters</WaraqPaneTitle>
+        <WaraqPaneContent>
           <ActionImageFilter />
-        </DesignerPaneContent>
-      </DesignerPane>
-    </DesignerPanel>
+        </WaraqPaneContent>
+      </WaraqPane>
+    </WaraqPanel>
   );
 }
 
-export function CanvasDesigner({
-  canvasId,
-  canvas,
+export function PriceTagDesigner({
+  priceTagId,
+  priceTag,
   loading,
   ...props
 }: {
-  canvasId: string;
-  canvas?: Canvas | null;
+  priceTagId: string;
+  priceTag?: PriceTag | null;
   loading?: boolean;
-} & Partial<React.ComponentProps<typeof Designer>>) {
-  const [data, setData] = useLocalStorage<Canvas>(
-    `canvas-template-${canvasId}`,
+} & Partial<React.ComponentProps<typeof Waraq>>) {
+  const [data, setData] = useLocalStorage<PriceTag>(
+    `price-tag-template-${priceTagId}`,
     {
-      id: canvasId,
+      id: priceTagId,
       name: "New Template",
       frameSize: DEFAULT_FRAME_SIZE,
       frameBackgroundColor: DEFAULT_FRAME_BACKGROUND_COLOR,
@@ -447,50 +440,50 @@ export function CanvasDesigner({
 
   /**
    * biome-ignore lint/correctness/useExhaustiveDependencies: this causes the component to
-   * freeze when canvas changes, we only want to set data on initial load or when canvasId changes
+   * freeze when price tag changes, we only want to set data on initial load or when priceTag changes
    */
   useEffect(() => {
-    if (canvas) {
-      setData(canvas);
+    if (priceTag) {
+      setData(priceTag);
     }
-  }, [canvas]);
+  }, [priceTag]);
 
   return (
-    <Designer
+    <Waraq
       {...props}
       data={data}
       onDataChange={setData}
-      layerTypes={CANVAS_LAYER_TYPES}
+      layerTypes={PRICE_TAG_LAYER_TYPES}
     >
       <WaraqBackground />
       <Header />
       <LayersPanel />
-      <DesignerCanvas>
-        <DesignerFrame ables={CANVAS_ABLES}>
+      <WaraqStage>
+        <WaraqFrame ables={PRICE_TAG_ABLES}>
           {loading && (
             <Skeleton className="absolute top-0 left-0 z-11 size-full rounded-none" />
           )}
-        </DesignerFrame>
-      </DesignerCanvas>
+        </WaraqFrame>
+      </WaraqStage>
       <PropertiesPanel />
-      <CanvasToolbar />
-    </Designer>
+      <Toolbar />
+    </Waraq>
   );
 }
 
-export function CanvasDesignerDemo() {
+export function PriceTagDesignerDemo() {
   return (
-    <Designer
+    <Waraq
       initialLayers={PRICE_TAG_MOCK.layers}
-      layerTypes={CANVAS_LAYER_TYPES}
+      layerTypes={PRICE_TAG_LAYER_TYPES}
     >
       <WaraqBackground />
       <LayersPanel defaultCollapsed />
-      <DesignerCanvas>
-        <DesignerFrame ables={CANVAS_ABLES} />
-      </DesignerCanvas>
+      <WaraqStage>
+        <WaraqFrame ables={PRICE_TAG_ABLES} />
+      </WaraqStage>
       <PropertiesPanel defaultCollapsed />
-      <CanvasToolbar hideTools />
-    </Designer>
+      <Toolbar hideTools />
+    </Waraq>
   );
 }

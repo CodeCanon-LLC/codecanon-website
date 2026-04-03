@@ -1,7 +1,7 @@
 import {
-  WaraqProvider as DesignerProvider,
-  WaraqStaticFrame as DesignerStaticFrame,
-  useWaraq as useDesigner,
+  WaraqProvider,
+  WaraqStaticFrame,
+  useWaraq,
 } from "@codecanon/waraq";
 import type { Layer } from "@codecanon/waraq/lib";
 import { Palette } from "lucide-react";
@@ -21,7 +21,7 @@ interface ProductCustomViewProps {
 }
 
 export function ProductCustomView({ layer }: ProductCustomViewProps) {
-  const { updateLayer } = useDesigner();
+  const { updateLayer } = useWaraq();
 
   if (
     !layer.data?.customDesign?.layers.length ||
@@ -40,7 +40,7 @@ export function ProductCustomView({ layer }: ProductCustomViewProps) {
           layer.data?.productDesign?.[product.id] || layer.data?.customDesign;
 
         return (
-          <DesignerProvider
+          <WaraqProvider
             key={product.id}
             data={design}
             layerTypes={PRODUCT_CUSTOM_LAYER_TYPES}
@@ -57,11 +57,11 @@ export function ProductCustomView({ layer }: ProductCustomViewProps) {
               });
             }}
           >
-            <DesignerStaticFrame
+            <WaraqStaticFrame
               className="shrink-0 shadow-none"
               injectLayerData={() => ({ product })}
             />
-          </DesignerProvider>
+          </WaraqProvider>
         );
       })}
     </div>

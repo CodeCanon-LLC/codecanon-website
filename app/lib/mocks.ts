@@ -1,4 +1,4 @@
-import type { Canvas } from "@/types/canvas";
+import type { PriceTag } from "@/types/price-tag";
 import type { Layer } from "@codecanon/waraq/lib";
 
 export const CODE_CANON_LOGO_IMAGE_LAYER: Layer = {
@@ -20,8 +20,8 @@ export const CODE_CANON_LOGO_IMAGE_LAYER: Layer = {
   },
 };
 
-export const PRICE_TAG_MOCK: Canvas = {
-  id: "canvas-1",
+export const PRICE_TAG_MOCK: PriceTag = {
+  id: "price-tag-1",
   name: "Price Tag",
   frameSize: { width: 8.5 * 96, height: 11 * 96 },
   frameBackgroundColor: "#fff",
@@ -303,8 +303,8 @@ export const PRICE_TAG_MOCK: Canvas = {
   ],
 };
 
-export const PRICE_TAG_CUSTOM_MOCK: Canvas = {
-  id: "canvas-2",
+export const PRICE_TAG_CUSTOM_MOCK: PriceTag = {
+  id: "price-tag-2",
   name: "Price Tag with Custom Product Layer",
   frameSize: { width: 8.5 * 96, height: 11 * 96 },
   frameBackgroundColor: "#fff",
@@ -683,8 +683,8 @@ export const PRICE_TAG_CUSTOM_MOCK: Canvas = {
   ],
 };
 
-export const PEROFRMANCE_MOCK: Canvas = {
-  id: "canvas-3",
+export const PEROFRMANCE_MOCK: PriceTag = {
+  id: "price-tag-3",
   name: "Performance Demo",
   layers: [
     {
@@ -5483,9 +5483,9 @@ export const PEROFRMANCE_MOCK: Canvas = {
   frameBackgroundColor: "#ffffff",
 };
 
-export const CANVAS_TEMPLATE_MOCKS: Canvas[] = [
+export const PRICE_TAG_TEMPLATE_MOCKS: PriceTag[] = [
   PRICE_TAG_MOCK,
   PRICE_TAG_CUSTOM_MOCK,
 ];
 
-export const CANVAS_DESIGN_MOCKS: Canvas[] = [PEROFRMANCE_MOCK];
+export const PRICE_TAG_DESIGN_MOCKS: PriceTag[] = [PEROFRMANCE_MOCK];

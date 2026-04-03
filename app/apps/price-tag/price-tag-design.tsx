@@ -1,22 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
-import { CanvasDesigner } from "@/apps/price-tag/components/price-tag-designer";
-import { getCanvasDesign } from "@/apps/price-tag/lib/api";
+import { PriceTagDesigner } from "@/apps/price-tag/components/price-tag-designer";
+import { getPriceTagDesign } from "@/apps/price-tag/lib/api";
 import { uuid } from "@/lib/uuid";
 
-export function CanvasDesign() {
-  const { id: canvasDesignId = uuid() } = useParams<{ id: string }>();
+export function PriceTagDesign() {
+  const { id: priceTagDesignId = uuid() } = useParams<{ id: string }>();
 
-  const { data: canvas, isPending } = useQuery({
-    queryKey: ["canvas-item", canvasDesignId],
-    queryFn: () => (canvasDesignId ? getCanvasDesign(canvasDesignId) : null),
+  const { data: priceTag, isPending } = useQuery({
+    queryKey: ["price-tag-design", priceTagDesignId],
+    queryFn: () => (priceTagDesignId ? getPriceTagDesign(priceTagDesignId) : null),
   });
 
   return (
-    <CanvasDesigner
-      initialTool={canvas?.layers.length ? "select" : "move"}
-      canvasId={canvasDesignId}
-      canvas={canvas}
+    <PriceTagDesigner
+      initialTool={priceTag?.layers.length ? "select" : "move"}
+      priceTagId={priceTagDesignId}
+      priceTag={priceTag}
       loading={isPending}
     />
   );

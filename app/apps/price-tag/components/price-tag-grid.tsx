@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/empty";
 import { cn } from "@/lib/cn";
 
-export function CanvasGrid({
+export function PriceTagGrid({
   className,
   children,
   ...props
@@ -21,7 +21,7 @@ export function CanvasGrid({
   );
 }
 
-export function CanvasGridHeader({
+export function PriceTagGridHeader({
   className,
   children,
   ...props
@@ -33,7 +33,7 @@ export function CanvasGridHeader({
   );
 }
 
-export function CanvasGridTitle({
+export function PriceTagGridTitle({
   className,
   children,
   ...props
@@ -45,7 +45,7 @@ export function CanvasGridTitle({
   );
 }
 
-export function CanvasGridDescription({
+export function PriceTagGridDescription({
   className,
   children,
   ...props
@@ -57,7 +57,7 @@ export function CanvasGridDescription({
   );
 }
 
-export function CanvasGridContent({
+export function PriceTagGridContent({
   className,
   children,
   ...props
@@ -75,7 +75,7 @@ export function CanvasGridContent({
   );
 }
 
-export function CanvasGridEmpty({
+export function PriceTagGridEmpty({
   title,
   description,
   children,

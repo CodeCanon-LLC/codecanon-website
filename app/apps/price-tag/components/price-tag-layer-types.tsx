@@ -7,7 +7,7 @@ import { SelectLayerType } from "@/apps/price-tag/components/price-tag-select-la
 import { TodaysDateLayerType } from "@/apps/price-tag/components/price-tag-todaysdate-layer-type";
 import { UserLayerType } from "@/apps/price-tag/components/price-tag-user-layer-type";
 
-export const CANVAS_LAYER_TYPES: LayerType[] = [
+export const PRICE_TAG_LAYER_TYPES: LayerType[] = [
   ...DEFAULT_LAYER_TYPES,
   TodaysDateLayerType,
   SelectLayerType,

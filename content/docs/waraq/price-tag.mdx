@@ -5,12 +5,12 @@ description: A step-by-step walkthrough of building a price tag designer with cu
 
 This page walks through the key parts of the Price Tag app — a real-world example of how to extend Waraq with custom layer types, nest one Waraq canvas inside another, and render a read-only grid of saved designs.
 
-import {CanvasDesignerDemo} from "@/apps/price-tag/components/price-tag-designer";
-import {CanvasDemo} from "@/apps/price-tag";
+import { PriceTagDesignerDemo } from "@/apps/price-tag/components/price-tag-designer";
+import { PriceTagDemo } from "@/apps/price-tag";
 import { getWaraqPriceTagLink, getWaraqPriceTagTemplateLink } from "@/lib/links";
 
-<Browser link={getWaraqPriceTagTemplateLink('canvas-1')} className="not-prose">
-  <CanvasDesignerDemo />
+<Browser link={getWaraqPriceTagTemplateLink('price-tag-1')} className="not-prose">
+  <PriceTagDesignerDemo />
 </Browser>
 
 ---
@@ -321,7 +321,7 @@ import { InputLayerType } from "./price-tag-input-layer-type";
 import { QRCodeLayerType } from "./price-tag-qrcode-layer-type";
 import { ProductLayerType } from "./price-tag-product-layer-type";
 
-export const CANVAS_LAYER_TYPES: LayerType[] = [
+export const PRICE_TAG_LAYER_TYPES: LayerType[] = [
   ...DEFAULT_LAYER_TYPES,
   InputLayerType,
   QRCodeLayerType,
@@ -333,11 +333,11 @@ Then pass this array to `<Waraq>`:
 
 ```tsx
 import { Waraq, WaraqStage, WaraqFrame } from "@codecanon/waraq";
-import { CANVAS_LAYER_TYPES } from "./price-tag-layer-types";
+import { PRICE_TAG_LAYER_TYPES } from "./price-tag-layer-types";
 
 export function PriceTagEditor() {
   return (
-    <Waraq layerTypes={CANVAS_LAYER_TYPES}>
+    <Waraq layerTypes={PRICE_TAG_LAYER_TYPES}>
       <WaraqStage>
         <WaraqFrame />
       </WaraqStage>
@@ -357,35 +357,35 @@ import {
   WaraqPreview,
   WaraqStaticFrame,
 } from "@codecanon/waraq";
-import { CANVAS_LAYER_TYPES } from "./price-tag-layer-types";
-import type { Canvas } from "@/types/canvas";
+import { PRICE_TAG_LAYER_TYPES } from "./price-tag-layer-types";
+import type { PriceTag } from "@/types/price-tag";
 
-function CanvasCard({ canvas }: { canvas: Canvas }) {
+function PriceTagCard({ priceTag }: { priceTag: PriceTag }) {
   return (
     <div className="flex flex-col gap-2">
       {/* WaraqPreview computes a scale transform so the frame fills the card */}
-      <WaraqPreview frameSize={canvas.frameSize}>
+      <WaraqPreview frameSize={priceTag.frameSize}>
         {(style) => (
           <WaraqStaticFrame
-            data={canvas}
-            layerTypes={CANVAS_LAYER_TYPES}
+            data={priceTag}
+            layerTypes={PRICE_TAG_LAYER_TYPES}
             style={style}
           />
         )}
       </WaraqPreview>
 
-      <p className="text-sm font-medium">{canvas.name}</p>
+      <p className="text-sm font-medium">{priceTag.name}</p>
     </div>
   );
 }
 ```
 
-`WaraqStaticFrame` takes `data` (a `WaraqData` / `Canvas` object) and `layerTypes` directly — there is no surrounding `<Waraq>` provider required. This makes it ideal for thumbnails, print previews, and read-only embeds.
+`WaraqStaticFrame` takes `data` (a `WaraqData` object) and `layerTypes` directly — there is no surrounding `<Waraq>` provider required. This makes it ideal for thumbnails, print previews, and read-only embeds.
 
 ### Full grid
 
 <Browser link={getWaraqPriceTagLink()} className="not-prose">
   <div className="size-full flex overflow-auto bg-background not-prose">
-    <CanvasDemo />
+    <PriceTagDemo />
   </div>
 </Browser>

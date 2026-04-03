@@ -1,4 +1,4 @@
-import { useWaraq as useDesigner } from "@codecanon/waraq";
+import { useWaraq } from "@codecanon/waraq";
 import { DEFAULT_ABLES } from "@codecanon/waraq/lib";
 import { createAble } from "@codecanon/waraq/lib";
 
@@ -79,7 +79,7 @@ export const InputLayerEditAble = createAble({
     if (!layerId) return null;
 
     const id = useId();
-    const { updateLayer, getLayer } = useDesigner();
+    const { updateLayer, getLayer } = useWaraq();
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const layer = getLayer<InputLayerData>(layerId);
@@ -159,7 +159,7 @@ export const InputLayerEditAble = createAble({
   },
 });
 
-export const CANVAS_ABLES = [
+export const PRICE_TAG_ABLES = [
   ...DEFAULT_ABLES,
   SelectLayerComboboxAble,
   InputLayerEditAble,

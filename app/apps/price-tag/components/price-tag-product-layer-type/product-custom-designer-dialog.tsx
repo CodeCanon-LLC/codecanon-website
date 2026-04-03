@@ -1,5 +1,5 @@
-import type { WaraqData as DesignerData } from "@codecanon/waraq/lib";
-import { createWaraqData as createDesignerData } from "@codecanon/waraq/lib";
+import type { WaraqData } from "@codecanon/waraq/lib";
+import { createWaraqData } from "@codecanon/waraq/lib";
 import { DialogClose } from "@codecanon/waraq/ui";
 import { IconPencil } from "@tabler/icons-react";
 import { useState } from "react";
@@ -16,21 +16,21 @@ import {
 } from "@/components/ui/dialog";
 
 interface ProductCustomDesignerDialogProps {
-  data?: DesignerData;
-  onDataChange: (data: DesignerData) => void;
+  data?: WaraqData;
+  onDataChange: (data: WaraqData) => void;
   children?: React.ReactNode;
   maxWidth: number;
   maxHeight: number;
 }
 
 export function ProductCustomDesignerDialog({
-  data = createDesignerData(),
+  data = createWaraqData(),
   onDataChange,
   children,
   maxWidth,
   maxHeight,
 }: ProductCustomDesignerDialogProps) {
-  const [localData, setLocalData] = useState<DesignerData>(data);
+  const [localData, setLocalData] = useState<WaraqData>(data);
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {

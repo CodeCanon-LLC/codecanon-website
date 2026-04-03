@@ -1,7 +1,4 @@
-import type {
-  WaraqData as DesignerData,
-  LayerType,
-} from "@codecanon/waraq/lib";
+import type { WaraqData, LayerType } from "@codecanon/waraq/lib";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
@@ -25,7 +22,7 @@ export type ProductLayerDisplayStyle =
   | "list"
   | "custom";
 
-// Helper type for product display in canvas
+// Helper type for product display in price tag
 export interface ProductDisplay {
   id: string;
   name: string;
@@ -37,8 +34,8 @@ export interface ProductDisplay {
 export interface ProductLayerData {
   displayStyle: ProductLayerDisplayStyle;
   products: ProductDisplay[];
-  customDesign?: DesignerData;
-  productDesign?: Record<string, DesignerData>;
+  customDesign?: WaraqData;
+  productDesign?: Record<string, WaraqData>;
   maxSelectCount?: number;
 }
 

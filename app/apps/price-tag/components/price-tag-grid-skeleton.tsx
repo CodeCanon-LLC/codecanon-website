@@ -1,13 +1,13 @@
 import {
-  CanvasGrid,
-  CanvasGridContent,
-  CanvasGridDescription,
-  CanvasGridHeader,
-  CanvasGridTitle,
+  PriceTagGrid,
+  PriceTagGridContent,
+  PriceTagGridDescription,
+  PriceTagGridHeader,
+  PriceTagGridTitle,
 } from "@/apps/price-tag/components/price-tag-grid";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function CanvasCardSkeleton() {
+export function PriceTagCardSkeleton() {
   return (
     <div className="flex flex-col gap-2">
       {/* Preview */}
@@ -22,7 +22,7 @@ export function CanvasCardSkeleton() {
   );
 }
 
-export function CanvasGridSkeleton({
+export function PriceTagGridSkeleton({
   title,
   description,
   count = 3,
@@ -32,17 +32,17 @@ export function CanvasGridSkeleton({
   count?: number;
 }) {
   return (
-    <CanvasGrid>
-      <CanvasGridHeader>
-        <CanvasGridTitle>{title}</CanvasGridTitle>
-        <CanvasGridDescription>{description}</CanvasGridDescription>
-      </CanvasGridHeader>
+    <PriceTagGrid>
+      <PriceTagGridHeader>
+        <PriceTagGridTitle>{title}</PriceTagGridTitle>
+        <PriceTagGridDescription>{description}</PriceTagGridDescription>
+      </PriceTagGridHeader>
 
-      <CanvasGridContent>
+      <PriceTagGridContent>
         {Array.from({ length: count }).map((_, index) => (
-          <CanvasCardSkeleton key={index} />
+          <PriceTagCardSkeleton key={index} />
         ))}
-      </CanvasGridContent>
-    </CanvasGrid>
+      </PriceTagGridContent>
+    </PriceTagGrid>
   );
 }

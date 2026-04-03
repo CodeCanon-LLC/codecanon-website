@@ -30,20 +30,20 @@ import {
   ActionToolbarHistory,
   ActionToolbarTool,
   ActionToolbarZoom,
-  Waraq as Designer,
-  WaraqStage as DesignerCanvas,
-  WaraqFrame as DesignerFrame,
-  WaraqPane as DesignerPane,
-  WaraqPaneContent as DesignerPaneContent,
-  WaraqPanel as DesignerPanel,
-  WaraqPaneTitle as DesignerPaneTitle,
-  WaraqToolbar as DesignerToolbar,
-  WaraqToolbarGroup as DesignerToolbarGroup,
-  WaraqToolbarSeparator as DesignerToolbarSeparator,
+  Waraq,
+  WaraqStage,
+  WaraqFrame,
+  WaraqPane,
+  WaraqPaneContent,
+  WaraqPanel,
+  WaraqPaneTitle,
+  WaraqToolbar,
+  WaraqToolbarGroup,
+  WaraqToolbarSeparator,
   PaneAddLayer,
   PaneLayerTree,
 } from "@codecanon/waraq";
-import type { WaraqData as DesignerData } from "@codecanon/waraq/lib";
+import type { WaraqData } from "@codecanon/waraq/lib";
 import { Action, ActionControls, ActionLabel } from "@codecanon/waraq/ui";
 import { PlusIcon } from "lucide-react";
 import {
@@ -67,8 +67,8 @@ import {
 } from "@/components/ui/tooltip";
 
 interface ProductCustomDesignerProps {
-  data: DesignerData;
-  onDataChange: (data: DesignerData) => void;
+  data: WaraqData;
+  onDataChange: (data: WaraqData) => void;
   maxWidth: number;
   maxHeight: number;
 }
@@ -80,46 +80,46 @@ export function ProductCustomDesigner({
   maxHeight,
 }: ProductCustomDesignerProps) {
   return (
-    <Designer
+    <Waraq
       data={data}
       onDataChange={onDataChange}
       layerTypes={PRODUCT_CUSTOM_LAYER_TYPES}
     >
       {/* Left Panel - Layer Types */}
-      <DesignerPanel title="Layers" position="top-left" icon={PlusIcon}>
-        <DesignerPane>
-          <DesignerPaneTitle>Add Product Layer</DesignerPaneTitle>
-          <DesignerPaneContent>
+      <WaraqPanel title="Layers" position="top-left" icon={PlusIcon}>
+        <WaraqPane>
+          <WaraqPaneTitle>Add Product Layer</WaraqPaneTitle>
+          <WaraqPaneContent>
             <PaneAddLayer
               filterLayers={(layer) => layer.id.includes("product")}
             />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane>
-          <DesignerPaneTitle>Add Layer</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane>
+          <WaraqPaneTitle>Add Layer</WaraqPaneTitle>
+          <WaraqPaneContent>
             <PaneAddLayer
               filterLayers={(layer) => !layer.id.includes("product")}
             />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane>
-          <DesignerPaneTitle>Layers</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane>
+          <WaraqPaneTitle>Layers</WaraqPaneTitle>
+          <WaraqPaneContent>
             <PaneLayerTree />
-          </DesignerPaneContent>
-        </DesignerPane>
-      </DesignerPanel>
+          </WaraqPaneContent>
+        </WaraqPane>
+      </WaraqPanel>
       {/* Canvas */}
-      <DesignerCanvas>
-        <DesignerFrame />
-      </DesignerCanvas>
+      <WaraqStage>
+        <WaraqFrame />
+      </WaraqStage>
 
       {/* Right Panel - Layer Properties */}
-      <DesignerPanel title="Properties" position="top-right">
-        <DesignerPane showFor="document">
-          <DesignerPaneTitle>Area</DesignerPaneTitle>
-          <DesignerPaneContent>
+      <WaraqPanel title="Properties" position="top-right">
+        <WaraqPane showFor="document">
+          <WaraqPaneTitle>Area</WaraqPaneTitle>
+          <WaraqPaneContent>
             <Action>
               <ActionLabel>Size</ActionLabel>
               <ActionControls className="text-muted-foreground h-7 items-center gap-4.5 px-2 font-mono text-sm">
@@ -172,85 +172,85 @@ export function ProductCustomDesigner({
                 </Tooltip>
               </ActionControls>
             </Action>
-          </DesignerPaneContent>
-        </DesignerPane>
+          </WaraqPaneContent>
+        </WaraqPane>
 
-        <DesignerPane showFor="document">
-          <DesignerPaneTitle>Document</DesignerPaneTitle>
-          <DesignerPaneContent>
+        <WaraqPane showFor="document">
+          <WaraqPaneTitle>Document</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionDocumentSize
               minFrameSize={{ width: 100, height: 100 }}
               maxFrameSize={{ width: maxWidth, height: maxHeight }}
             />
             <ActionDocumentBackground />
-          </DesignerPaneContent>
-        </DesignerPane>
+          </WaraqPaneContent>
+        </WaraqPane>
 
-        <DesignerPane showFor="layer">
-          <DesignerPaneTitle>Layer</DesignerPaneTitle>
-          <DesignerPaneContent>
+        <WaraqPane showFor="layer">
+          <WaraqPaneTitle>Layer</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionPosition />
             <ActionSize />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor="layer">
-          <DesignerPaneTitle>Styles</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor="layer">
+          <WaraqPaneTitle>Styles</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionCorner />
             <ActionBorder />
             <ActionBoxShadow />
             <ActionPadding />
             <ActionFill />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor="layer">
-          <DesignerPaneTitle>Transform</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor="layer">
+          <WaraqPaneTitle>Transform</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionRotate />
             <ActionFlip />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["text"]}>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["text"]}>
+          <WaraqPaneContent>
             <ActionTextValue />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["product-qrcode"]}>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["product-qrcode"]}>
+          <WaraqPaneContent>
             <ActionProductQRCodeValue />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["qrcode"]}>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["qrcode"]}>
+          <WaraqPaneContent>
             <ActionQRCodeValue />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["qrcode", "product-qrcode"]}>
-          <DesignerPaneTitle>QR Code</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["qrcode", "product-qrcode"]}>
+          <WaraqPaneTitle>QR Code</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionQRCodeFgColor />
             <ActionQRCodeLevel />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["input", "product-input"]}>
-          <DesignerPaneTitle>Input</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["input", "product-input"]}>
+          <WaraqPaneTitle>Input</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionInputPlaceholder />
             <ActionInputMode />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["input"]}>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["input"]}>
+          <WaraqPaneContent>
             <ActionInputDefaultValue />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["product-input"]}>
-          <DesignerPaneTitle>Default Value</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["product-input"]}>
+          <WaraqPaneTitle>Default Value</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionProductInputDefaultValue />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane
           showFor={[
             "text",
             "input",
@@ -260,8 +260,8 @@ export function ProductCustomDesigner({
             "product-input",
           ]}
         >
-          <DesignerPaneTitle>Text</DesignerPaneTitle>
-          <DesignerPaneContent>
+          <WaraqPaneTitle>Text</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionFont apiKey={import.meta.env.VITE_GOOGLE_FONTS_API_KEY} />
             <ActionFontWeight />
             <ActionColor />
@@ -275,35 +275,35 @@ export function ProductCustomDesigner({
             <ActionTextTransform />
             <ActionTextShadow />
             <ActionTextStroke />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["image", "product-image"]}>
-          <DesignerPaneTitle>Image</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["image", "product-image"]}>
+          <WaraqPaneTitle>Image</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionImageEdit />
             <ActionImageFit />
-          </DesignerPaneContent>
-        </DesignerPane>
-        <DesignerPane showFor={["image", "product-image"]}>
-          <DesignerPaneTitle>Filters</DesignerPaneTitle>
-          <DesignerPaneContent>
+          </WaraqPaneContent>
+        </WaraqPane>
+        <WaraqPane showFor={["image", "product-image"]}>
+          <WaraqPaneTitle>Filters</WaraqPaneTitle>
+          <WaraqPaneContent>
             <ActionImageFilter />
-          </DesignerPaneContent>
-        </DesignerPane>
-      </DesignerPanel>
+          </WaraqPaneContent>
+        </WaraqPane>
+      </WaraqPanel>
 
       {/* Toolbar */}
-      <DesignerToolbar>
-        <DesignerToolbarGroup>
+      <WaraqToolbar>
+        <WaraqToolbarGroup>
           <ActionToolbarTool />
-        </DesignerToolbarGroup>
-        <DesignerToolbarSeparator />
-        <DesignerToolbarGroup>
+        </WaraqToolbarGroup>
+        <WaraqToolbarSeparator />
+        <WaraqToolbarGroup>
           <ActionToolbarHistory />
-        </DesignerToolbarGroup>
-        <DesignerToolbarSeparator />
+        </WaraqToolbarGroup>
+        <WaraqToolbarSeparator />
         <ActionToolbarZoom />
-      </DesignerToolbar>
-    </Designer>
+      </WaraqToolbar>
+    </Waraq>
   );
 }

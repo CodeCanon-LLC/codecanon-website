@@ -1,4 +1,4 @@
-import { CanvasTemplate } from "@/apps/price-tag/price-tag-template";
+import { PriceTagTemplate } from "@/apps/price-tag/price-tag-template";
 import type { Route } from "./+types/template";
 
 export function meta(_: Route.MetaArgs) {
@@ -8,7 +8,7 @@ export function meta(_: Route.MetaArgs) {
 export default function Page() {
   return (
     <div className="size-full flex-1">
-      <CanvasTemplate />
+      <priceTagTemplate />
     </div>
   );
 }

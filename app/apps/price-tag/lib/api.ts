@@ -2,34 +2,34 @@ import {
   DEFAULT_FRAME_BACKGROUND_COLOR,
   DEFAULT_FRAME_SIZE,
 } from "@codecanon/waraq/lib";
-import { CANVAS_DESIGN_MOCKS, CANVAS_TEMPLATE_MOCKS } from "@/lib/mocks";
+import { PRICE_TAG_DESIGN_MOCKS, PRICE_TAG_TEMPLATE_MOCKS } from "@/lib/mocks";
 import { simulateDelay } from "@/lib/mock-api-utils";
 import { uuid } from "@/lib/uuid";
-import type { Canvas } from "@/types/canvas";
+import type { PriceTag } from "@/types/price-tag";
 
-export async function getCanvasTemplates(): Promise<Canvas[]> {
+export async function getPriceTagTemplates(): Promise<PriceTag[]> {
   await simulateDelay();
-  return CANVAS_TEMPLATE_MOCKS;
+  return PRICE_TAG_TEMPLATE_MOCKS;
 }
 
-export async function getCanvasDesigns(): Promise<Canvas[]> {
+export async function getPriceTagDesigns(): Promise<PriceTag[]> {
   await simulateDelay();
-  return CANVAS_DESIGN_MOCKS;
+  return PRICE_TAG_DESIGN_MOCKS;
 }
 
-export async function getCanvasTemplate(id: string): Promise<Canvas | null> {
+export async function getPriceTagTemplate(id: string): Promise<PriceTag | null> {
   await simulateDelay();
-  return CANVAS_TEMPLATE_MOCKS.find((c) => c.id === id) || null;
+  return PRICE_TAG_TEMPLATE_MOCKS.find((c) => c.id === id) || null;
 }
 
-export async function getCanvasDesign(id: string): Promise<Canvas | null> {
+export async function getPriceTagDesign(id: string): Promise<PriceTag | null> {
   await simulateDelay();
-  return CANVAS_DESIGN_MOCKS.find((c) => c.id === id) || null;
+  return PRICE_TAG_DESIGN_MOCKS.find((c) => c.id === id) || null;
 }
 
-export async function createCanvasTemplate(id = uuid()): Promise<string> {
+export async function createPriceTagTemplate(id = uuid()): Promise<string> {
   await simulateDelay();
-  CANVAS_TEMPLATE_MOCKS.push({
+  PRICE_TAG_TEMPLATE_MOCKS.push({
     id,
     name: "New Template",
     frameBackgroundColor: DEFAULT_FRAME_BACKGROUND_COLOR,
@@ -39,10 +39,10 @@ export async function createCanvasTemplate(id = uuid()): Promise<string> {
   return id;
 }
 
-export async function createCanvasDesign(template: Canvas): Promise<string> {
+export async function createPriceTagDesign(template: PriceTag): Promise<string> {
   await simulateDelay();
   const id = uuid();
-  CANVAS_DESIGN_MOCKS.push({
+  PRICE_TAG_DESIGN_MOCKS.push({
     ...template,
     id,
     name: `New ${template.name}`,

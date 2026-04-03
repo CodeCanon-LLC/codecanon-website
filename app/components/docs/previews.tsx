@@ -31,10 +31,10 @@ import {
   Textarea,
   ToggleGroup,
   ToggleGroupItem,
-  Tabs as WaraqTabs,
-  TabsContent as WaraqTabsContent,
-  TabsList as WaraqTabsList,
-  TabsTrigger as WaraqTabsTrigger,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@codecanon/waraq/ui";
 import {
   AlignCenter,
@@ -211,31 +211,31 @@ export function SelectPreview() {
 export function TabsPreview() {
   return (
     <PreviewBox>
-      <WaraqTabs defaultValue="style" className="w-64">
-        <WaraqTabsList>
-          <WaraqTabsTrigger value="style">Style</WaraqTabsTrigger>
-          <WaraqTabsTrigger value="layout">Layout</WaraqTabsTrigger>
-          <WaraqTabsTrigger value="effects">Effects</WaraqTabsTrigger>
-        </WaraqTabsList>
-        <WaraqTabsContent
+      <Tabs defaultValue="style" className="w-64">
+        <TabsList>
+          <TabsTrigger value="style">Style</TabsTrigger>
+          <TabsTrigger value="layout">Layout</TabsTrigger>
+          <TabsTrigger value="effects">Effects</TabsTrigger>
+        </TabsList>
+        <TabsContent
           value="style"
           className="p-2 text-xs text-fd-muted-foreground"
         >
           Style panel content
-        </WaraqTabsContent>
-        <WaraqTabsContent
+        </TabsContent>
+        <TabsContent
           value="layout"
           className="p-2 text-xs text-fd-muted-foreground"
         >
           Layout panel content
-        </WaraqTabsContent>
-        <WaraqTabsContent
+        </TabsContent>
+        <TabsContent
           value="effects"
           className="p-2 text-xs text-fd-muted-foreground"
         >
           Effects panel content
-        </WaraqTabsContent>
-      </WaraqTabs>
+        </TabsContent>
+      </Tabs>
     </PreviewBox>
   );
 }
