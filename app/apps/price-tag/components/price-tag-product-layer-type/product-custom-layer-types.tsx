@@ -1,5 +1,5 @@
-import { FrameLayer, ImageLayer, TextLayer } from "@codecanon/waraq/lib";
 import type { CSSVars, Layer, LayerType } from "@codecanon/waraq/lib";
+import { FrameLayer, ImageLayer, TextLayer } from "@codecanon/waraq/lib";
 import {
   IconCurrencyDollar,
   IconHash,

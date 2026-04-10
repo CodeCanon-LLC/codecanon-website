@@ -1,6 +1,6 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import { gitConfig } from "./shared";
 import { NavbarLogo } from "@/components/navbar-logo";
+import { gitConfig } from "./shared";
 
 export function baseOptions(): BaseLayoutProps {
   return {

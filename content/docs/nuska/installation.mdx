@@ -1,0 +1,51 @@
+---
+title: Installation
+description: Add @codecanon/nuska to your project.
+---
+
+## Access
+
+`@codecanon/nuska` is a protected package on the npm registry. Only authorized users can install it.
+
+To get access, [contact us](mailto:codecanonllc@gmail.com) to purchase a license. Once confirmed, your npm account will be added to the allowed list and you will be able to install the package.
+
+## Requirements
+
+- TypeScript 5+
+- Node.js 18+, Bun, Deno, or any modern edge runtime
+- React 18+ _(only if using `@codecanon/nuska/react`)_
+
+## Install
+
+```bash tab="bun"
+bun add @codecanon/nuska
+```
+```bash tab="pnpm"
+pnpm add @codecanon/nuska
+```
+```bash tab="npm"
+npm install @codecanon/nuska
+```
+```bash tab="yarn"
+yarn add @codecanon/nuska
+```
+
+## Entry points
+
+The package ships three tree-shakable entry points:
+
+| Import | Use for |
+| --- | --- |
+| `@codecanon/nuska` | Core engine, types, and in-memory adapters |
+| `@codecanon/nuska/adapters` | All adapters — Memory + IndexedDB |
+| `@codecanon/nuska/react` | React hook, provider, and context hook |
+
+You only pay for what you import. The React bindings do not pull in the IndexedDB adapters, and vice versa.
+
+## Next.js
+
+No extra configuration needed. The package ships dual ESM/CJS builds and Next.js handles it automatically.
+
+## Vite / React Router
+
+Works out of the box. No special configuration required.

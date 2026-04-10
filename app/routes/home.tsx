@@ -5,7 +5,11 @@ import { Link } from "react-router";
 import { Browser } from "@/components/browser";
 import { Loader } from "@/components/loader";
 import { baseOptions } from "@/lib/layout.shared";
-import { getWaraqDemoLink } from "@/lib/links";
+import {
+  getDocsNuskaLink,
+  getDocsWaraqLink,
+  getWaraqDemoLink,
+} from "@/lib/links";
 import type { Route } from "./+types/home";
 
 const WaraqDemo = lazy(() => import("@/components/waraq-demo"));
@@ -119,7 +123,7 @@ export default function Home() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Link
-              to="/docs/waraq"
+              to={getDocsWaraqLink()}
               className="group flex flex-col rounded-xl border bg-fd-card p-6 hover:border-fd-primary transition-colors"
             >
               <div className="mb-2 flex items-center gap-2">
@@ -140,25 +144,27 @@ export default function Home() {
               </span>
             </Link>
 
-            <div className="flex flex-col rounded-xl border border-dashed bg-fd-muted/10 p-6">
-              <div className="mb-2">
-                <span className="rounded-md bg-fd-muted px-2 py-0.5 text-xs font-medium text-fd-muted-foreground">
-                  Coming soon
+            <Link
+              to={getDocsNuskaLink()}
+              className="group flex flex-col rounded-xl border bg-fd-card p-6 hover:border-fd-primary transition-colors"
+            >
+              <div className="mb-2 flex items-center gap-2">
+                <span className="rounded-md bg-fd-primary/10 px-2 py-0.5 text-xs font-semibold text-fd-primary">
+                  v0.1
+                </span>
+                <span className="font-mono font-semibold">
+                  @codecanon/nuska
                 </span>
               </div>
-              <p className="flex-1 text-sm text-fd-muted-foreground leading-relaxed">
-                More libraries are in active development. Follow{" "}
-                <a
-                  href="https://github.com/CodeCanon-LLC"
-                  className="underline underline-offset-2 hover:text-fd-foreground transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  github.com/CodeCanon-LLC
-                </a>{" "}
-                to stay updated.
+              <p className="flex-1 mb-4 text-sm text-fd-muted-foreground leading-relaxed">
+                Headless git-like version control for any key/value datasource.
+                Commits, branches, diffs, 3-way merge, and pull requests — over
+                IndexedDB, PostgreSQL, MongoDB, or any custom adapter.
               </p>
-            </div>
+              <span className="flex items-center gap-1 text-xs font-medium text-fd-primary group-hover:gap-2 transition-all">
+                View documentation →
+              </span>
+            </Link>
           </div>
         </div>
       </section>

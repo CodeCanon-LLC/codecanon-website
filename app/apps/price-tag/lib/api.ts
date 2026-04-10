@@ -2,8 +2,8 @@ import {
   DEFAULT_FRAME_BACKGROUND_COLOR,
   DEFAULT_FRAME_SIZE,
 } from "@codecanon/waraq/lib";
-import { PRICE_TAG_DESIGN_MOCKS, PRICE_TAG_TEMPLATE_MOCKS } from "@/lib/mocks";
 import { simulateDelay } from "@/lib/mock-api-utils";
+import { PRICE_TAG_DESIGN_MOCKS, PRICE_TAG_TEMPLATE_MOCKS } from "@/lib/mocks";
 import { uuid } from "@/lib/uuid";
 import type { PriceTag } from "@/types/price-tag";
 
@@ -17,7 +17,9 @@ export async function getPriceTagDesigns(): Promise<PriceTag[]> {
   return PRICE_TAG_DESIGN_MOCKS;
 }
 
-export async function getPriceTagTemplate(id: string): Promise<PriceTag | null> {
+export async function getPriceTagTemplate(
+  id: string,
+): Promise<PriceTag | null> {
   await simulateDelay();
   return PRICE_TAG_TEMPLATE_MOCKS.find((c) => c.id === id) || null;
 }
@@ -39,7 +41,9 @@ export async function createPriceTagTemplate(id = uuid()): Promise<string> {
   return id;
 }
 
-export async function createPriceTagDesign(template: PriceTag): Promise<string> {
+export async function createPriceTagDesign(
+  template: PriceTag,
+): Promise<string> {
   await simulateDelay();
   const id = uuid();
   PRICE_TAG_DESIGN_MOCKS.push({

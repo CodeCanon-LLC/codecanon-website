@@ -1,4 +1,4 @@
-import type { WaraqData, LayerType } from "@codecanon/waraq/lib";
+import type { LayerType, WaraqData } from "@codecanon/waraq/lib";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";

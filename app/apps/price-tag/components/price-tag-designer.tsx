@@ -34,18 +34,18 @@ import {
   ActionToolbarHistory,
   ActionToolbarTool,
   ActionToolbarZoom,
+  PaneAddLayer,
+  PaneLayerTree,
+  useWaraq,
   Waraq,
-  WaraqStage,
+  WaraqBackground,
   WaraqFrame,
   WaraqKeyboardShortcuts,
   WaraqPane,
   WaraqPaneContent,
   WaraqPanel,
   WaraqPaneTitle,
-  PaneAddLayer,
-  PaneLayerTree,
-  useWaraq,
-  WaraqBackground,
+  WaraqStage,
   WaraqToolbar,
   WaraqToolbarGroup,
 } from "@codecanon/waraq";
@@ -66,7 +66,7 @@ import {
   SunIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, NavLink } from "react-router";
 import { PRICE_TAG_ABLES } from "@/apps/price-tag/components/price-tag-layer-ables";
 import {
@@ -88,8 +88,6 @@ import { PRICE_TAG_LAYER_TYPES } from "@/apps/price-tag/components/price-tag-lay
 import type { ProductLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type";
 import type { UserLayerData } from "@/apps/price-tag/components/price-tag-user-layer-type";
 import { getPriceTagDesigns } from "@/apps/price-tag/lib/api";
-import { PRICE_TAG_MOCK } from "@/lib/mocks";
-import { Loader } from "@/components/loader";
 import {
   Empty,
   EmptyDescription,
@@ -100,6 +98,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIsBreakpoint } from "@/hooks/use-breakpoint";
 import { getWaraqPriceTagDesignLink, getWaraqPriceTagLink } from "@/lib/links";
+import { PRICE_TAG_MOCK } from "@/lib/mocks";
 import type { PriceTag } from "@/types/price-tag";
 
 function Header() {

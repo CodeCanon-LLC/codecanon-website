@@ -1,0 +1,89 @@
+import { useState } from "react";
+import { cn } from "@/lib/cn";
+import { useNuska } from "@/apps/products-version-control/use-nuska";
+import {
+  IconCommit,
+  IconDB,
+  IconPR,
+} from "@/apps/products-version-control/lib/icons";
+import { BranchSelector } from "@/apps/products-version-control/components/branch-selector";
+import { CodeView } from "@/apps/products-version-control/components/code-view";
+import { CommitsView } from "@/apps/products-version-control/components/commits-view";
+import { PRView } from "@/apps/products-version-control/components/pull-requests-view";
+
+type Tab = "data" | "commits" | "pulls";
+
+export function NuskaDemo() {
+  const nuska = useNuska();
+  const [tab, setTab] = useState<Tab>("data");
+  const openPRCount = nuska.pullRequests.filter(
+    (p) => p.status === "open",
+  ).length;
+
+  return (
+    <div className="flex flex-col">
+      {/* Repo bar */}
+      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-3 border-b border-fd-border bg-fd-background/95 px-4 backdrop-blur">
+        {nuska.ready && <BranchSelector nuska={nuska} />}
+        <div className="flex">
+          {[
+            { id: "data" as const, label: "Data", icon: <IconDB /> },
+            {
+              id: "commits" as const,
+              label: "Commits",
+              badge: nuska.log.length,
+              icon: <IconCommit />,
+            },
+            {
+              id: "pulls" as const,
+              label: "Pull Requests",
+              badge: openPRCount || undefined,
+              icon: <IconPR />,
+            },
+          ].map(({ id, label, badge, icon }) => (
+            <button
+              key={id}
+              className={cn(
+                "flex h-11 items-center gap-1.5 border-b-2 px-3 text-sm transition-colors",
+                tab === id
+                  ? "border-fd-primary font-semibold text-fd-foreground"
+                  : "border-transparent text-fd-muted-foreground hover:text-fd-foreground",
+              )}
+              onClick={() => setTab(id)}
+            >
+              {icon}
+              {label}
+              {badge !== undefined && badge > 0 && (
+                <span
+                  className={cn(
+                    "rounded-full px-1.5 py-0.5 text-[11px]",
+                    tab === id
+                      ? "bg-fd-primary text-white"
+                      : "bg-fd-muted text-fd-muted-foreground",
+                  )}
+                >
+                  {badge}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4">
+        {!nuska.ready ? (
+          <div className="py-20 text-center text-sm text-fd-muted-foreground">
+            Initialising…
+          </div>
+        ) : (
+          <>
+            {tab === "data" && <CodeView nuska={nuska} />}
+            {tab === "commits" && <CommitsView nuska={nuska} />}
+            {tab === "pulls" && <PRView nuska={nuska} />}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

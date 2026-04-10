@@ -1,0 +1,19 @@
+{
+  "title": "@codecanon/nuska",
+  "description": "Git-like version control for any key/value datasource",
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "index",
+    "installation",
+    "getting-started",
+    "---Core---",
+    "engine",
+    "adapters",
+    "react",
+    "---Reference---",
+    "types",
+    "---Apps and Demos---",
+    "products-version-control"
+  ]
+}

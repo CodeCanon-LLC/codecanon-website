@@ -1,7 +1,4 @@
-import {
-  WaraqPreview,
-  WaraqStaticFrame,
-} from "@codecanon/waraq";
+import { WaraqPreview, WaraqStaticFrame } from "@codecanon/waraq";
 import { PlusIcon } from "lucide-react";
 import { Link, type LinkProps } from "react-router";
 import { PRICE_TAG_LAYER_TYPES } from "@/apps/price-tag/components/price-tag-layer-types";
@@ -99,7 +96,10 @@ export function PriceTagCardNew({
   description: string;
 }) {
   return (
-    <PriceTagCardContainer className={cn("flex flex-col", className)} {...props}>
+    <PriceTagCardContainer
+      className={cn("flex flex-col", className)}
+      {...props}
+    >
       {/* Preview */}
       <PriceTagCardPreview className="bg-card group-hover/price-tag-card:border-primary group-hover/price-tag-card:bg-accent/50 relative flex aspect-video w-full flex-1 flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed transition-all">
         <div className="bg-muted group-hover/price-tag-card:border-primary group-hover/price-tag-card:bg-primary/10 flex size-12 items-center justify-center rounded-full border-2 border-dashed transition-all">
@@ -119,7 +119,9 @@ export function PriceTagCardNew({
 export function PriceTagCard({
   priceTag,
   ...props
-}: React.ComponentProps<typeof PriceTagCardContainer> & { priceTag: PriceTag }) {
+}: React.ComponentProps<typeof PriceTagCardContainer> & {
+  priceTag: PriceTag;
+}) {
   return (
     <PriceTagCardContainer {...props}>
       {/* Preview */}

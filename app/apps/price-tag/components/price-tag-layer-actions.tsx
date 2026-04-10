@@ -1,8 +1,8 @@
 import { useWaraqAction } from "@codecanon/waraq";
 import {
   createWaraqData as createWaraqData,
-  type WaraqData,
   parseLayerCssVar,
+  type WaraqData,
 } from "@codecanon/waraq/lib";
 import {
   Action,

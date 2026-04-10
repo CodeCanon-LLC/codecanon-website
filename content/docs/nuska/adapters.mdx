@@ -1,0 +1,179 @@
+---
+title: Adapters
+description: Built-in datasource and version store adapters, and how to implement your own.
+---
+
+Nuska separates *what to version* (the datasource) from *where to store version history* (the version store). Both are small interfaces you can implement for any backend.
+
+---
+
+## DataSourceAdapter
+
+The interface your data store must satisfy:
+
+```ts
+interface DataSourceAdapter {
+  read(key: string): Promise<unknown>
+  write(key: string, value: unknown): Promise<void>
+  delete(key: string): Promise<void>
+  list(): Promise<string[]>
+  clear?(): Promise<void>  // optional — used by checkout() for efficient bulk wipe
+}
+```
+
+---
+
+## VersionStore
+
+The interface for persisting commits, branches, and pull requests:
+
+```ts
+interface VersionStore {
+  saveCommit(commit: Commit): Promise<void>
+  getCommit(id: string): Promise<Commit | undefined>
+  saveBranch(branch: Branch): Promise<void>
+  getBranch(name: string): Promise<Branch | undefined>
+  listBranches(): Promise<Branch[]>
+  deleteBranch(name: string): Promise<void>
+  savePullRequest(pr: PullRequest): Promise<void>
+  getPullRequest(id: string): Promise<PullRequest | undefined>
+  listPullRequests(): Promise<PullRequest[]>
+  listPullRequestsPaginated?(
+    opts: PaginationOptions & { status?: PullRequest["status"] }
+  ): Promise<PaginatedResult<PullRequest>>
+}
+```
+
+`listPullRequestsPaginated` is optional — implement it if you want cursor-based pagination on PR listings.
+
+---
+
+## MemoryDataSourceAdapter
+
+In-memory `Map`-backed datasource. Works in every environment — browser, Node.js, Bun, Deno, edge runtimes.
+
+```ts
+import { MemoryDataSourceAdapter } from "@codecanon/nuska"
+
+const datasource = new MemoryDataSourceAdapter()
+```
+
+Great for unit tests and demos. Data is lost when the process exits.
+
+---
+
+## MemoryVersionStore
+
+In-memory `Map`-backed version store. Stores commits, branches, and PRs as separate Maps.
+
+```ts
+import { MemoryVersionStore } from "@codecanon/nuska"
+
+const store = new MemoryVersionStore()
+```
+
+---
+
+## IndexedDBDataSourceAdapter
+
+Browser-native datasource backed by IndexedDB. Persists data across page reloads.
+
+```ts
+import { IndexedDBDataSourceAdapter } from "@codecanon/nuska/adapters"
+
+// The string argument is the IndexedDB database name
+const datasource = new IndexedDBDataSourceAdapter("my-app-data")
+```
+
+The database is opened lazily on first use. Each key/value pair is stored as `{ key, value }` in the `entries` object store.
+
+---
+
+## IndexedDBVersionStore
+
+Browser-native version store backed by IndexedDB. Uses three object stores: `commits`, `branches`, and `pullRequests`.
+
+```ts
+import { IndexedDBVersionStore } from "@codecanon/nuska/adapters"
+
+const store = new IndexedDBVersionStore("my-app-versions")
+```
+
+Implements `listPullRequestsPaginated` with an index on `createdAt` for efficient cursor pagination.
+
+---
+
+## Implementing a custom adapter
+
+### PostgreSQL example
+
+```ts
+import type { DataSourceAdapter } from "@codecanon/nuska"
+import { sql } from "./db" // your query client
+
+class PostgresDataSourceAdapter implements DataSourceAdapter {
+  async read(key: string) {
+    const [row] = await sql`SELECT value FROM kv WHERE key = ${key}`
+    return row?.value ?? undefined
+  }
+  async write(key: string, value: unknown) {
+    await sql`
+      INSERT INTO kv (key, value) VALUES (${key}, ${JSON.stringify(value)})
+      ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value
+    `
+  }
+  async delete(key: string) {
+    await sql`DELETE FROM kv WHERE key = ${key}`
+  }
+  async list() {
+    const rows = await sql`SELECT key FROM kv`
+    return rows.map((r) => r.key as string)
+  }
+  async clear() {
+    await sql`TRUNCATE kv`
+  }
+}
+```
+
+### MongoDB example
+
+```ts
+import type { VersionStore, Commit, Branch, PullRequest } from "@codecanon/nuska"
+import { db } from "./mongo" // your MongoClient database
+
+class MongoVersionStore implements VersionStore {
+  private commits = db.collection<Commit>("nuska_commits")
+  private branches = db.collection<Branch>("nuska_branches")
+  private prs = db.collection<PullRequest>("nuska_prs")
+
+  async saveCommit(c: Commit) {
+    await this.commits.replaceOne({ id: c.id }, c, { upsert: true })
+  }
+  async getCommit(id: string) {
+    return (await this.commits.findOne({ id })) ?? undefined
+  }
+  async saveBranch(b: Branch) {
+    await this.branches.replaceOne({ name: b.name }, b, { upsert: true })
+  }
+  async getBranch(name: string) {
+    return (await this.branches.findOne({ name })) ?? undefined
+  }
+  async listBranches() {
+    return this.branches.find().toArray()
+  }
+  async deleteBranch(name: string) {
+    await this.branches.deleteOne({ name })
+  }
+  async savePullRequest(pr: PullRequest) {
+    await this.prs.replaceOne({ id: pr.id }, pr, { upsert: true })
+  }
+  async getPullRequest(id: string) {
+    return (await this.prs.findOne({ id })) ?? undefined
+  }
+  async listPullRequests() {
+    return this.prs.find().sort({ createdAt: -1 }).toArray()
+  }
+}
+```
+
+Any adapter that satisfies the interface works. The engine only calls the methods defined above — you are free to add indexes, caching, or batching in your implementation.

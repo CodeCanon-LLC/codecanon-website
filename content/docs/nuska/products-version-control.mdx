@@ -1,0 +1,57 @@
+---
+title: Products Version Control
+description: Interactive playground demonstrating commits, branches, diffs, merges, and pull requests.
+---
+
+The demo below runs entirely in your browser using `IndexedDBDataSourceAdapter` and `IndexedDBVersionStore` — your data persists across page reloads.
+
+<Cards>
+  <Card title="Open full demo" href="/nuska/demo" />
+</Cards>
+
+## What you can do
+
+### Data tab
+
+- **Add / edit / delete** key-value pairs in the staged changes panel
+- **Commit** staged changes with a message
+- **View diff** between the last two commits
+- See the current branch state as a live table
+
+### Commits tab
+
+- Browse the full commit history for the active branch
+- **Revert** any past commit — creates a new inverse commit
+
+### Pull Requests tab
+
+- **Create a PR** between any two branches
+- **Merge** open PRs — conflict resolution UI appears automatically when needed
+- **Close** PRs without merging
+
+### Branch selector
+
+- **Create** a new branch at the current HEAD
+- **Switch** between branches — the datasource state is reconstructed automatically
+- **Delete** branches you no longer need
+
+## How 3-way merge works
+
+When you merge branch B into branch A, nuska:
+
+1. Finds the **common ancestor** commit of A and B
+2. Replays ops from the ancestor to both branch HEADs to reconstruct their states
+3. For every key that changed: applies the change automatically if only one side modified it
+4. Reports a **conflict** only when both sides changed the same key differently
+
+You then supply a `ConflictResolution` for each conflicted key and the merge completes.
+
+## Routing
+
+The demo uses URL-based routing so you can bookmark or share a specific view:
+
+| URL | View |
+| --- | --- |
+| `/nuska/demo` | Data table (current branch) |
+| `/nuska/demo/commits` | Commit history |
+| `/nuska/demo/pulls` | Pull requests |

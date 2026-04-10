@@ -1,0 +1,237 @@
+---
+title: Types
+description: TypeScript types and interfaces exported from @codecanon/nuska.
+---
+
+All types are imported from `@codecanon/nuska`.
+
+```ts
+import type {
+  MutationOp,
+  Commit,
+  Branch,
+  Diff,
+  DiffEntry,
+  MergeResult,
+  ConflictEntry,
+  ConflictResolution,
+  PullRequest,
+  PaginationOptions,
+  PaginatedResult,
+  DataSourceAdapter,
+  VersionStore,
+  NuskaEngineOptions,
+} from "@codecanon/nuska"
+```
+
+---
+
+## MutationOp
+
+An atomic delta on a single key. Commits are composed entirely of these.
+
+```ts
+type MutationOp =
+  | { type: "set"; key: string; value: unknown; prevValue?: unknown }
+  | { type: "delete"; key: string; prevValue?: unknown }
+```
+
+`prevValue` is populated internally by the engine when it stores the op — you do not need to supply it when creating commits.
+
+---
+
+## Commit
+
+A snapshot of a set of changes with metadata.
+
+```ts
+interface Commit {
+  id: string
+  parentIds: string[]   // [] for the first commit, [parentId] normally, [a, b] for merge commits
+  ops: MutationOp[]
+  message: string
+  author: string
+  timestamp: number     // Unix ms
+}
+```
+
+---
+
+## Branch
+
+A named pointer to a commit.
+
+```ts
+interface Branch {
+  name: string
+  headCommitId: string | null   // null when the branch has no commits yet
+}
+```
+
+---
+
+## Diff
+
+The result of comparing two commits.
+
+```ts
+interface Diff {
+  fromCommitId: string | null
+  toCommitId: string | null
+  entries: DiffEntry[]
+}
+```
+
+---
+
+## DiffEntry
+
+A single changed key in a diff.
+
+```ts
+interface DiffEntry {
+  key: string
+  type: "added" | "removed" | "modified"
+  oldValue?: unknown
+  newValue?: unknown
+}
+```
+
+---
+
+## MergeResult
+
+The outcome of a `merge()` or `mergePR()` call.
+
+```ts
+type MergeResult =
+  | { status: "success"; commitId: string }
+  | { status: "conflict"; conflicts: ConflictEntry[] }
+```
+
+---
+
+## ConflictEntry
+
+A key that conflicted during a 3-way merge.
+
+```ts
+interface ConflictEntry {
+  key: string
+  baseValue?: unknown   // value at the common ancestor
+  oursValue?: unknown   // value on the current branch
+  theirsValue?: unknown // value on the source branch
+}
+```
+
+A value of `undefined` means the key did not exist on that side.
+
+---
+
+## ConflictResolution
+
+Supplies the user's decision for a conflicted key.
+
+```ts
+type ConflictResolution =
+  | { key: string; value: unknown }   // keep this value
+  | { key: string; deleted: true }    // delete the key
+```
+
+---
+
+## PullRequest
+
+```ts
+interface PullRequest {
+  id: string
+  title: string
+  fromBranch: string
+  toBranch: string
+  status: "open" | "merged" | "closed"
+  createdAt: number  // Unix ms
+}
+```
+
+---
+
+## PaginationOptions
+
+Cursor-based pagination input.
+
+```ts
+interface PaginationOptions {
+  limit?: number    // number of items to return
+  cursor?: string   // last item ID from the previous page
+}
+```
+
+---
+
+## PaginatedResult
+
+Cursor-based pagination output.
+
+```ts
+interface PaginatedResult<T> {
+  items: T[]
+  nextCursor: string | null   // pass as cursor in the next request, null when no more pages
+  hasMore: boolean
+}
+```
+
+---
+
+## DataSourceAdapter
+
+Interface for the data store being versioned.
+
+```ts
+interface DataSourceAdapter {
+  read(key: string): Promise<unknown>
+  write(key: string, value: unknown): Promise<void>
+  delete(key: string): Promise<void>
+  list(): Promise<string[]>
+  clear?(): Promise<void>
+}
+```
+
+See [Adapters](/docs/nuska/adapters) for built-in implementations and custom examples.
+
+---
+
+## VersionStore
+
+Interface for the store that persists version history.
+
+```ts
+interface VersionStore {
+  saveCommit(commit: Commit): Promise<void>
+  getCommit(id: string): Promise<Commit | undefined>
+  saveBranch(branch: Branch): Promise<void>
+  getBranch(name: string): Promise<Branch | undefined>
+  listBranches(): Promise<Branch[]>
+  deleteBranch(name: string): Promise<void>
+  savePullRequest(pr: PullRequest): Promise<void>
+  getPullRequest(id: string): Promise<PullRequest | undefined>
+  listPullRequests(): Promise<PullRequest[]>
+  listPullRequestsPaginated?(
+    opts: PaginationOptions & { status?: PullRequest["status"] }
+  ): Promise<PaginatedResult<PullRequest>>
+}
+```
+
+---
+
+## NuskaEngineOptions
+
+Constructor options for `NuskaEngine`.
+
+```ts
+interface NuskaEngineOptions {
+  datasource: DataSourceAdapter
+  store: VersionStore
+  defaultBranch?: string       // default: "main"
+  generateId?: () => string    // default: uuid v4
+}
+```

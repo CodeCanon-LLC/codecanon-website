@@ -30,18 +30,18 @@ import {
   ActionToolbarHistory,
   ActionToolbarTool,
   ActionToolbarZoom,
+  PaneAddLayer,
+  PaneLayerTree,
   Waraq,
-  WaraqStage,
   WaraqFrame,
   WaraqPane,
   WaraqPaneContent,
   WaraqPanel,
   WaraqPaneTitle,
+  WaraqStage,
   WaraqToolbar,
   WaraqToolbarGroup,
   WaraqToolbarSeparator,
-  PaneAddLayer,
-  PaneLayerTree,
 } from "@codecanon/waraq";
 import type { WaraqData } from "@codecanon/waraq/lib";
 import { Action, ActionControls, ActionLabel } from "@codecanon/waraq/ui";

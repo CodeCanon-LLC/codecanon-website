@@ -1,0 +1,313 @@
+---
+title: NuskaEngine
+description: The main API class — commits, branches, diffs, merges, and pull requests.
+---
+
+`NuskaEngine` is the central class that wires together a datasource and a version store. All operations go through it.
+
+```ts
+import { NuskaEngine } from "@codecanon/nuska"
+
+const engine = new NuskaEngine({
+  datasource,  // DataSourceAdapter
+  store,       // VersionStore
+  defaultBranch: "main",   // optional, default: "main"
+  generateId: () => myId(), // optional, default: uuid v4
+})
+
+await engine.init()
+```
+
+---
+
+## init
+
+```ts
+engine.init(): Promise<void>
+```
+
+Creates the default branch and sets it as the current branch. Must be called once before any other method.
+
+If the store already has a branch named `defaultBranch` (e.g. from a previous session), `init()` is a no-op — safe to call on every mount.
+
+```ts
+await engine.init()
+```
+
+---
+
+## commit
+
+```ts
+engine.commit(
+  ops: MutationOp[],
+  message: string,
+  author: string
+): Promise<Commit>
+```
+
+Persists a list of mutation ops as a new commit and applies them to the datasource. The current branch HEAD advances to the new commit.
+
+```ts
+const commit = await engine.commit(
+  [
+    { type: "set", key: "post:1", value: { title: "Hello" } },
+    { type: "delete", key: "draft:1" },
+  ],
+  "Publish post 1",
+  "alice"
+)
+```
+
+---
+
+## branch
+
+```ts
+engine.branch(name: string): Promise<Branch>
+```
+
+Creates a new branch pointing to the current HEAD. Does not switch to it — call `checkout()` to switch.
+
+```ts
+await engine.branch("feature/search")
+await engine.checkout("feature/search")
+```
+
+---
+
+## deleteBranch
+
+```ts
+engine.deleteBranch(name: string): Promise<void>
+```
+
+Deletes a branch. Throws if you try to delete the currently checked-out branch.
+
+```ts
+await engine.deleteBranch("feature/search")
+```
+
+---
+
+## checkout
+
+```ts
+engine.checkout(name: string): Promise<void>
+```
+
+Switches to a branch and reconstructs the datasource state to match that branch's HEAD. All keys are replayed from the commit history.
+
+```ts
+await engine.checkout("main")
+```
+
+If the adapter implements `clear()`, nuska uses it for an efficient bulk wipe before replay. Otherwise it deletes and rewrites keys individually.
+
+---
+
+## getCurrentBranch
+
+```ts
+engine.getCurrentBranch(): string
+```
+
+Returns the name of the currently checked-out branch. Synchronous.
+
+```ts
+console.log(engine.getCurrentBranch()) // "main"
+```
+
+---
+
+## listBranches
+
+```ts
+engine.listBranches(): Promise<Branch[]>
+```
+
+Returns all branches in the store.
+
+```ts
+const branches = await engine.listBranches()
+// [{ name: "main", headCommitId: "abc" }, { name: "feature/search", headCommitId: "def" }]
+```
+
+---
+
+## log
+
+```ts
+engine.log(
+  branchName?: string,
+  opts?: { limit?: number; cursor?: string }
+): Promise<Commit[]>
+```
+
+Returns commits in reverse-chronological order (newest first). Defaults to the current branch.
+
+```ts
+// First page
+const page1 = await engine.log("main", { limit: 20 })
+
+// Next page using the last commit ID as cursor
+const lastId = page1[page1.length - 1].id
+const page2 = await engine.log("main", { limit: 20, cursor: lastId })
+```
+
+---
+
+## diff
+
+```ts
+engine.diff(
+  fromCommitId: string | null,
+  toCommitId: string | null
+): Promise<Diff>
+```
+
+Compares two commits and returns the set of keys that changed. Pass `null` for either side to diff against an empty state.
+
+```ts
+const diff = await engine.diff("commit-a", "commit-b")
+
+for (const entry of diff.entries) {
+  // entry.type: "added" | "removed" | "modified"
+  // entry.key, entry.oldValue, entry.newValue
+  console.log(entry.type, entry.key)
+}
+```
+
+---
+
+## merge
+
+```ts
+engine.merge(sourceBranchName: string): Promise<MergeResult>
+```
+
+Performs a 3-way merge of the source branch into the current branch. Finds the common ancestor, then merges changes from both sides.
+
+```ts
+const result = await engine.merge("feature/search")
+
+if (result.status === "success") {
+  console.log("Merged at:", result.commitId)
+} else {
+  // result.status === "conflict"
+  for (const c of result.conflicts) {
+    console.log(c.key, { base: c.baseValue, ours: c.oursValue, theirs: c.theirsValue })
+  }
+}
+```
+
+A conflict occurs when both branches modified the same key differently since their common ancestor. If both sides converged to the same value, it is not a conflict.
+
+---
+
+## resolveConflicts
+
+```ts
+engine.resolveConflicts(
+  sourceBranchName: string,
+  resolutions: ConflictResolution[],
+  options?: { targetBranch?: string; prId?: string }
+): Promise<{ commitId: string }>
+```
+
+Completes a conflicted merge by applying user-supplied resolutions. Every conflicted key must have a resolution.
+
+```ts
+await engine.resolveConflicts("feature/search", [
+  { key: "config:index", value: "elastic" },   // keep a value
+  { key: "config:cache", deleted: true },       // delete the key
+])
+```
+
+---
+
+## revertCommit
+
+```ts
+engine.revertCommit(
+  commitId: string,
+  opts?: { message?: string; author?: string }
+): Promise<Commit>
+```
+
+Creates a new commit that undoes all operations from the target commit. History is never rewritten.
+
+```ts
+const revert = await engine.revertCommit("abc123", {
+  message: "Revert: Publish post 1",
+  author: "bob",
+})
+```
+
+---
+
+## createPR
+
+```ts
+engine.createPR(
+  title: string,
+  fromBranch: string,
+  toBranch: string
+): Promise<PullRequest>
+```
+
+Opens a pull request to merge `fromBranch` into `toBranch`.
+
+```ts
+const pr = await engine.createPR("Add search", "feature/search", "main")
+console.log(pr.id, pr.status) // "open"
+```
+
+---
+
+## mergePR
+
+```ts
+engine.mergePR(
+  prId: string,
+  options?: { deleteBranch?: boolean }
+): Promise<MergeResult>
+```
+
+Merges the PR's source branch into its target branch. By default the source branch is deleted after a successful merge. Pass `{ deleteBranch: false }` to keep it.
+
+```ts
+const result = await engine.mergePR(pr.id)
+// result.status === "success" | "conflict"
+```
+
+---
+
+## closePR
+
+```ts
+engine.closePR(prId: string): Promise<PullRequest>
+```
+
+Closes a PR without merging it. The returned PR has `status: "closed"`.
+
+```ts
+await engine.closePR(pr.id)
+```
+
+---
+
+## listPullRequests
+
+```ts
+engine.listPullRequests(
+  opts?: PaginationOptions & { status?: "open" | "merged" | "closed" }
+): Promise<PullRequest[]>
+```
+
+Returns pull requests, optionally filtered by status.
+
+```ts
+const open = await engine.listPullRequests({ status: "open" })
+const all = await engine.listPullRequests({ limit: 50 })
+```

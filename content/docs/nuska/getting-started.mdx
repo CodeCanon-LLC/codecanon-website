@@ -1,0 +1,166 @@
+---
+title: Getting started
+description: Set up nuska and make your first commit in minutes.
+---
+
+This guide walks you through creating an engine, making commits, branching, merging, and opening a pull request.
+
+## Minimal setup
+
+```ts
+import { NuskaEngine, MemoryDataSourceAdapter, MemoryVersionStore } from "@codecanon/nuska"
+
+const engine = new NuskaEngine({
+  datasource: new MemoryDataSourceAdapter(),
+  store: new MemoryVersionStore(),
+})
+
+await engine.init()
+```
+
+`init()` creates the default `main` branch. Call it once before using any other method.
+
+## Your first commit
+
+Commits are lists of `MutationOp` objects — atomic `set` or `delete` operations on keys.
+
+```ts
+const commit = await engine.commit(
+  [
+    { type: "set", key: "user:1", value: { name: "Alice", role: "admin" } },
+    { type: "set", key: "user:2", value: { name: "Bob", role: "viewer" } },
+  ],
+  "Add initial users",
+  "alice"
+)
+
+console.log(commit.id) // "abc123…"
+```
+
+After the commit, both keys are available in the datasource and the branch HEAD points to the new commit.
+
+## Branching
+
+Create a branch at the current HEAD, then check it out to switch to it.
+
+```ts
+await engine.branch("feature/dark-mode")
+await engine.checkout("feature/dark-mode")
+```
+
+Changes committed while on `feature/dark-mode` are isolated from `main`.
+
+## Viewing history
+
+```ts
+const commits = await engine.log() // defaults to current branch
+
+for (const c of commits) {
+  console.log(c.id, c.message, c.author, new Date(c.timestamp))
+}
+```
+
+Pass a branch name to inspect another branch:
+
+```ts
+const mainLog = await engine.log("main", { limit: 10 })
+```
+
+## Diffing
+
+Compare any two commits to see what changed:
+
+```ts
+const diff = await engine.diff(commits[1].id, commits[0].id)
+
+for (const entry of diff.entries) {
+  console.log(entry.type, entry.key, entry.oldValue, "→", entry.newValue)
+}
+```
+
+`diff.entries` contains objects with `type: "added" | "removed" | "modified"`.
+
+## Merging branches
+
+```ts
+// On main, merge the feature branch
+await engine.checkout("main")
+const result = await engine.merge("feature/dark-mode")
+
+if (result.status === "success") {
+  console.log("Merged:", result.commitId)
+} else {
+  console.log("Conflicts:", result.conflicts)
+}
+```
+
+### Resolving conflicts
+
+When `merge()` returns `{ status: "conflict" }`, supply a resolution for every conflicted key:
+
+```ts
+await engine.resolveConflicts("feature/dark-mode", [
+  { key: "settings:theme", value: "dark" },     // keep a value
+  { key: "settings:font", deleted: true },       // delete the key
+])
+```
+
+## Pull requests
+
+```ts
+const pr = await engine.createPR("Add dark mode", "feature/dark-mode", "main")
+console.log(pr.id, pr.status) // "open"
+
+const mergeResult = await engine.mergePR(pr.id)
+// The source branch is deleted automatically (pass { deleteBranch: false } to keep it)
+```
+
+## Reverting a commit
+
+```ts
+const revert = await engine.revertCommit(commit.id, {
+  message: "Revert: Add initial users",
+  author: "alice",
+})
+```
+
+This creates a new commit that undoes all operations from the target commit — it does not rewrite history.
+
+## Using browser persistence
+
+Swap the in-memory adapters for IndexedDB ones to persist data across page reloads:
+
+```ts
+import {
+  IndexedDBDataSourceAdapter,
+  IndexedDBVersionStore,
+} from "@codecanon/nuska/adapters"
+
+const engine = new NuskaEngine({
+  datasource: new IndexedDBDataSourceAdapter("my-app-data"),
+  store: new IndexedDBVersionStore("my-app-versions"),
+})
+
+await engine.init()
+```
+
+## React
+
+For React projects use the `useNuskaEngine` hook — see [React bindings](/docs/nuska/react) for the full guide.
+
+```tsx
+import { useNuskaEngine } from "@codecanon/nuska/react"
+import { MemoryDataSourceAdapter, MemoryVersionStore } from "@codecanon/nuska"
+
+const datasource = new MemoryDataSourceAdapter()
+const store = new MemoryVersionStore()
+
+export function App() {
+  const { ready, currentBranch, commit, branch, checkout, log } =
+    useNuskaEngine({ datasource, store })
+
+  if (!ready) return <p>Initializing…</p>
+
+  return <p>On branch: {currentBranch}</p>
+}
+```

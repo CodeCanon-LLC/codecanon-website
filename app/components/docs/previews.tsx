@@ -28,13 +28,13 @@ import {
   SelectValue,
   Separator,
   Slider,
-  Textarea,
-  ToggleGroup,
-  ToggleGroupItem,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
+  Textarea,
+  ToggleGroup,
+  ToggleGroupItem,
 } from "@codecanon/waraq/ui";
 import {
   AlignCenter,

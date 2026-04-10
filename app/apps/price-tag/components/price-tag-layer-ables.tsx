@@ -1,6 +1,5 @@
 import { useWaraq } from "@codecanon/waraq";
-import { DEFAULT_ABLES } from "@codecanon/waraq/lib";
-import { createAble } from "@codecanon/waraq/lib";
+import { createAble, DEFAULT_ABLES } from "@codecanon/waraq/lib";
 
 import { IconChevronDown, IconEdit } from "@tabler/icons-react";
 import { Palette } from "lucide-react";

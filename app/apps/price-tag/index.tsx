@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import {
   PriceTagCard,
@@ -20,12 +20,12 @@ import {
   getPriceTagDesigns,
   getPriceTagTemplates,
 } from "@/apps/price-tag/lib/api";
-import { PRICE_TAG_DESIGN_MOCKS, PRICE_TAG_TEMPLATE_MOCKS } from "@/lib/mocks";
 import { Page, PageContent } from "@/components/ui/page";
 import {
   getWaraqPriceTagDesignLink,
   getWaraqPriceTagTemplateLink,
 } from "@/lib/links";
+import { PRICE_TAG_DESIGN_MOCKS, PRICE_TAG_TEMPLATE_MOCKS } from "@/lib/mocks";
 import type { PriceTag as PriceTagType } from "@/types/price-tag";
 
 export function PriceTag() {
@@ -138,7 +138,10 @@ export function PriceTagDemo() {
           </PriceTagGridHeader>
 
           <PriceTagGridContent>
-            <PriceTagCardNew title="New Design" description="Create new design" />
+            <PriceTagCardNew
+              title="New Design"
+              description="Create new design"
+            />
             {designs?.map((priceTag) => (
               <PriceTagCard
                 key={priceTag.id}

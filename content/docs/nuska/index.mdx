@@ -1,0 +1,37 @@
+---
+title: Nuska
+description: Git-like version control for any key/value datasource.
+---
+
+**@codecanon/nuska** is a headless TypeScript library that brings git-like version control to any key/value datasource. Think commits, branches, diffs, 3-way merges, and pull requests — but over your own data (IndexedDB, PostgreSQL, MongoDB, etc.) instead of files.
+
+## Highlights
+
+- **Atomic commits** — group key/value mutations into commits with message, author, and timestamp
+- **Branching** — create, checkout, and delete branches; each branch has its own HEAD
+- **Diffs** — compare any two commits to see exactly what changed
+- **3-way merge** — merge branches with automatic conflict detection and resolution
+- **Pull requests** — open, merge, or close PRs with full status tracking
+- **Paginated history** — efficient cursor-based log that never loads all commits at once
+- **Pluggable adapters** — implement two small interfaces to version any store: SQL, NoSQL, cloud, or in-memory
+- **React bindings** — `useNuskaEngine`, `NuskaProvider`, and `useNuska` for reactive state
+
+## Entry points
+
+| Import | Contents |
+| --- | --- |
+| `@codecanon/nuska` | `NuskaEngine`, core types, `MemoryDataSourceAdapter`, `MemoryVersionStore` |
+| `@codecanon/nuska/adapters` | All adapters including `IndexedDBDataSourceAdapter`, `IndexedDBVersionStore` |
+| `@codecanon/nuska/react` | `useNuskaEngine`, `NuskaProvider`, `useNuska` |
+
+## Quick navigation
+
+<Cards>
+  <Card title="Installation" href="/docs/nuska/installation" />
+  <Card title="Getting started" href="/docs/nuska/getting-started" />
+  <Card title="NuskaEngine API" href="/docs/nuska/engine" />
+  <Card title="Adapters" href="/docs/nuska/adapters" />
+  <Card title="React bindings" href="/docs/nuska/react" />
+  <Card title="Types" href="/docs/nuska/types" />
+  <Card title="Live demo" href="/docs/nuska/demo" />
+</Cards>

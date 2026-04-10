@@ -10,11 +10,11 @@ import {
   ViewOptionsPopover,
 } from "fumadocs-ui/layouts/docs/page";
 import { useMDXComponents } from "@/components/mdx";
+import { Markdown } from "@/hooks/use-markdown";
 import { baseOptions } from "@/lib/layout.shared";
 import { gitConfig } from "@/lib/shared";
 import { getPageMarkdownUrl, source } from "@/lib/source";
 import type { Route } from "./+types/docs";
-import { Markdown } from "@/hooks/use-markdown";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const slugs = params["*"].split("/").filter((v) => v.length > 0);
@@ -75,6 +75,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           title: "@codecanon/waraq",
           url: "/docs/waraq",
           description: "Design editor library",
+        },
+        {
+          title: "@codecanon/nuska",
+          url: "/docs/nuska",
+          description: "Git-like version control for any datasource",
         },
       ]}
     >

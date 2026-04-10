@@ -45,13 +45,12 @@ import {
   WaraqPaneContent,
   WaraqPanel,
   WaraqPaneTitle,
+  type WaraqProps,
   WaraqStage,
   WaraqToolbar,
   WaraqToolbarGroup,
-  type WaraqProps,
 } from "@codecanon/waraq";
-import type { Layer } from "@codecanon/waraq/lib";
-import { Button, ButtonText } from "@codecanon/waraq/ui";
+import { Button } from "@codecanon/waraq/ui";
 import {
   CircleQuestionMark,
   HomeIcon,
@@ -62,8 +61,8 @@ import {
 import { useTheme } from "next-themes";
 import { Link } from "react-router";
 import { useIsBreakpoint } from "@/hooks/use-breakpoint";
-import { CODE_CANON_LOGO_IMAGE_LAYER, PEROFRMANCE_MOCK } from "@/lib/mocks";
 import { useMarkdown } from "@/hooks/use-markdown";
+import { CODE_CANON_LOGO_IMAGE_LAYER, PEROFRMANCE_MOCK } from "@/lib/mocks";
 import { cn } from "@/lib/utils";
 
 function Header() {

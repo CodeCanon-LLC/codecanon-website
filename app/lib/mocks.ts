@@ -1,5 +1,5 @@
-import type { PriceTag } from "@/types/price-tag";
 import type { Layer } from "@codecanon/waraq/lib";
+import type { PriceTag } from "@/types/price-tag";
 
 export const CODE_CANON_LOGO_IMAGE_LAYER: Layer = {
   id: "codecanon-logo-initial",

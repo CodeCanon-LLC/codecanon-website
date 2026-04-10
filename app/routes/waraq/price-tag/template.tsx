@@ -8,7 +8,7 @@ export function meta(_: Route.MetaArgs) {
 export default function Page() {
   return (
     <div className="size-full flex-1">
-      <priceTagTemplate />
+      <PriceTagTemplate />
     </div>
   );
 }

@@ -9,7 +9,8 @@ export function PriceTagDesign() {
 
   const { data: priceTag, isPending } = useQuery({
     queryKey: ["price-tag-design", priceTagDesignId],
-    queryFn: () => (priceTagDesignId ? getPriceTagDesign(priceTagDesignId) : null),
+    queryFn: () =>
+      priceTagDesignId ? getPriceTagDesign(priceTagDesignId) : null,
   });
 
   return (

@@ -1,0 +1,213 @@
+---
+title: React bindings
+description: useNuskaEngine, NuskaProvider, and useNuska for reactive version control in React.
+---
+
+All React bindings are imported from `@codecanon/nuska/react`.
+
+```ts
+import { useNuskaEngine, NuskaProvider, useNuska } from "@codecanon/nuska/react"
+```
+
+---
+
+## useNuskaEngine
+
+The primary hook for using nuska in React. Creates and owns a stable `NuskaEngine` instance, initializes it on mount, and returns reactive state alongside bound action methods.
+
+```tsx
+import { useNuskaEngine } from "@codecanon/nuska/react"
+import { MemoryDataSourceAdapter, MemoryVersionStore } from "@codecanon/nuska"
+
+// Create adapters outside the component so they are stable
+const datasource = new MemoryDataSourceAdapter()
+const store = new MemoryVersionStore()
+
+export function App() {
+  const nuska = useNuskaEngine({ datasource, store })
+
+  if (!nuska.ready) return <p>Loading…</p>
+
+  return <p>Branch: {nuska.currentBranch}</p>
+}
+```
+
+### Options
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `datasource` | `DataSourceAdapter` | Your datasource adapter |
+| `store` | `VersionStore` | Your version store adapter |
+| `defaultBranch` | `string` | Initial branch name. Default: `"main"` |
+| `generateId` | `() => string` | Custom ID generator. Default: uuid v4 |
+
+### State
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `ready` | `boolean` | `true` once `init()` has completed |
+| `currentBranch` | `string` | Name of the checked-out branch |
+| `branches` | `Branch[]` | All branches |
+| `log` | `Commit[]` | Commit history for the current branch |
+| `pullRequests` | `PullRequest[]` | All pull requests |
+| `lastDiff` | `Diff \| null` | Most recent diff result, or `null` |
+| `conflicts` | `ConflictEntry[]` | Active conflicts from the last merge |
+| `pendingMerge` | `{ sourceBranch: string; targetBranch: string; prId?: string } \| null` | Set when a merge is awaiting conflict resolution |
+| `engine` | `NuskaEngine` | Escape hatch — the underlying engine instance |
+
+### Actions
+
+All action methods call `refresh()` automatically after completion so state stays in sync.
+
+| Method | Signature | Description |
+| --- | --- | --- |
+| `refresh` | `() => Promise<void>` | Re-sync all state from the engine |
+| `commit` | `(ops, message, author) => Promise<Commit>` | Persist a commit |
+| `branch` | `(name) => Promise<Branch>` | Create a branch |
+| `checkout` | `(name) => Promise<void>` | Switch branch |
+| `diff` | `(fromId, toId) => Promise<Diff>` | Compare two commits, stores result in `lastDiff` |
+| `deleteBranch` | `(name) => Promise<void>` | Delete a branch |
+| `revertCommit` | `(commitId, opts?) => Promise<Commit>` | Revert a commit |
+| `merge` | `(sourceBranch) => Promise<MergeResult>` | 3-way merge into current branch |
+| `resolveConflicts` | `(resolutions) => Promise<{ commitId: string }>` | Finish a conflicted merge |
+| `createPR` | `(title, fromBranch, toBranch) => Promise<PullRequest>` | Open a PR |
+| `mergePR` | `(prId, options?) => Promise<MergeResult>` | Merge a PR |
+| `closePR` | `(prId) => Promise<PullRequest>` | Close a PR |
+| `clearConflicts` | `() => void` | Reset conflict state |
+| `clearDiff` | `() => void` | Reset `lastDiff` to `null` |
+
+---
+
+## NuskaProvider + useNuska
+
+Use `NuskaProvider` to share a single engine instance across a React subtree. Any component inside the tree can call `useNuska()` to access the same state and actions.
+
+```tsx
+import { NuskaProvider, useNuska } from "@codecanon/nuska/react"
+import {
+  IndexedDBDataSourceAdapter,
+  IndexedDBVersionStore,
+} from "@codecanon/nuska/adapters"
+
+const datasource = new IndexedDBDataSourceAdapter("my-app-data")
+const store = new IndexedDBVersionStore("my-app-versions")
+
+export function Root() {
+  return (
+    <NuskaProvider options={{ datasource, store }}>
+      <App />
+    </NuskaProvider>
+  )
+}
+
+function App() {
+  const { ready, currentBranch, commit } = useNuska()
+
+  if (!ready) return <p>Loading…</p>
+
+  return <p>Branch: {currentBranch}</p>
+}
+```
+
+`useNuska()` throws if called outside a `NuskaProvider`.
+
+---
+
+## Usage example — commit form
+
+```tsx
+import { useState } from "react"
+import { useNuska } from "@codecanon/nuska/react"
+
+export function CommitForm() {
+  const { commit } = useNuska()
+  const [key, setKey] = useState("")
+  const [value, setValue] = useState("")
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    await commit(
+      [{ type: "set", key, value: JSON.parse(value) }],
+      `Set ${key}`,
+      "user"
+    )
+    setKey("")
+    setValue("")
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={key} onChange={(e) => setKey(e.target.value)} placeholder="key" />
+      <input value={value} onChange={(e) => setValue(e.target.value)} placeholder="value (JSON)" />
+      <button type="submit">Commit</button>
+    </form>
+  )
+}
+```
+
+---
+
+## Usage example — branch selector
+
+```tsx
+import { useNuska } from "@codecanon/nuska/react"
+
+export function BranchSelector() {
+  const { currentBranch, branches, checkout, branch } = useNuska()
+
+  return (
+    <div>
+      <select
+        value={currentBranch}
+        onChange={(e) => checkout(e.target.value)}
+      >
+        {branches.map((b) => (
+          <option key={b.name} value={b.name}>{b.name}</option>
+        ))}
+      </select>
+      <button onClick={() => branch(prompt("New branch name") ?? "")}>
+        New branch
+      </button>
+    </div>
+  )
+}
+```
+
+---
+
+## Usage example — conflict resolution
+
+```tsx
+import { useNuska } from "@codecanon/nuska/react"
+
+export function ConflictPanel() {
+  const { conflicts, pendingMerge, resolveConflicts, clearConflicts } = useNuska()
+
+  if (!pendingMerge || conflicts.length === 0) return null
+
+  async function acceptTheirs() {
+    await resolveConflicts(
+      conflicts.map((c) =>
+        c.theirsValue === undefined
+          ? { key: c.key, deleted: true }
+          : { key: c.key, value: c.theirsValue }
+      )
+    )
+  }
+
+  return (
+    <div>
+      <p>{conflicts.length} conflict(s) merging {pendingMerge.sourceBranch}</p>
+      {conflicts.map((c) => (
+        <div key={c.key}>
+          <strong>{c.key}</strong>
+          <span>Ours: {JSON.stringify(c.oursValue)}</span>
+          <span>Theirs: {JSON.stringify(c.theirsValue)}</span>
+        </div>
+      ))}
+      <button onClick={acceptTheirs}>Accept theirs</button>
+      <button onClick={clearConflicts}>Cancel</button>
+    </div>
+  )
+}
+```
