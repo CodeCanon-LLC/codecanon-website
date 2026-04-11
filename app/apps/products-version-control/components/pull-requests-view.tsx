@@ -271,7 +271,7 @@ export function PRView({ nuska }: { nuska: NuskaDemoReturn }) {
                   className={cn(
                     "rounded-full px-1.5 py-0.5 text-[11px]",
                     filter === f
-                      ? "bg-fd-primary text-white"
+                      ? "bg-fd-primary text-fd-primary-foreground"
                       : "bg-fd-muted text-fd-muted-foreground",
                   )}
                 >
