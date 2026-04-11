@@ -1,0 +1,161 @@
+---
+title: Providers & hooks
+description: ThemeProvider, PresetProvider, useTheme, and usePreset.
+---
+
+## ThemeProvider
+
+Wraps your app with light/dark mode context via `next-themes`. Must be the outermost provider.
+
+```tsx
+import { ThemeProvider } from "@codecanon/next-presets";
+
+<ThemeProvider defaultTheme="dark" themeKey="theme">
+  {children}
+</ThemeProvider>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | — | Required. Your app content. |
+| `defaultTheme` | `Theme` | `"dark"` | Initial theme when no persisted value exists. |
+| `themeKey` | `string` | `"theme"` | `localStorage` key used to persist the theme. |
+
+All other props are forwarded to `next-themes` `ThemeProvider`.
+
+---
+
+## PresetProvider
+
+Manages which color preset is active. Applies `data-preset="<id>"` to `document.documentElement` so the CSS variables take effect. Must be nested inside `ThemeProvider`.
+
+```tsx
+import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
+
+<ThemeProvider>
+  <PresetProvider defaultPreset="nuteral" presetKey="preset">
+    {children}
+  </PresetProvider>
+</ThemeProvider>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | — | Required. Your app content. |
+| `defaultPreset` | `PresetKeys` | `"nuteral"` | Initial preset when no persisted value exists. |
+| `presetKey` | `string` | `"preset"` | `localStorage` key used to persist the preset. |
+
+---
+
+## useTheme()
+
+Returns current theme state and setters. Must be called inside a `<ThemeProvider>`.
+
+```tsx
+import { useTheme } from "@codecanon/next-presets";
+
+const {
+  theme,         // "light" | "dark" | "system"
+  setTheme,      // (value: Theme) => void
+  resolvedTheme, // "light" | "dark" — the actual resolved value
+  systemTheme,   // "light" | "dark" — OS preference
+  colorScheme,   // "light" | "dark" — same as resolvedTheme
+  isDarkTheme,   // boolean
+  themes,        // ["light", "dark", "system"]
+  forcedTheme,   // Theme | undefined
+} = useTheme();
+```
+
+### Return values
+
+| Property | Type | Description |
+|---|---|---|
+| `theme` | `Theme \| undefined` | Currently stored theme value. |
+| `setTheme` | `(value: Theme) => void` | Update the active theme. |
+| `resolvedTheme` | `ColorScheme \| undefined` | Actual rendered mode — never `"system"`. |
+| `systemTheme` | `ColorScheme \| undefined` | OS-level color scheme preference. |
+| `colorScheme` | `ColorScheme` | Current color scheme (`"light"` or `"dark"`). |
+| `isDarkTheme` | `boolean` | `true` when the resolved theme is dark. |
+| `themes` | `Theme[]` | All available theme names. |
+| `forcedTheme` | `Theme \| undefined` | Present when a route forces a specific theme. |
+
+### Example: toggle button
+
+```tsx
+function DarkModeToggle() {
+  const { isDarkTheme, setTheme } = useTheme();
+
+  return (
+    <button onClick={() => setTheme(isDarkTheme ? "light" : "dark")}>
+      {isDarkTheme ? "☀️ Light" : "🌙 Dark"}
+    </button>
+  );
+}
+```
+
+---
+
+## usePreset()
+
+Returns the active preset and controls. Must be called inside a `<PresetProvider>`.
+
+```tsx
+import { usePreset } from "@codecanon/next-presets";
+
+const {
+  preset,       // PresetKeys | undefined
+  setPreset,    // (preset: PresetKeys) => void
+  resetPreset,  // () => void
+} = usePreset();
+```
+
+### Return values
+
+| Property | Type | Description |
+|---|---|---|
+| `preset` | `PresetKeys \| undefined` | The currently active preset ID. |
+| `setPreset` | `(preset: PresetKeys) => void` | Switch to a different preset. Persists to localStorage. |
+| `resetPreset` | `() => void` | Resets to the `defaultPreset` passed to `PresetProvider`. |
+
+### Example: preset switcher
+
+```tsx
+import { usePreset, PRESETS } from "@codecanon/next-presets";
+
+function PresetList() {
+  const { preset, setPreset } = usePreset();
+
+  return (
+    <ul>
+      {PRESETS.map(([key, label]) => (
+        <li key={key}>
+          <button
+            onClick={() => setPreset(key)}
+            style={{ fontWeight: preset === key ? "bold" : "normal" }}
+          >
+            {label}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+## Constants
+
+```tsx
+import { PRESETS, DEFAULT_PRESET } from "@codecanon/next-presets";
+
+// Array of [id, label] tuples for all 50+ built-in presets
+PRESETS; // [["nuteral", "Nuteral"], ["violet-bloom", "Violet Bloom"], ...]
+
+// The default preset ID
+DEFAULT_PRESET; // "nuteral"
+```

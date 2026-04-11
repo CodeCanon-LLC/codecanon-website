@@ -1,0 +1,66 @@
+---
+title: Installation
+description: Add @codecanon/next-presets to your React project.
+---
+
+## Access
+
+`@codecanon/next-presets` is a private CodeCanon package. Contact [codecanonllc@gmail.com](mailto:codecanonllc@gmail.com) for registry access.
+
+## Requirements
+
+- React 19 or later
+- A [shadcn/ui](https://ui.shadcn.com/) project (CSS variable-based theming)
+
+## Install
+
+<Tabs items={["bun", "pnpm", "npm", "yarn"]}>
+
+<Tab value="bun">
+```bash
+bun add @codecanon/next-presets
+```
+</Tab>
+
+<Tab value="pnpm">
+```bash
+pnpm add @codecanon/next-presets
+```
+</Tab>
+
+<Tab value="npm">
+```bash
+npm install @codecanon/next-presets
+```
+</Tab>
+
+<Tab value="yarn">
+```bash
+yarn add @codecanon/next-presets
+```
+</Tab>
+
+</Tabs>
+
+## Import styles
+
+Add the stylesheet once at your app root. It injects all 50+ preset CSS variable definitions globally:
+
+```tsx title="app/layout.tsx"
+import "@codecanon/next-presets/styles.css";
+```
+
+The stylesheet uses `[data-preset="..."]` selectors on `<html>`, so it has no render cost until a preset is active.
+
+## Peer dependencies
+
+`@codecanon/next-presets` uses `next-themes` internally for light/dark switching. It ships bundled and requires no separate install. React and React DOM must be installed in your project.
+
+```json
+{
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
+```

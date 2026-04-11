@@ -6,6 +6,9 @@ export default [
     index("routes/nuska/index.tsx"),
     route("demo", "routes/nuska/demo.tsx"),
   ]),
+  route("next-presets", "routes/next-presets/layout.tsx", [
+    index("routes/next-presets/index.tsx"),
+  ]),
   route("waraq", "routes/waraq/layout.tsx", [
     index("routes/waraq/index.tsx"),
     route("demo", "routes/waraq/demo.tsx"),

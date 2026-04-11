@@ -1,0 +1,17 @@
+{
+  "title": "@codecanon/next-presets",
+  "description": "50+ shadcn/ui color presets with light/dark mode support",
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "index",
+    "installation",
+    "getting-started",
+    "---Core---",
+    "providers",
+    "preset-picker",
+    "presets",
+    "---Reference---",
+    "types"
+  ]
+}

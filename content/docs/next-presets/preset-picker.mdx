@@ -1,0 +1,196 @@
+---
+title: Preset picker
+description: PresetPicker, PresetPickerSheet, PresetPickerContent, and related components.
+---
+
+The preset picker is a composable slide-out sheet UI that lets users search, preview, and select from all available presets. It is built from four collaborating components that share state through a React context.
+
+## PresetPicker
+
+Context provider that wires together the picker components. Wrap all picker sub-components inside it.
+
+```tsx
+import {
+  PresetPicker,
+  PresetPickerSheet,
+  PresetPickerContent,
+} from "@codecanon/next-presets";
+
+<PresetPicker>
+  <PresetPickerSheet>
+    <PresetPickerContent />
+  </PresetPickerSheet>
+</PresetPicker>
+```
+
+### Props
+
+| Prop | Type | Description |
+|---|---|---|
+| `children` | `ReactNode` | Required. Picker sub-components. |
+
+---
+
+## usePresetPicker(caller?)
+
+Hook to access the picker's open/close state from any component inside a `<PresetPicker>`. Useful for building custom triggers.
+
+```tsx
+import { usePresetPicker } from "@codecanon/next-presets";
+
+const { open, setOpen, toggleOpen } = usePresetPicker();
+```
+
+### Return values
+
+| Property | Type | Description |
+|---|---|---|
+| `open` | `boolean` | Whether the picker sheet is open. |
+| `setOpen` | `(value: boolean) => void` | Directly set open state. |
+| `toggleOpen` | `() => void` | Toggle open/closed. |
+
+Throws an error if called outside of a `<PresetPicker>`.
+
+---
+
+## PresetPickerSheet
+
+Renders the slide-out sheet container. Animates in from the left. Non-modal — the rest of the app stays interactive while open.
+
+```tsx
+<PresetPicker>
+  <PresetPickerSheet>
+    {/* content here */}
+  </PresetPickerSheet>
+</PresetPicker>
+```
+
+Extends the `Sheet` component props. The `open` and `onOpenChange` values are wired automatically from `PresetPicker` context.
+
+---
+
+## PresetPickerContent
+
+The main body of the picker — renders a search field, the full preset list with live previews, and optional theme toggles.
+
+```tsx
+<PresetPickerContent
+  showDock={false}
+  previewCard={DefaultAppPreviewCard}
+/>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `showDock` | `boolean` | `false` | Render previews in a compact dock style at the bottom. |
+| `previewCard` | `typeof DefaultAppPreviewCard` | `DefaultAppPreviewCard` | Custom preview card component. Must accept the same props. |
+
+### Keyboard navigation
+
+| Key | Action |
+|---|---|
+| `↑` / `↓` | Move through the preset list |
+| `Enter` | Apply the highlighted preset |
+| Type | Filters the preset list by name |
+
+---
+
+## PresetPickerThemeToggleGroup
+
+Three-button toggle for switching between light, dark, and system modes. Can be rendered independently — e.g. in a nav or settings panel — without needing to be inside a `<PresetPickerSheet>`.
+
+```tsx
+import { PresetPickerThemeToggleGroup } from "@codecanon/next-presets";
+
+<PresetPickerThemeToggleGroup />
+```
+
+Internally calls `useTheme()` to read and set the current theme.
+
+---
+
+## DefaultAppPreviewCard
+
+A mock app UI that renders in the colors of any preset — useful for previewing themes before applying them.
+
+```tsx
+import { DefaultAppPreviewCard } from "@codecanon/next-presets";
+
+<DefaultAppPreviewCard
+  presetKey="violet-bloom"
+  label="Violet Bloom"
+  active={false}
+  highlighted={false}
+  showDock={false}
+/>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `presetKey` | `PresetKeys` | — | Which preset's colors to render. |
+| `label` | `string` | — | Display name shown below the card. |
+| `active` | `boolean` | `false` | Highlights the card with a primary-color ring (current preset). |
+| `highlighted` | `boolean` | `false` | Highlights the card with a secondary ring (keyboard focus). |
+| `showDock` | `boolean` | `false` | Compact dock layout. |
+| `ref` | `React.Ref<HTMLDivElement>` | — | Forwarded to the root element. |
+
+The card renders a miniature app chrome — sidebar, header, content cards, and footer — using the preset's CSS variables. This gives an accurate preview of how the preset will look in a real UI.
+
+### Custom preview card
+
+Pass a custom component to `PresetPickerContent` via the `previewCard` prop. It receives the same props as `DefaultAppPreviewCard`:
+
+```tsx
+import type { DefaultAppPreviewCard } from "@codecanon/next-presets";
+
+type PreviewCardProps = React.ComponentProps<typeof DefaultAppPreviewCard>;
+
+function MyPreviewCard({ presetKey, label, active }: PreviewCardProps) {
+  return (
+    <div data-preset={presetKey} style={{ border: active ? "2px solid blue" : "none" }}>
+      {label}
+    </div>
+  );
+}
+
+<PresetPickerContent previewCard={MyPreviewCard} />
+```
+
+---
+
+## Full example
+
+```tsx
+import {
+  PresetPicker,
+  PresetPickerSheet,
+  PresetPickerContent,
+  PresetPickerThemeToggleGroup,
+  usePresetPicker,
+} from "@codecanon/next-presets";
+
+function TriggerButton() {
+  const { toggleOpen } = usePresetPicker();
+  return (
+    <button onClick={toggleOpen}>
+      🎨 Themes
+    </button>
+  );
+}
+
+export function ThemePicker() {
+  return (
+    <PresetPicker>
+      <TriggerButton />
+      <PresetPickerSheet>
+        <PresetPickerContent />
+        <PresetPickerThemeToggleGroup />
+      </PresetPickerSheet>
+    </PresetPicker>
+  );
+}
+```

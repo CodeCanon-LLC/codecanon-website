@@ -1,0 +1,155 @@
+---
+title: Presets
+description: All 50+ built-in color presets and how to use the preset system.
+---
+
+Each preset defines a complete set of CSS variables for **both light and dark mode** — covering background, foreground, primary, secondary, muted, accent, destructive, border, input, ring, sidebar colors, and five chart colors.
+
+## How presets work
+
+When a preset is active, `PresetProvider` sets `data-preset="<id>"` on `document.documentElement`. The imported stylesheet contains selectors like:
+
+```css
+[data-preset="violet-bloom"] {
+  --primary: oklch(0.6 0.25 290);
+  --background: oklch(0.98 0.01 290);
+  /* ... full light mode token set */
+}
+
+.dark[data-preset="violet-bloom"] {
+  --primary: oklch(0.75 0.22 290);
+  --background: oklch(0.1 0.02 290);
+  /* ... full dark mode token set */
+}
+```
+
+This means **presets and dark/light mode are fully independent** — every preset works in both modes.
+
+## Using a preset
+
+```tsx
+import { usePreset } from "@codecanon/next-presets";
+
+const { setPreset } = usePreset();
+
+setPreset("violet-bloom");
+```
+
+## Listing all presets
+
+```tsx
+import { PRESETS, DEFAULT_PRESET } from "@codecanon/next-presets";
+
+// Array of [id, label] tuples
+PRESETS.forEach(([key, label]) => {
+  console.log(key, label);
+});
+
+// Default preset ID
+console.log(DEFAULT_PRESET); // "nuteral"
+```
+
+---
+
+## Available presets
+
+| ID | Label |
+|---|---|
+| `nuteral` | Nuteral |
+| `nuteral-accent` | Nuteral (Accent) |
+| `new` | Anew |
+| `red` | Red |
+| `rose` | Rose |
+| `orange` | Orange |
+| `green` | Green |
+| `blue` | Blue |
+| `yellow` | Yellow |
+| `violet` | Violet |
+| `modern-minimal` | Modern Minimal |
+| `violet-bloom` | Violet Bloom |
+| `t3-chat` | T3 Chat |
+| `twitter` | Twitter |
+| `mocha-mousse` | Mocha Mousse |
+| `bubblegum` | Bubblegum |
+| `amethyst-haze` | Amethyst Haze |
+| `notebook` | Notebook |
+| `doom-64` | Doom 64 |
+| `catppuccin` | Catppuccin |
+| `graphite` | Graphite |
+| `perpetuity` | Perpetuity |
+| `kodama-grove` | Kodama Grove |
+| `cosmic-night` | Cosmic Night |
+| `tangerine` | Tangerine |
+| `quantum-rose` | Quantum Rose |
+| `nature` | Nature |
+| `bold-tech` | Bold Tech |
+| `elegant-luxury` | Elegant Luxury |
+| `amber-minimal` | Amber Minimal |
+| `supabase` | Supabase |
+| `neo-brutalism` | Neo Brutalism |
+| `solar-dusk` | Solar Dusk |
+| `claymorphism` | Claymorphism |
+| `cyberpunk` | Cyberpunk |
+| `pastel-dreams` | Pastel Dreams |
+| `clean-slate` | Clean Slate |
+| `caffeine` | Caffeine |
+| `ocean-breeze` | Ocean Breeze |
+| `retro-arcade` | Retro Arcade |
+| `midnight-bloom` | Midnight Bloom |
+| `candyland` | Candyland |
+| `northern-lights` | Northern Lights |
+| `vintage-paper` | Vintage Paper |
+| `sunset-horizon` | Sunset Horizon |
+| `starry-night` | Starry Night |
+| `claude` | Claude |
+| `vercel` | Vercel |
+| `darkmatter` | Darkmatter |
+| `mono` | Mono |
+| `soft-pop` | Soft Pop |
+| `sage-garden` | Sage Garden |
+
+---
+
+## Custom presets
+
+You can extend the preset system with your own CSS. Define the preset's variables using `[data-preset="my-preset"]` selectors and add them to your global stylesheet after the library styles:
+
+```css
+/* my-app/globals.css — after @import "@codecanon/next-presets/styles.css" */
+
+[data-preset="my-brand"] {
+  --background: oklch(0.99 0.005 220);
+  --foreground: oklch(0.1 0 0);
+  --primary: oklch(0.45 0.2 220);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.93 0.02 220);
+  --secondary-foreground: oklch(0.2 0 0);
+  --muted: oklch(0.95 0.01 220);
+  --muted-foreground: oklch(0.5 0 0);
+  --accent: oklch(0.9 0.04 220);
+  --accent-foreground: oklch(0.15 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.88 0.01 220);
+  --input: oklch(0.88 0.01 220);
+  --ring: oklch(0.55 0.18 220);
+  --radius: 0.5rem;
+}
+
+.dark[data-preset="my-brand"] {
+  --background: oklch(0.1 0.005 220);
+  --foreground: oklch(0.97 0 0);
+  --primary: oklch(0.65 0.18 220);
+  /* ... dark mode values */
+}
+```
+
+Then activate it with `setPreset`:
+
+```tsx
+const { setPreset } = usePreset();
+setPreset("my-brand" as PresetKeys);
+```
+
+<Callout type="warn">
+Custom preset IDs are not type-safe by default since `PresetKeys` is derived from the built-in `PRESETS` array. Cast with `as PresetKeys` or extend the type in your own project.
+</Callout>

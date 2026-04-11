@@ -81,6 +81,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           url: "/docs/nuska",
           description: "Git-like version control for any datasource",
         },
+        {
+          title: "@codecanon/next-presets",
+          url: "/docs/next-presets",
+          description: "50+ shadcn/ui color presets with theme switching",
+        },
       ]}
     >
       {clientLoader.useContent(loaderData.path, {

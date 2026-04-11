@@ -7,6 +7,7 @@ import { Loader } from "@/components/loader";
 import { baseOptions } from "@/lib/layout.shared";
 import {
   getDocsLink,
+  getDocsNextPresetsLink,
   getDocsNuskaLink,
   getDocsWaraqLink,
   getWaraqDemoLink,
@@ -120,7 +121,7 @@ export default function Home() {
 
       {/* ── Libraries ─────────────────────────────────────────────────── */}
       <section className="px-6 py-20 border-b">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold mb-3">Libraries</h2>
             <p className="text-fd-muted-foreground">
@@ -168,6 +169,28 @@ export default function Home() {
                 Commits, branches, diffs, 3-way merge, and pull requests —
                 framework-agnostic, with adapters for IndexedDB, PostgreSQL,
                 MongoDB, or any custom store.
+              </p>
+              <span className="flex items-center gap-1 text-xs font-medium text-fd-primary group-hover:gap-2 transition-all">
+                View documentation →
+              </span>
+            </Link>
+
+            <Link
+              to={getDocsNextPresetsLink()}
+              className="group flex flex-col rounded-xl border bg-fd-card p-6 hover:border-fd-primary transition-colors"
+            >
+              <div className="mb-2 flex items-center gap-2">
+                <span className="rounded-md bg-fd-primary/10 px-2 py-0.5 text-xs font-semibold text-fd-primary">
+                  v0.0.4
+                </span>
+                <span className="font-mono font-semibold">
+                  @codecanon/next-presets
+                </span>
+              </div>
+              <p className="flex-1 mb-4 text-sm text-fd-muted-foreground leading-relaxed">
+                50+ shadcn/ui color presets with light/dark mode support.
+                Drop-in theme switching for any React app — violet-bloom,
+                catppuccin, cyberpunk, and more.
               </p>
               <span className="flex items-center gap-1 text-xs font-medium text-fd-primary group-hover:gap-2 transition-all">
                 View documentation →

@@ -1,0 +1,175 @@
+---
+title: Types
+description: Full TypeScript type reference for @codecanon/next-presets.
+---
+
+All types are exported directly from `@codecanon/next-presets`.
+
+```tsx
+import type {
+  PresetKeys,
+  ColorScheme,
+  Theme,
+  ThemeProviderProps,
+  PresetProviderProps,
+} from "@codecanon/next-presets";
+```
+
+---
+
+## PresetKeys
+
+A union of all valid preset IDs, derived from the `PRESETS` constant.
+
+```ts
+type PresetKeys =
+  | "nuteral"
+  | "nuteral-accent"
+  | "new"
+  | "red"
+  | "rose"
+  | "orange"
+  | "green"
+  | "blue"
+  | "yellow"
+  | "violet"
+  | "modern-minimal"
+  | "violet-bloom"
+  | "t3-chat"
+  | "twitter"
+  | "mocha-mousse"
+  | "bubblegum"
+  | "amethyst-haze"
+  | "notebook"
+  | "doom-64"
+  | "catppuccin"
+  | "graphite"
+  | "perpetuity"
+  | "kodama-grove"
+  | "cosmic-night"
+  | "tangerine"
+  | "quantum-rose"
+  | "nature"
+  | "bold-tech"
+  | "elegant-luxury"
+  | "amber-minimal"
+  | "supabase"
+  | "neo-brutalism"
+  | "solar-dusk"
+  | "claymorphism"
+  | "cyberpunk"
+  | "pastel-dreams"
+  | "clean-slate"
+  | "caffeine"
+  | "ocean-breeze"
+  | "retro-arcade"
+  | "midnight-bloom"
+  | "candyland"
+  | "northern-lights"
+  | "vintage-paper"
+  | "sunset-horizon"
+  | "starry-night"
+  | "claude"
+  | "vercel"
+  | "darkmatter"
+  | "mono"
+  | "soft-pop"
+  | "sage-garden";
+```
+
+---
+
+## ColorScheme
+
+The resolved color mode — never includes `"system"`.
+
+```ts
+type ColorScheme = "light" | "dark";
+```
+
+---
+
+## Theme
+
+All theme values a user can select, including the `"system"` option.
+
+```ts
+type Theme = "light" | "dark" | "system";
+```
+
+---
+
+## ThemeProviderProps
+
+Props accepted by `<ThemeProvider>`.
+
+```ts
+type ThemeProviderProps = {
+  children: React.ReactNode;
+  defaultTheme?: Theme;
+  themeKey?: string;
+  // + all next-themes ThemeProviderProps
+};
+```
+
+---
+
+## PresetProviderProps
+
+Props accepted by `<PresetProvider>`.
+
+```ts
+type PresetProviderProps = {
+  children: React.ReactNode;
+  defaultPreset?: PresetKeys;
+  presetKey?: string;
+};
+```
+
+---
+
+## PresetState
+
+Returned by `usePreset()`.
+
+```ts
+type PresetState = {
+  preset?: PresetKeys;
+  setPreset: (preset: PresetKeys) => void;
+  resetPreset: () => void;
+};
+```
+
+---
+
+## PresetPickerState
+
+Returned by `usePresetPicker()`.
+
+```ts
+type PresetPickerState = {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  toggleOpen: () => void;
+};
+```
+
+---
+
+## PRESETS
+
+The full preset registry — a readonly array of `[id, label]` tuples.
+
+```ts
+const PRESETS: readonly [PresetKeys, string][];
+```
+
+---
+
+## DEFAULT_PRESET
+
+The preset used when no stored value exists and no `defaultPreset` prop is provided.
+
+```ts
+const DEFAULT_PRESET: PresetKeys; // "nuteral"
+```

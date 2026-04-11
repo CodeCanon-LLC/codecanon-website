@@ -1,0 +1,130 @@
+---
+title: Getting started
+description: Wrap your app with providers and add a theme preset picker.
+---
+
+## 1. Import the stylesheet
+
+Add the preset CSS once at your app root:
+
+```tsx title="app/layout.tsx"
+import "@codecanon/next-presets/styles.css";
+```
+
+## 2. Wrap your app with providers
+
+Add `ThemeProvider` and `PresetProvider` at the root. `PresetProvider` must be nested inside `ThemeProvider`:
+
+```tsx title="app/layout.tsx"
+import "@codecanon/next-presets/styles.css";
+import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider defaultTheme="dark">
+          <PresetProvider defaultPreset="nuteral">
+            {children}
+          </PresetProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+Both providers persist their state to `localStorage` and restore it on the next page load.
+
+## 3. Add a preset picker
+
+Use `PresetPicker`, `PresetPickerSheet`, and `PresetPickerContent` together to render a slide-out theme selector:
+
+```tsx
+import {
+  PresetPicker,
+  PresetPickerSheet,
+  PresetPickerContent,
+  PresetPickerThemeToggleGroup,
+} from "@codecanon/next-presets";
+
+export function ThemeSidebar() {
+  return (
+    <PresetPicker>
+      <PresetPickerSheet>
+        <PresetPickerContent />
+      </PresetPickerSheet>
+    </PresetPicker>
+  );
+}
+```
+
+`PresetPickerContent` renders a searchable list of presets with live mini-app previews. It supports arrow-key navigation and Enter to select.
+
+## 4. Open the picker programmatically
+
+Use `usePresetPicker` to toggle the sheet from any button or trigger inside a `<PresetPicker>`:
+
+```tsx
+import {
+  PresetPicker,
+  PresetPickerSheet,
+  PresetPickerContent,
+  usePresetPicker,
+} from "@codecanon/next-presets";
+
+function OpenButton() {
+  const { toggleOpen } = usePresetPicker();
+  return <button onClick={toggleOpen}>Change theme</button>;
+}
+
+export function App() {
+  return (
+    <PresetPicker>
+      <OpenButton />
+      <PresetPickerSheet>
+        <PresetPickerContent />
+      </PresetPickerSheet>
+    </PresetPicker>
+  );
+}
+```
+
+## 5. Read and set the preset in code
+
+```tsx
+import { usePreset } from "@codecanon/next-presets";
+
+function PresetControls() {
+  const { preset, setPreset, resetPreset } = usePreset();
+
+  return (
+    <div>
+      <p>Active: {preset}</p>
+      <button onClick={() => setPreset("violet-bloom")}>Violet Bloom</button>
+      <button onClick={() => setPreset("catppuccin")}>Catppuccin</button>
+      <button onClick={resetPreset}>Reset to default</button>
+    </div>
+  );
+}
+```
+
+## 6. Read and set the theme mode
+
+```tsx
+import { useTheme } from "@codecanon/next-presets";
+
+function ThemeToggle() {
+  const { isDarkTheme, setTheme } = useTheme();
+
+  return (
+    <button onClick={() => setTheme(isDarkTheme ? "light" : "dark")}>
+      {isDarkTheme ? "Switch to light" : "Switch to dark"}
+    </button>
+  );
+}
+```
