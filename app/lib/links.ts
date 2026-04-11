@@ -8,6 +8,8 @@ export const getDocsNextPresetsLink = () => `${getDocsLink()}/next-presets`;
 
 export const getNextPresetsLink = () => `/next-presets`;
 
+export const getNextPresetsDemoLink = () => `${getNextPresetsLink()}/demo`;
+
 export const getNuskaLink = () => `/nuska`;
 
 export const getNuskaDemoLink = () => `${getNuskaLink()}/demo`;

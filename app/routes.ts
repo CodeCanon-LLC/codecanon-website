@@ -8,6 +8,7 @@ export default [
   ]),
   route("next-presets", "routes/next-presets/layout.tsx", [
     index("routes/next-presets/index.tsx"),
+    route("demo", "routes/next-presets/demo.tsx"),
   ]),
   route("waraq", "routes/waraq/layout.tsx", [
     index("routes/waraq/index.tsx"),
