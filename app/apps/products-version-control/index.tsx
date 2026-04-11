@@ -98,7 +98,7 @@ export function NuskaDemo() {
                   className={cn(
                     "rounded-full px-1.5 py-0.5 text-[11px]",
                     tab === id
-                      ? "bg-fd-primary text-white"
+                      ? "bg-fd-primary text-fd-primary-foreground"
                       : "bg-fd-muted text-fd-muted-foreground",
                   )}
                 >
