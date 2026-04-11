@@ -8,6 +8,7 @@ import {
   GitMerge,
   GitPullRequest,
   GitPullRequestClosed,
+  Pencil,
   Plus,
   Trash2,
   X,
@@ -22,6 +23,7 @@ export const IconCheck = () => <Check className="size-3.5" />;
 export const IconTrash = () => <Trash2 className="size-3.5" />;
 export const IconX = () => <X className="size-3" />;
 export const IconPlus = () => <Plus className="size-3.5" />;
+export const IconPencil = () => <Pencil className="size-3.5" />;
 export const IconAlert = () => <AlertTriangle className="size-3.5" />;
 export const IconPROpen = () => (
   <GitPullRequest className="size-3.5 text-green-500" />

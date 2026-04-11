@@ -1,11 +1,11 @@
 import type { MutationOp } from "@codecanon/nuska";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
 import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
-import { parseValue } from "@/apps/products-version-control/lib/helpers";
-import { IconPlus, IconTrash, IconX } from "@/apps/products-version-control/lib/icons";
+import { getType, parseValue } from "@/apps/products-version-control/lib/helpers";
+import { IconCheck, IconPencil, IconPlus, IconTrash, IconX } from "@/apps/products-version-control/lib/icons";
 import {
   TypeBadge,
   ValueDisplay,
@@ -23,6 +23,12 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
   const [addKey, setAddKey] = useState("");
   const [addVal, setAddVal] = useState("");
   const [addType, setAddType] = useState("string");
+  const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [editKey, setEditKey] = useState("");
+  const [editVal, setEditVal] = useState("");
+  const [editType, setEditType] = useState("string");
+  const editKeyRef = useRef<HTMLInputElement>(null);
+  const editInputRef = useRef<HTMLInputElement>(null);
 
   const rows = Object.entries(nuska.datasource);
 
@@ -49,6 +55,43 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
     setAddVal("");
     setAddType("string");
     setShowAdd(false);
+  }
+
+  function startEdit(key: string, currentValue: unknown) {
+    const t = getType(currentValue);
+    const displayType = t === "object" ? "json" : t;
+    const raw =
+      t === "null"
+        ? "null"
+        : t === "object"
+          ? JSON.stringify(currentValue)
+          : String(currentValue);
+    setEditingKey(key);
+    setEditKey(key);
+    setEditType(displayType);
+    setEditVal(raw);
+    setTimeout(() => editKeyRef.current?.focus(), 0);
+  }
+
+  function commitEdit() {
+    if (!editingKey) return;
+    const newKey = editKey.trim() || editingKey;
+    const value = parseValue(editVal, editType);
+    if (newKey !== editingKey) {
+      // key renamed: delete old, set new
+      setPending((prev) => [
+        ...prev.filter((op) => op.key !== editingKey && op.key !== newKey),
+        { _id: uid(), type: "delete", key: editingKey },
+        { _id: uid(), type: "set", key: newKey, value },
+      ]);
+    } else {
+      stageSet(newKey, value);
+    }
+    setEditingKey(null);
+  }
+
+  function cancelEdit() {
+    setEditingKey(null);
   }
 
   async function handleCommit() {
@@ -166,33 +209,65 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                   (op): op is Extract<PendingOp, { type: "set" }> =>
                     op.key === key && op.type === "set",
                 );
+                const isEditing = editingKey === key;
                 return (
                   <tr
                     key={key}
                     className="group/row border-b border-fd-border/50 last:border-0 hover:bg-fd-muted/10"
                     style={pDel ? { opacity: 0.4 } : undefined}
                   >
-                    <td
-                      className="px-4 py-2.5 font-mono text-xs"
-                      style={
-                        pDel ? { textDecoration: "line-through" } : undefined
-                      }
-                    >
-                      {key}
+                    <td className="px-4 py-2.5 font-mono text-xs">
+                      {isEditing ? (
+                        <Input
+                          ref={editKeyRef}
+                          className="h-6 text-xs font-mono"
+                          value={editKey}
+                          onChange={(e) => setEditKey(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              editInputRef.current?.focus();
+                            }
+                            if (e.key === "Escape") cancelEdit();
+                          }}
+                        />
+                      ) : (
+                        <span style={pDel ? { textDecoration: "line-through" } : undefined}>
+                          {key}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-2.5">
-                      {pSet ? (
+                      {isEditing ? (
+                        <div className="flex items-center gap-1.5">
+                          <Input
+                            ref={editInputRef}
+                            className="h-6 text-xs font-mono"
+                            value={editVal}
+                            onChange={(e) => setEditVal(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") commitEdit();
+                              if (e.key === "Escape") cancelEdit();
+                            }}
+                          />
+                          <select
+                            className="h-6 rounded border border-fd-border bg-fd-background px-1 text-xs"
+                            value={editType}
+                            onChange={(e) => setEditType(e.target.value)}
+                          >
+                            {["string", "number", "boolean", "json", "null"].map((t) => (
+                              <option key={t} value={t}>{t}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ) : pSet ? (
                         <div className="flex flex-col gap-0.5">
                           <span className="flex items-center gap-1 opacity-50 line-through">
-                            <span className="text-xs font-bold text-red-500">
-                              −
-                            </span>
+                            <span className="text-xs font-bold text-red-500">−</span>
                             <ValueDisplay value={value} />
                           </span>
                           <span className="flex items-center gap-1">
-                            <span className="text-xs font-bold text-green-500">
-                              +
-                            </span>
+                            <span className="text-xs font-bold text-green-500">+</span>
                             <ValueDisplay value={pSet.value} />
                           </span>
                         </div>
@@ -201,40 +276,72 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                       )}
                     </td>
                     <td className="px-4 py-2.5">
-                      <TypeBadge value={pSet ? pSet.value : value} />
+                      {!isEditing && <TypeBadge value={pSet ? pSet.value : value} />}
                     </td>
                     <td className="px-4 py-2.5">
-                      <div className="flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
-                        {pDel ? (
+                      {isEditing ? (
+                        <div className="flex items-center gap-1">
                           <Button
                             variant="ghost"
                             size="icon-sm"
-                            onClick={() => unstage(pDel._id)}
+                            className="text-green-600 hover:text-green-600 dark:text-green-500"
+                            onClick={commitEdit}
+                          >
+                            <IconCheck />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={cancelEdit}
                           >
                             <IconX />
                           </Button>
-                        ) : (
-                          <>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                          {pDel ? (
                             <Button
                               variant="ghost"
                               size="icon-sm"
-                              className="text-destructive hover:text-destructive"
-                              onClick={() => stageDelete(key)}
+                              onClick={() => unstage(pDel._id)}
                             >
-                              <IconTrash />
+                              <IconX />
                             </Button>
-                            {pSet && (
+                          ) : (
+                            <>
+                              {!pSet && (
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  onClick={() => startEdit(key, value)}
+                                >
+                                  <IconPencil />
+                                </Button>
+                              )}
                               <Button
                                 variant="ghost"
                                 size="icon-sm"
-                                onClick={() => unstage(pSet._id)}
+                                className="text-destructive hover:text-destructive"
+                                onClick={() => stageDelete(key)}
                               >
-                                <IconX />
+                                <IconTrash />
                               </Button>
-                            )}
-                          </>
-                        )}
-                      </div>
+                              {pSet && (
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  onClick={() => {
+                                    unstage(pSet._id);
+                                    startEdit(key, value);
+                                  }}
+                                >
+                                  <IconPencil />
+                                </Button>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );
