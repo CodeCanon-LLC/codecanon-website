@@ -86,6 +86,58 @@ The main body of the picker — renders a search field, the full preset list wit
 |---|---|---|---|
 | `showDock` | `boolean` | `false` | Render previews in a compact dock style at the bottom. |
 | `previewCard` | `typeof DefaultAppPreviewCard` | `DefaultAppPreviewCard` | Custom preview card component. Must accept the same props. |
+| `presets` | `readonly [string, string][]` | `PRESETS` | The list of presets to display. Spread to extend with custom entries. |
+
+### Extending with custom presets
+
+Pass your own presets alongside the built-ins using the `presets` prop. Each entry is a `[id, label]` tuple — the `id` must match the `data-preset` value in your CSS:
+
+```tsx
+import { PRESETS, PresetPickerContent } from "@codecanon/next-presets";
+
+const MY_PRESETS = [
+  ...PRESETS,
+  ["my-brand", "My Brand"],
+  ["my-brand-dark", "My Brand (Dark)"],
+] as const;
+
+<PresetPickerContent presets={MY_PRESETS} />
+```
+
+Define the CSS variables for your custom presets in your global stylesheet **after** the library import:
+
+```css
+/* globals.css */
+@import "@codecanon/next-presets/styles.css";
+
+/* Light mode */
+[data-preset="my-brand"],
+[data-preset="my-brand"].dark .scheme-light,
+:root[data-preset="my-brand"] {
+  --background: oklch(0.99 0.005 220);
+  --foreground: oklch(0.1 0 0);
+  --primary: oklch(0.45 0.2 220);
+  --primary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.95 0.01 220);
+  --muted-foreground: oklch(0.5 0 0);
+  --border: oklch(0.88 0.01 220);
+  --input: oklch(0.88 0.01 220);
+  --ring: oklch(0.55 0.18 220);
+  --radius: 0.5rem;
+  /* ... all other tokens */
+}
+
+/* Dark mode */
+[data-preset="my-brand"] .dark,
+[data-preset="my-brand"] .scheme-dark,
+[data-preset="my-brand"].dark {
+  --background: oklch(0.1 0.005 220);
+  --foreground: oklch(0.97 0 0);
+  /* ... dark mode tokens */
+}
+```
+
+The picker automatically picks up and displays your custom entries alongside the built-ins, including search filtering and keyboard navigation.
 
 ### Keyboard navigation
 

@@ -156,6 +156,16 @@ type PresetPickerState = {
 
 ---
 
+## PresetTuple
+
+A single `[id, label]` pair describing one preset — used when passing custom entries to `PresetPickerContent`.
+
+```ts
+type PresetTuple = readonly [string, string];
+```
+
+---
+
 ## PRESETS
 
 The full preset registry — a readonly array of `[id, label]` tuples.

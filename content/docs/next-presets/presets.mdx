@@ -7,23 +7,29 @@ Each preset defines a complete set of CSS variables for **both light and dark mo
 
 ## How presets work
 
-When a preset is active, `PresetProvider` sets `data-preset="<id>"` on `document.documentElement`. The imported stylesheet contains selectors like:
+When a preset is active, `PresetProvider` sets `data-preset="<id>"` on `document.documentElement`. The imported stylesheet uses these selector groups:
 
 ```css
-[data-preset="violet-bloom"] {
+/* Light mode */
+[data-preset="violet-bloom"],
+[data-preset="violet-bloom"].dark .scheme-light,
+:root[data-preset="violet-bloom"] {
   --primary: oklch(0.6 0.25 290);
   --background: oklch(0.98 0.01 290);
   /* ... full light mode token set */
 }
 
-.dark[data-preset="violet-bloom"] {
+/* Dark mode */
+[data-preset="violet-bloom"] .dark,
+[data-preset="violet-bloom"] .scheme-dark,
+[data-preset="violet-bloom"].dark {
   --primary: oklch(0.75 0.22 290);
   --background: oklch(0.1 0.02 290);
   /* ... full dark mode token set */
 }
 ```
 
-This means **presets and dark/light mode are fully independent** — every preset works in both modes.
+This means **presets and dark/light mode are fully independent** — every preset works in both modes. The `.scheme-light` / `.scheme-dark` selectors allow scoping light or dark mode to a specific subtree.
 
 ## Using a preset
 
@@ -115,9 +121,12 @@ console.log(DEFAULT_PRESET); // "nuteral"
 You can extend the preset system with your own CSS. Define the preset's variables using `[data-preset="my-preset"]` selectors and add them to your global stylesheet after the library styles:
 
 ```css
-/* my-app/globals.css — after @import "@codecanon/next-presets/styles.css" */
+/* globals.css — after @import "@codecanon/next-presets/styles.css" */
 
-[data-preset="my-brand"] {
+/* Light mode */
+[data-preset="my-brand"],
+[data-preset="my-brand"].dark .scheme-light,
+:root[data-preset="my-brand"] {
   --background: oklch(0.99 0.005 220);
   --foreground: oklch(0.1 0 0);
   --primary: oklch(0.45 0.2 220);
@@ -135,7 +144,10 @@ You can extend the preset system with your own CSS. Define the preset's variable
   --radius: 0.5rem;
 }
 
-.dark[data-preset="my-brand"] {
+/* Dark mode */
+[data-preset="my-brand"] .dark,
+[data-preset="my-brand"] .scheme-dark,
+[data-preset="my-brand"].dark {
   --background: oklch(0.1 0.005 220);
   --foreground: oklch(0.97 0 0);
   --primary: oklch(0.65 0.18 220);
@@ -147,9 +159,5 @@ Then activate it with `setPreset`:
 
 ```tsx
 const { setPreset } = usePreset();
-setPreset("my-brand" as PresetKeys);
+setPreset("my-brand");
 ```
-
-<Callout type="warn">
-Custom preset IDs are not type-safe by default since `PresetKeys` is derived from the built-in `PRESETS` array. Cast with `as PresetKeys` or extend the type in your own project.
-</Callout>
