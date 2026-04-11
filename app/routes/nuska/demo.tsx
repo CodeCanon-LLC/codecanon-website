@@ -5,7 +5,9 @@ import { baseOptions } from "@/lib/layout.shared";
 import type { Route } from "./+types/demo";
 
 const NuskaDemo = lazy(() =>
-  import("@/apps/products-version-control").then((m) => ({ default: m.NuskaDemo })),
+  import("@/apps/products-version-control").then((m) => ({
+    default: m.NuskaDemo,
+  })),
 );
 
 export function meta(_: Route.MetaArgs) {

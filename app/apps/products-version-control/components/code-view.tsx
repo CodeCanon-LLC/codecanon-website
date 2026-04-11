@@ -4,8 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
 import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
-import { getType, parseValue } from "@/apps/products-version-control/lib/helpers";
-import { IconCheck, IconPencil, IconPlus, IconTrash, IconX } from "@/apps/products-version-control/lib/icons";
+import {
+  getType,
+  parseValue,
+} from "@/apps/products-version-control/lib/helpers";
+import {
+  IconCheck,
+  IconPencil,
+  IconPlus,
+  IconTrash,
+  IconX,
+} from "@/apps/products-version-control/lib/icons";
 import {
   TypeBadge,
   ValueDisplay,
@@ -232,7 +241,13 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                           }}
                         />
                       ) : (
-                        <span style={pDel ? { textDecoration: "line-through" } : undefined}>
+                        <span
+                          style={
+                            pDel
+                              ? { textDecoration: "line-through" }
+                              : undefined
+                          }
+                        >
                           {key}
                         </span>
                       )}
@@ -255,19 +270,31 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                             value={editType}
                             onChange={(e) => setEditType(e.target.value)}
                           >
-                            {["string", "number", "boolean", "json", "null"].map((t) => (
-                              <option key={t} value={t}>{t}</option>
+                            {[
+                              "string",
+                              "number",
+                              "boolean",
+                              "json",
+                              "null",
+                            ].map((t) => (
+                              <option key={t} value={t}>
+                                {t}
+                              </option>
                             ))}
                           </select>
                         </div>
                       ) : pSet ? (
                         <div className="flex flex-col gap-0.5">
                           <span className="flex items-center gap-1 opacity-50 line-through">
-                            <span className="text-xs font-bold text-red-500">−</span>
+                            <span className="text-xs font-bold text-red-500">
+                              −
+                            </span>
                             <ValueDisplay value={value} />
                           </span>
                           <span className="flex items-center gap-1">
-                            <span className="text-xs font-bold text-green-500">+</span>
+                            <span className="text-xs font-bold text-green-500">
+                              +
+                            </span>
                             <ValueDisplay value={pSet.value} />
                           </span>
                         </div>
@@ -276,7 +303,9 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                       )}
                     </td>
                     <td className="px-4 py-2.5">
-                      {!isEditing && <TypeBadge value={pSet ? pSet.value : value} />}
+                      {!isEditing && (
+                        <TypeBadge value={pSet ? pSet.value : value} />
+                      )}
                     </td>
                     <td className="px-4 py-2.5">
                       {isEditing ? (

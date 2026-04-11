@@ -11,10 +11,12 @@ const typeColors: Record<string, string> = {
 
 const typeBgColors: Record<string, string> = {
   string: "bg-sky-100 text-sky-700 dark:bg-sky-400/10 dark:text-sky-400",
-  number: "bg-amber-100 text-amber-700 dark:bg-yellow-400/10 dark:text-yellow-400",
+  number:
+    "bg-amber-100 text-amber-700 dark:bg-yellow-400/10 dark:text-yellow-400",
   boolean: "bg-rose-100 text-rose-700 dark:bg-red-400/10 dark:text-red-400",
   null: "bg-fd-muted/50 text-fd-muted-foreground",
-  object: "bg-violet-100 text-violet-700 dark:bg-purple-400/10 dark:text-purple-400",
+  object:
+    "bg-violet-100 text-violet-700 dark:bg-purple-400/10 dark:text-purple-400",
 };
 
 export function ValueDisplay({ value }: { value: unknown }) {

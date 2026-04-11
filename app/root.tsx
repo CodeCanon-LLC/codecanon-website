@@ -1,3 +1,11 @@
+import {
+  PresetPicker,
+  PresetPickerContent,
+  PresetPickerSheet,
+  PresetPickerThemeToggleGroup,
+  PresetProvider,
+  usePresetPicker,
+} from "@codecanon/next-presets";
 import { RootProvider } from "fumadocs-ui/provider/react-router";
 import {
   isRouteErrorResponse,
@@ -11,6 +19,14 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import SearchDialog from "@/components/search";
 import NotFound from "./routes/not-found";
+import { Button } from "@/components/ui/button";
+import { Palette } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -47,11 +63,42 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="flex flex-col min-h-screen">
-        <RootProvider search={{ SearchDialog }}>{children}</RootProvider>
+        <TooltipProvider>
+          <RootProvider search={{ SearchDialog }}>
+            <PresetProvider>
+              <PresetPicker>
+                {children}
+                <PresetPickerSheet>
+                  <PresetPickerThemeToggleGroup />
+                  <PresetPickerContent />
+                </PresetPickerSheet>
+                <PresetPickerButton />
+              </PresetPicker>
+            </PresetProvider>
+          </RootProvider>
+        </TooltipProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function PresetPickerButton() {
+  const { toggleOpen } = usePresetPicker();
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          className="fixed size-12 bottom-4 right-4 rounded-full"
+          onClick={toggleOpen}
+        >
+          <Palette className="size-5" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>Choose Preset</TooltipContent>
+    </Tooltip>
   );
 }
 

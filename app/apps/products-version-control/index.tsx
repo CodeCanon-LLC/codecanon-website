@@ -16,8 +16,8 @@ import { useTheme } from "next-themes";
 type Tab = "data" | "commits" | "pulls";
 
 export function NuskaDemo() {
-  const { theme, setTheme } = useTheme()
-  const originalTheme = useRef(theme)
+  const { theme, setTheme } = useTheme();
+  const originalTheme = useRef(theme);
   const nuska = useNuska();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState<Tab>("data");
@@ -27,14 +27,14 @@ export function NuskaDemo() {
   ).length;
 
   useEffect(() => {
-    setTheme('dark')
+    setTheme("dark");
 
     return () => {
       if (originalTheme.current) {
-        setTheme(originalTheme.current)
+        setTheme(originalTheme.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   // On first ready: checkout the branch from URL (if it exists)
   useEffect(() => {
@@ -44,7 +44,7 @@ export function NuskaDemo() {
     if (urlBranch && urlBranch !== nuska.currentBranch) {
       nuska.checkout(urlBranch).catch(() => {});
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nuska.ready]);
 
   // Keep URL in sync with current branch
