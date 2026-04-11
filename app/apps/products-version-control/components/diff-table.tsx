@@ -44,17 +44,17 @@ export function DiffTable({
           <tr
             key={e.key}
             className={cn(
-              e.type === "added" && "bg-green-500/8",
-              e.type === "removed" && "bg-red-500/8",
-              e.type === "modified" && "bg-yellow-500/8",
+              e.type === "added" && "bg-green-100 dark:bg-green-500/8",
+              e.type === "removed" && "bg-red-100 dark:bg-red-500/8",
+              e.type === "modified" && "bg-amber-100 dark:bg-yellow-500/8",
             )}
           >
             <td
               className={cn(
                 "px-3 py-1.5 font-bold",
-                e.type === "added" && "text-green-500",
-                e.type === "removed" && "text-red-500",
-                e.type === "modified" && "text-yellow-500",
+                e.type === "added" && "text-green-600 dark:text-green-500",
+                e.type === "removed" && "text-red-600 dark:text-red-500",
+                e.type === "modified" && "text-amber-600 dark:text-yellow-500",
               )}
             >
               {e.type === "added" ? "+" : e.type === "removed" ? "−" : "~"}

@@ -242,7 +242,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
               {pendingAdditions.map((op) => (
                 <tr
                   key={op._id}
-                  className="border-b border-fd-border/50 last:border-0 bg-green-500/5"
+                  className="border-b border-fd-border/50 last:border-0 bg-green-50 dark:bg-green-500/5"
                 >
                   <td className="px-4 py-2.5 font-mono text-xs text-green-500">
                     {op.key}
@@ -292,8 +292,8 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                     className={cn(
                       "flex items-center gap-2 rounded-lg px-2.5 py-1.5 font-mono text-xs border-l-2",
                       op.type === "set"
-                        ? "bg-green-500/5 border-green-500"
-                        : "bg-red-500/5 border-red-500",
+                        ? "bg-green-50 border-green-500 dark:bg-green-500/5"
+                        : "bg-red-50 border-red-500 dark:bg-red-500/5",
                     )}
                   >
                     <span

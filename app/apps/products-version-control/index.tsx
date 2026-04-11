@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router";
 import { cn } from "@/lib/cn";
 import { useNuska } from "@/apps/products-version-control/use-nuska";
 import {
@@ -10,18 +11,57 @@ import { BranchSelector } from "@/apps/products-version-control/components/branc
 import { CodeView } from "@/apps/products-version-control/components/code-view";
 import { CommitsView } from "@/apps/products-version-control/components/commits-view";
 import { PRView } from "@/apps/products-version-control/components/pull-requests-view";
+import { useTheme } from "next-themes";
 
 type Tab = "data" | "commits" | "pulls";
 
 export function NuskaDemo() {
+  const { theme, setTheme } = useTheme()
+  const originalTheme = useRef(theme)
   const nuska = useNuska();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState<Tab>("data");
+  const didInitialCheckout = useRef(false);
   const openPRCount = nuska.pullRequests.filter(
     (p) => p.status === "open",
   ).length;
 
+  useEffect(() => {
+    setTheme('dark')
+
+    return () => {
+      if (originalTheme.current) {
+        setTheme(originalTheme.current)
+      }
+    }
+  }, [])
+
+  // On first ready: checkout the branch from URL (if it exists)
+  useEffect(() => {
+    if (!nuska.ready || didInitialCheckout.current) return;
+    didInitialCheckout.current = true;
+    const urlBranch = searchParams.get("branch");
+    if (urlBranch && urlBranch !== nuska.currentBranch) {
+      nuska.checkout(urlBranch).catch(() => {});
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nuska.ready]);
+
+  // Keep URL in sync with current branch
+  useEffect(() => {
+    if (!nuska.ready) return;
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("branch", nuska.currentBranch);
+        return next;
+      },
+      { replace: true },
+    );
+  }, [nuska.currentBranch, nuska.ready, setSearchParams]);
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-[calc(100dvh-3.5rem)]">
       {/* Repo bar */}
       <div className="sticky top-0 z-10 flex flex-wrap items-center gap-3 border-b border-fd-border bg-fd-background/95 px-4 backdrop-blur">
         {nuska.ready && <BranchSelector nuska={nuska} />}
@@ -71,7 +111,7 @@ export function NuskaDemo() {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="flex-1 p-4">
         {!nuska.ready ? (
           <div className="py-20 text-center text-sm text-fd-muted-foreground">
             Initialising…

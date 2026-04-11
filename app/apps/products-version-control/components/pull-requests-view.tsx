@@ -81,9 +81,9 @@ function PRRow({ pr, nuska }: { pr: PullRequest; nuska: NuskaDemoReturn }) {
               className={cn(
                 "rounded-full px-2 py-0.5 text-[11px] font-semibold border",
                 pr.status === "open" &&
-                  "bg-green-500/10 text-green-500 border-green-500/30",
+                  "bg-green-100 text-green-700 border-green-400/50 dark:bg-green-500/10 dark:text-green-500 dark:border-green-500/30",
                 pr.status === "merged" &&
-                  "bg-purple-500/10 text-purple-500 border-purple-500/30",
+                  "bg-purple-100 text-purple-700 border-purple-400/50 dark:bg-purple-500/10 dark:text-purple-500 dark:border-purple-500/30",
                 pr.status === "closed" &&
                   "bg-fd-muted text-fd-muted-foreground border-fd-border",
               )}
