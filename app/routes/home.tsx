@@ -6,6 +6,7 @@ import { Browser } from "@/components/browser";
 import { Loader } from "@/components/loader";
 import { baseOptions } from "@/lib/layout.shared";
 import {
+  getDocsLink,
   getDocsNuskaLink,
   getDocsWaraqLink,
   getWaraqDemoLink,
@@ -20,7 +21,7 @@ export function meta(_: Route.MetaArgs) {
     {
       name: "description",
       content:
-        "Composable React libraries and software consultation by CodeCanon LLC. Build powerful design tools with @codecanon/waraq.",
+        "Composable TypeScript libraries and software consultation by CodeCanon LLC. Design editors, version control, and more — for any stack.",
     },
   ];
 }
@@ -39,26 +40,29 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-3xl">
           <h1 className="mb-5 text-5xl font-bold tracking-tight leading-tight md:text-6xl">
-            Design tooling for
+            Developer tooling for
             <br />
-            <span className="text-fd-primary">React applications</span>
+            <span className="text-fd-primary">modern applications</span>
           </h1>
 
           <p className="mb-10 text-lg text-fd-muted-foreground leading-relaxed max-w-xl mx-auto">
-            CodeCanon builds composable React libraries and provides software
-            consultation services. Ship a full-featured canvas editor in minutes
-            — or let us build your next product end-to-end.
+            CodeCanon builds composable TypeScript libraries and provides
+            software consultation services. From canvas editors to headless
+            version control — drop them into any stack.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
-              to="/docs/waraq"
+              to={getDocsLink()}
               className={buttonVariants({ variant: "primary" })}
             >
-              Get started →
+              Browse libraries →
             </Link>
-            <Link to="/docs" className={buttonVariants({ variant: "outline" })}>
-              Browse all docs
+            <Link
+              to={getDocsWaraqLink()}
+              className={buttonVariants({ variant: "outline" })}
+            >
+              Get started with Waraq
             </Link>
           </div>
         </div>
@@ -91,6 +95,9 @@ export default function Home() {
       <section className="px-6 py-20 border-b">
         <div className="mx-auto max-w-5xl">
           <div className="mb-12 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-fd-primary mb-2">
+              @codecanon/waraq
+            </p>
             <h2 className="text-3xl font-bold mb-3">Everything included</h2>
             <p className="text-fd-muted-foreground">
               One package — no headless setup, no extra wiring required.
@@ -117,7 +124,7 @@ export default function Home() {
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold mb-3">Libraries</h2>
             <p className="text-fd-muted-foreground">
-              Packages ready to drop into any React project.
+              Packages ready to drop into any project.
             </p>
           </div>
 
@@ -135,7 +142,7 @@ export default function Home() {
                 </span>
               </div>
               <p className="flex-1 mb-4 text-sm text-fd-muted-foreground leading-relaxed">
-                Canva-like drag-and-drop design editor for React 19+. Composable
+                Canva-like drag-and-drop design editor for React 19. Composable
                 panels, 50+ action components, Google Fonts, undo/redo, and
                 serializable JSON state.
               </p>
@@ -158,8 +165,9 @@ export default function Home() {
               </div>
               <p className="flex-1 mb-4 text-sm text-fd-muted-foreground leading-relaxed">
                 Headless git-like version control for any key/value datasource.
-                Commits, branches, diffs, 3-way merge, and pull requests — over
-                IndexedDB, PostgreSQL, MongoDB, or any custom adapter.
+                Commits, branches, diffs, 3-way merge, and pull requests —
+                framework-agnostic, with adapters for IndexedDB, PostgreSQL,
+                MongoDB, or any custom store.
               </p>
               <span className="flex items-center gap-1 text-xs font-medium text-fd-primary group-hover:gap-2 transition-all">
                 View documentation →
@@ -179,7 +187,7 @@ export default function Home() {
           <p className="mb-8 text-fd-muted-foreground leading-relaxed">
             We provide software consultation and full-stack development services
             — from architecture reviews to building production-ready
-            applications from scratch.
+            applications from scratch, across any stack.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
