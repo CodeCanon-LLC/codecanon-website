@@ -17,7 +17,7 @@ export function meta(_: Route.MetaArgs) {
 export default function Page() {
   return (
     <HomeLayout {...baseOptions()}>
-      <Suspense fallback={<Loader>Loading demo…</Loader>}>
+      <Suspense fallback={<Loader className="m-auto">Loading demo…</Loader>}>
         <NuskaDemo />
       </Suspense>
     </HomeLayout>
