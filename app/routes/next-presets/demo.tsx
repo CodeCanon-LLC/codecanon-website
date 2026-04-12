@@ -1,4 +1,4 @@
-import { NextPresetsDemo } from "@/apps/products-next-presets";
+import { NextPresetsDemo } from "@/apps/next-presets";
 import type { Route } from "./+types/demo";
 
 export function meta(_: Route.MetaArgs) {
