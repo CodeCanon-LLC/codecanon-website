@@ -1,9 +1,4 @@
 {
   "title": "Docs",
-  "pages": [
-    "index",
-    "waraq",
-    "nuska",
-    "next-presets"
-  ]
+  "pages": ["index", "waraq", "nuska", "next-presets"]
 }

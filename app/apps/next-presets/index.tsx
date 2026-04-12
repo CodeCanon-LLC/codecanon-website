@@ -46,13 +46,7 @@ function OpenPickerButton() {
   );
 }
 
-function ColorSwatch({
-  label,
-  variable,
-}: {
-  label: string;
-  variable: string;
-}) {
+function ColorSwatch({ label, variable }: { label: string; variable: string }) {
   return (
     <div className="flex flex-col gap-1.5">
       <div
@@ -82,7 +76,7 @@ function DemoCard({
   );
 }
 
-function DemoContent() {
+function NextPresetsDemo() {
   return (
     <div className="bg-background text-foreground min-h-screen">
       {/* Header */}
@@ -108,9 +102,7 @@ function DemoContent() {
               </svg>
               Docs
             </Link>
-            <h1 className="text-base font-semibold">
-              @codecanon/next-presets
-            </h1>
+            <h1 className="text-base font-semibold">@codecanon/next-presets</h1>
             <p className="text-muted-foreground text-xs">
               50+ shadcn theme presets, one click away
             </p>
@@ -340,18 +332,4 @@ function DemoContent() {
   );
 }
 
-export function NextPresetsDemo() {
-  return (
-    <ThemeProvider themeKey="next-presets-demo-theme" defaultTheme="system">
-      <PresetProvider presetKey="next-presets-demo-preset">
-        <PresetPicker>
-          <DemoContent />
-          <PresetPickerSheet>
-            <PresetPickerThemeToggleGroup />
-            <PresetPickerContent />
-          </PresetPickerSheet>
-        </PresetPicker>
-      </PresetProvider>
-    </ThemeProvider>
-  );
-}
+export { NextPresetsDemo };
