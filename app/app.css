@@ -45,6 +45,23 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-fd-background: var(--color-background);
+  --color-fd-foreground: var(--color-foreground);
+  --color-fd-muted: var(--color-muted);
+  --color-fd-muted-foreground: var(--color-muted-foreground);
+  --color-fd-popover: var(--color-popover);
+  --color-fd-popover-foreground: var(--color-popover-foreground);
+  --color-fd-card: var(--color-card);
+  --color-fd-card-foreground: var(--color-card-foreground);
+  --color-fd-border: var(--color-border);
+  --color-fd-primary: var(--color-primary);
+  --color-fd-primary-foreground: var(--color-primary-foreground);
+  --color-fd-secondary: var(--color-secondary);
+  --color-fd-secondary-foreground: var(--color-secondary-foreground);
+  --color-fd-accent: var(--color-accent);
+  --color-fd-accent-foreground: var(--color-accent-foreground);
+  --color-fd-ring: var(--color-ring);
 }
 
 html {
