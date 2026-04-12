@@ -23,7 +23,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "./routes/not-found";
 import { getDocsNextPresetsLink, getNextPresetsDemoLink } from "@/lib/links";
 import { Button } from "@/components/ui/button";
-import { AppWindowIcon, FileIcon, FileText } from "lucide-react";
+import { AppWindowIcon, FileText } from "lucide-react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -58,11 +58,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <Meta />
         <Links />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=localStorage.getItem("preset");if(p)document.documentElement.setAttribute("data-preset",JSON.parse(p));}catch(e){}})();`,
-          }}
-        />
       </head>
       <body className="flex flex-col min-h-screen">
         <TooltipProvider>
