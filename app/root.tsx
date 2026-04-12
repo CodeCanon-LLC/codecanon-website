@@ -4,7 +4,6 @@ import {
   PresetPickerSheet,
   PresetPickerThemeToggleGroup,
   PresetProvider,
-  usePresetPicker,
 } from "@codecanon/next-presets";
 import { RootProvider } from "fumadocs-ui/provider/react-router";
 import {
@@ -17,16 +16,10 @@ import {
 } from "react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
+import { PresetPickerButton } from "@/components/preset-picker-button";
 import SearchDialog from "@/components/search";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "./routes/not-found";
-import { Button } from "@/components/ui/button";
-import { Palette } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -81,24 +74,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
-  );
-}
-
-function PresetPickerButton() {
-  const { toggleOpen } = usePresetPicker();
-
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          className="fixed size-12 bottom-4 right-4 rounded-full"
-          onClick={toggleOpen}
-        >
-          <Palette className="size-5" />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>Choose Preset</TooltipContent>
-    </Tooltip>
   );
 }
 

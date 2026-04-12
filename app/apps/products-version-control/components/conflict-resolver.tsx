@@ -1,9 +1,9 @@
 import type { ConflictResolution, PullRequest } from "@codecanon/nuska";
 import { useState } from "react";
+import { IconAlert } from "@/apps/products-version-control/lib/icons";
+import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
-import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
-import { IconAlert } from "@/apps/products-version-control/lib/icons";
 
 export function ConflictResolver({
   pr,

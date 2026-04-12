@@ -1,4 +1,11 @@
 import { useState } from "react";
+import {
+  IconBranch,
+  IconCheck,
+  IconChevron,
+  IconTrash,
+} from "@/apps/products-version-control/lib/icons";
+import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -7,13 +14,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/cn";
-import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
-import {
-  IconBranch,
-  IconCheck,
-  IconChevron,
-  IconTrash,
-} from "@/apps/products-version-control/lib/icons";
 
 export function BranchSelector({ nuska }: { nuska: NuskaDemoReturn }) {
   const [open, setOpen] = useState(false);

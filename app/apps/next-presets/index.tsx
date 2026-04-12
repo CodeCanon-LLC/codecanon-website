@@ -1,15 +1,5 @@
+import { usePreset, usePresetPicker, useTheme } from "@codecanon/next-presets";
 import { Link } from "react-router";
-import {
-  ThemeProvider,
-  PresetProvider,
-  PresetPicker,
-  usePresetPicker,
-  useTheme,
-  usePreset,
-  PresetPickerSheet,
-  PresetPickerThemeToggleGroup,
-  PresetPickerContent,
-} from "@codecanon/next-presets";
 import { getDocsNextPresetsLink } from "@/lib/links";
 
 function OpenPickerButton() {

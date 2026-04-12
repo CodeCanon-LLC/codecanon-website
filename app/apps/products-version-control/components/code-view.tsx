@@ -1,9 +1,9 @@
 import type { MutationOp } from "@codecanon/nuska";
 import { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/cn";
-import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
+import {
+  TypeBadge,
+  ValueDisplay,
+} from "@/apps/products-version-control/components/value-display";
 import {
   getType,
   parseValue,
@@ -15,10 +15,10 @@ import {
   IconTrash,
   IconX,
 } from "@/apps/products-version-control/lib/icons";
-import {
-  TypeBadge,
-  ValueDisplay,
-} from "@/apps/products-version-control/components/value-display";
+import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/cn";
 
 export type PendingOp = MutationOp & { _id: number };
 let _uid = 0;

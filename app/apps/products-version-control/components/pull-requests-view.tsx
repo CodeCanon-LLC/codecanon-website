@@ -1,17 +1,17 @@
 import type { Diff, PullRequest } from "@codecanon/nuska";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/cn";
-import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
+import { ConflictResolver } from "@/apps/products-version-control/components/conflict-resolver";
+import { DiffTable } from "@/apps/products-version-control/components/diff-table";
 import { timeAgo } from "@/apps/products-version-control/lib/helpers";
 import {
   IconPRClosed,
   IconPRMerged,
   IconPROpen,
 } from "@/apps/products-version-control/lib/icons";
-import { ConflictResolver } from "@/apps/products-version-control/components/conflict-resolver";
-import { DiffTable } from "@/apps/products-version-control/components/diff-table";
+import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/cn";
 
 function PRRow({ pr, nuska }: { pr: PullRequest; nuska: NuskaDemoReturn }) {
   const [expanded, setExpanded] = useState(false);

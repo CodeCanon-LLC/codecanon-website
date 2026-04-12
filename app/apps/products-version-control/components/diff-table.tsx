@@ -1,6 +1,6 @@
 import type { Diff } from "@codecanon/nuska";
-import { cn } from "@/lib/cn";
 import { renderVal } from "@/apps/products-version-control/lib/helpers";
+import { cn } from "@/lib/cn";
 
 export function DiffTable({
   diff,

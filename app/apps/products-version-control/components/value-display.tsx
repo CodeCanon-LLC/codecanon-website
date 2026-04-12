@@ -1,5 +1,5 @@
-import { cn } from "@/lib/cn";
 import { getType } from "@/apps/products-version-control/lib/helpers";
+import { cn } from "@/lib/cn";
 
 const typeColors: Record<string, string> = {
   string: "text-sky-600 dark:text-sky-400",

@@ -1,17 +1,17 @@
+import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
-import { cn } from "@/lib/cn";
-import { useNuska } from "@/apps/products-version-control/use-nuska";
+import { BranchSelector } from "@/apps/products-version-control/components/branch-selector";
+import { CodeView } from "@/apps/products-version-control/components/code-view";
+import { CommitsView } from "@/apps/products-version-control/components/commits-view";
+import { PRView } from "@/apps/products-version-control/components/pull-requests-view";
 import {
   IconCommit,
   IconDB,
   IconPR,
 } from "@/apps/products-version-control/lib/icons";
-import { BranchSelector } from "@/apps/products-version-control/components/branch-selector";
-import { CodeView } from "@/apps/products-version-control/components/code-view";
-import { CommitsView } from "@/apps/products-version-control/components/commits-view";
-import { PRView } from "@/apps/products-version-control/components/pull-requests-view";
-import { useTheme } from "next-themes";
+import { useNuska } from "@/apps/products-version-control/use-nuska";
+import { cn } from "@/lib/cn";
 
 type Tab = "data" | "commits" | "pulls";
 

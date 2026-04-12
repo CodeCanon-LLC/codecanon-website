@@ -1,12 +1,12 @@
 import type { Commit, Diff } from "@codecanon/nuska";
 import { useState } from "react";
-import { cn } from "@/lib/cn";
-import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
+import { DiffTable } from "@/apps/products-version-control/components/diff-table";
 import {
   avatarColor,
   timeAgo,
 } from "@/apps/products-version-control/lib/helpers";
-import { DiffTable } from "@/apps/products-version-control/components/diff-table";
+import type { NuskaDemoReturn } from "@/apps/products-version-control/use-nuska";
+import { cn } from "@/lib/cn";
 
 function CommitRow({
   commit,
