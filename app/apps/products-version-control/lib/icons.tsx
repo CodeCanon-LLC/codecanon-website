@@ -32,5 +32,5 @@ export const IconPRMerged = () => (
   <GitMerge className="size-3.5 text-purple-500" />
 );
 export const IconPRClosed = () => (
-  <GitPullRequestClosed className="size-3.5 text-fd-muted-foreground" />
+  <GitPullRequestClosed className="size-3.5 text-muted-foreground" />
 );

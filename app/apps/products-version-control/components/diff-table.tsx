@@ -11,14 +11,14 @@ export function DiffTable({
 }) {
   if (loading)
     return (
-      <p className="px-4 py-6 text-center text-xs text-fd-muted-foreground">
+      <p className="px-4 py-6 text-center text-xs text-muted-foreground">
         Loading diff…
       </p>
     );
   if (!diff) return null;
   if (diff.entries.length === 0)
     return (
-      <p className="px-4 py-6 text-center text-xs text-fd-muted-foreground">
+      <p className="px-4 py-6 text-center text-xs text-muted-foreground">
         No changes in this commit.
       </p>
     );
@@ -26,15 +26,15 @@ export function DiffTable({
   return (
     <table className="w-full text-xs">
       <thead>
-        <tr className="border-b border-fd-border bg-fd-muted/30">
-          <th className="w-5 px-3 py-1.5 text-left font-medium text-fd-muted-foreground"></th>
-          <th className="px-3 py-1.5 text-left font-medium text-fd-muted-foreground">
+        <tr className="border-b border-border bg-muted/30">
+          <th className="w-5 px-3 py-1.5 text-left font-medium text-muted-foreground"></th>
+          <th className="px-3 py-1.5 text-left font-medium text-muted-foreground">
             Key
           </th>
-          <th className="px-3 py-1.5 text-left font-medium text-fd-muted-foreground">
+          <th className="px-3 py-1.5 text-left font-medium text-muted-foreground">
             Before
           </th>
-          <th className="px-3 py-1.5 text-left font-medium text-fd-muted-foreground">
+          <th className="px-3 py-1.5 text-left font-medium text-muted-foreground">
             After
           </th>
         </tr>
@@ -60,7 +60,7 @@ export function DiffTable({
               {e.type === "added" ? "+" : e.type === "removed" ? "−" : "~"}
             </td>
             <td className="px-3 py-1.5 font-mono">{e.key}</td>
-            <td className="px-3 py-1.5 font-mono text-fd-muted-foreground">
+            <td className="px-3 py-1.5 font-mono text-muted-foreground">
               {e.type === "added" ? "—" : renderVal(e.oldValue)}
             </td>
             <td className="px-3 py-1.5 font-mono">

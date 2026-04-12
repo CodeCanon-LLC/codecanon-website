@@ -35,8 +35,8 @@ function CommitRow({
     <>
       <div
         className={cn(
-          "grid cursor-pointer grid-cols-[28px_1fr_auto] items-center gap-3 border-b border-fd-border/50 px-4 py-3 last:border-0 hover:bg-fd-muted/10 transition-colors",
-          expanded && "bg-fd-primary/5",
+          "grid cursor-pointer grid-cols-[28px_1fr_auto] items-center gap-3 border-b border-border/50 px-4 py-3 last:border-0 hover:bg-muted/10 transition-colors",
+          expanded && "bg-primary/5",
         )}
         onClick={toggle}
       >
@@ -48,21 +48,21 @@ function CommitRow({
         </div>
         <div className="min-w-0">
           <div className="truncate text-sm font-semibold">{commit.message}</div>
-          <div className="mt-0.5 text-xs text-fd-muted-foreground">
-            <strong className="text-fd-foreground">{commit.author}</strong>{" "}
+          <div className="mt-0.5 text-xs text-muted-foreground">
+            <strong className="text-foreground">{commit.author}</strong>{" "}
             committed {timeAgo(commit.timestamp)}
             {commit.parentIds.length > 1 && (
               <span className="ml-2 text-purple-500">merge commit</span>
             )}
           </div>
         </div>
-        <span className="flex-shrink-0 rounded-md border border-fd-primary/20 bg-fd-primary/5 px-1.5 py-0.5 font-mono text-[11px] text-fd-primary">
+        <span className="flex-shrink-0 rounded-md border border-primary/20 bg-primary/5 px-1.5 py-0.5 font-mono text-[11px] text-primary">
           {commit.id.slice(0, 7)}
         </span>
       </div>
       {expanded && (
-        <div className="border-b border-fd-border/50 bg-fd-muted/10">
-          <div className="flex items-center justify-between border-b border-fd-border/50 px-4 py-2 text-xs text-fd-muted-foreground">
+        <div className="border-b border-border/50 bg-muted/10">
+          <div className="flex items-center justify-between border-b border-border/50 px-4 py-2 text-xs text-muted-foreground">
             <span>
               {loading
                 ? "Loading diff…"
@@ -82,14 +82,14 @@ function CommitRow({
 export function CommitsView({ nuska }: { nuska: NuskaDemoReturn }) {
   if (nuska.log.length === 0)
     return (
-      <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card py-12 text-center text-sm text-fd-muted-foreground">
+      <div className="overflow-hidden rounded-xl border border-border bg-card py-12 text-center text-sm text-muted-foreground">
         No commits yet on{" "}
-        <strong className="text-fd-foreground">{nuska.currentBranch}</strong>.
+        <strong className="text-foreground">{nuska.currentBranch}</strong>.
       </div>
     );
   return (
-    <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card">
-      <div className="border-b border-fd-border bg-fd-muted/30 px-4 py-2.5">
+    <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="border-b border-border bg-muted/30 px-4 py-2.5">
         <span className="text-sm font-semibold">
           {nuska.log.length} commit{nuska.log.length !== 1 ? "s" : ""} on{" "}
           {nuska.currentBranch}

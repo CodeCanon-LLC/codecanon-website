@@ -63,7 +63,7 @@ export function NuskaDemo() {
   return (
     <div className="flex flex-col min-h-[calc(100dvh-3.5rem)]">
       {/* Repo bar */}
-      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-3 border-b border-fd-border bg-fd-background/95 px-4 backdrop-blur">
+      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-3 border-b border-border bg-background/95 px-4 backdrop-blur">
         {nuska.ready && <BranchSelector nuska={nuska} />}
         <div className="flex">
           {[
@@ -86,8 +86,8 @@ export function NuskaDemo() {
               className={cn(
                 "flex h-11 items-center gap-1.5 border-b-2 px-3 text-sm transition-colors",
                 tab === id
-                  ? "border-fd-primary font-semibold text-fd-foreground"
-                  : "border-transparent text-fd-muted-foreground hover:text-fd-foreground",
+                  ? "border-primary font-semibold text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
               )}
               onClick={() => setTab(id)}
             >
@@ -98,8 +98,8 @@ export function NuskaDemo() {
                   className={cn(
                     "rounded-full px-1.5 py-0.5 text-[11px]",
                     tab === id
-                      ? "bg-fd-primary text-fd-primary-foreground"
-                      : "bg-fd-muted text-fd-muted-foreground",
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground",
                   )}
                 >
                   {badge}
@@ -113,7 +113,7 @@ export function NuskaDemo() {
       {/* Content */}
       <div className="flex-1 p-4">
         {!nuska.ready ? (
-          <div className="py-20 text-center text-sm text-fd-muted-foreground">
+          <div className="py-20 text-center text-sm text-muted-foreground">
             Initialising…
           </div>
         ) : (

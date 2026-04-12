@@ -30,7 +30,7 @@ export function BranchSelector({ nuska }: { nuska: NuskaDemoReturn }) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button className="flex items-center gap-1.5 rounded-md border border-fd-border bg-fd-card px-2.5 py-1.5 text-sm font-medium text-fd-foreground transition-colors hover:bg-fd-muted max-w-[200px]">
+        <button className="flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted max-w-[200px]">
           <IconBranch />
           <span className="truncate">{nuska.currentBranch}</span>
           <IconChevron />
@@ -41,7 +41,7 @@ export function BranchSelector({ nuska }: { nuska: NuskaDemoReturn }) {
         className="w-64 p-0 overflow-hidden"
         sideOffset={4}
       >
-        <div className="border-b border-fd-border px-3 py-2 text-center text-xs font-semibold text-fd-muted-foreground">
+        <div className="border-b border-border px-3 py-2 text-center text-xs font-semibold text-muted-foreground">
           Switch branches
         </div>
         <div className="max-h-44 overflow-y-auto">
@@ -49,12 +49,12 @@ export function BranchSelector({ nuska }: { nuska: NuskaDemoReturn }) {
             <div
               key={b.name}
               className={cn(
-                "flex items-center border-b border-fd-border/50 last:border-0",
-                b.name === nuska.currentBranch && "bg-fd-primary/5",
+                "flex items-center border-b border-border/50 last:border-0",
+                b.name === nuska.currentBranch && "bg-primary/5",
               )}
             >
               <button
-                className="flex flex-1 items-center gap-2 px-3 py-2 text-left text-sm hover:bg-fd-muted/50"
+                className="flex flex-1 items-center gap-2 px-3 py-2 text-left text-sm hover:bg-muted/50"
                 onClick={() => {
                   nuska.checkout(b.name);
                   setOpen(false);
@@ -69,7 +69,7 @@ export function BranchSelector({ nuska }: { nuska: NuskaDemoReturn }) {
                   className={cn(
                     "truncate",
                     b.name === nuska.currentBranch &&
-                      "font-semibold text-fd-primary",
+                      "font-semibold text-primary",
                   )}
                 >
                   {b.name}
@@ -91,7 +91,7 @@ export function BranchSelector({ nuska }: { nuska: NuskaDemoReturn }) {
             </div>
           ))}
         </div>
-        <div className="flex gap-2 border-t border-fd-border p-2">
+        <div className="flex gap-2 border-t border-border p-2">
           <Input
             className="h-7 text-xs"
             placeholder="New branch name…"

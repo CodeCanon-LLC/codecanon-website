@@ -236,7 +236,7 @@ export default function ComponentPreview({ name }: ComponentPreviewProps) {
 
   if (!item) {
     return (
-      <div className="rounded-lg border border-dashed p-6 text-center text-sm text-fd-muted-foreground">
+      <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
         Preview not found: <code>{name}</code>
       </div>
     );

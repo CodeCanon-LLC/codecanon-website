@@ -53,10 +53,10 @@ export function ConflictResolver({
         return (
           <div
             key={c.key}
-            className="border-b border-fd-border/50 px-3 py-3 last:border-0"
+            className="border-b border-border/50 px-3 py-3 last:border-0"
           >
             <div className="mb-2 flex items-center gap-2">
-              <code className="rounded bg-fd-muted px-1.5 py-0.5 text-xs text-fd-primary">
+              <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-primary">
                 {c.key}
               </code>
               {ch && (
@@ -74,11 +74,11 @@ export function ConflictResolver({
                     "rounded-md border px-2 py-2 text-left text-xs transition-colors",
                     ch?.type === type
                       ? "border-green-500 bg-green-500/8"
-                      : "border-fd-border bg-fd-muted/30 hover:border-fd-primary",
+                      : "border-border bg-muted/30 hover:border-primary",
                     type === "delete" && "text-red-500",
                   )}
                 >
-                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-fd-muted-foreground">
+                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                     {label}
                   </div>
                   <code className="text-[11px]">
@@ -90,7 +90,7 @@ export function ConflictResolver({
           </div>
         );
       })}
-      <div className="flex justify-end gap-2 border-t border-fd-border px-3 py-2">
+      <div className="flex justify-end gap-2 border-t border-border px-3 py-2">
         <Button
           variant="ghost"
           size="sm"

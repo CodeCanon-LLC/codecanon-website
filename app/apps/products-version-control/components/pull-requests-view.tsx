@@ -66,8 +66,8 @@ function PRRow({ pr, nuska }: { pr: PullRequest; nuska: NuskaDemoReturn }) {
     <>
       <div
         className={cn(
-          "grid cursor-pointer grid-cols-[20px_1fr_auto] items-start gap-3 border-b border-fd-border/50 px-4 py-3 last:border-0 hover:bg-fd-muted/10 transition-colors",
-          expanded && "bg-fd-primary/5",
+          "grid cursor-pointer grid-cols-[20px_1fr_auto] items-start gap-3 border-b border-border/50 px-4 py-3 last:border-0 hover:bg-muted/10 transition-colors",
+          expanded && "bg-primary/5",
         )}
         onClick={toggle}
       >
@@ -76,7 +76,7 @@ function PRRow({ pr, nuska }: { pr: PullRequest; nuska: NuskaDemoReturn }) {
         </div>
         <div>
           <div className="text-sm font-semibold">{pr.title}</div>
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-fd-muted-foreground">
+          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <span
               className={cn(
                 "rounded-full px-2 py-0.5 text-[11px] font-semibold border",
@@ -85,13 +85,13 @@ function PRRow({ pr, nuska }: { pr: PullRequest; nuska: NuskaDemoReturn }) {
                 pr.status === "merged" &&
                   "bg-purple-100 text-purple-700 border-purple-400/50 dark:bg-purple-500/10 dark:text-purple-500 dark:border-purple-500/30",
                 pr.status === "closed" &&
-                  "bg-fd-muted text-fd-muted-foreground border-fd-border",
+                  "bg-muted text-muted-foreground border-border",
               )}
             >
               {pr.status}
             </span>
             <span>
-              <span className="font-mono text-fd-primary">{pr.fromBranch}</span>
+              <span className="font-mono text-primary">{pr.fromBranch}</span>
               {" → "}
               <span className="font-mono">{pr.toBranch}</span>
             </span>
@@ -126,16 +126,16 @@ function PRRow({ pr, nuska }: { pr: PullRequest; nuska: NuskaDemoReturn }) {
         )}
       </div>
       {expanded && (
-        <div className="border-b border-fd-border/50 bg-fd-muted/10 px-4 py-3">
+        <div className="border-b border-border/50 bg-muted/10 px-4 py-3">
           {nuska.pendingMerge?.prId === pr.id && nuska.conflicts.length > 0 && (
             <ConflictResolver pr={pr} nuska={nuska} />
           )}
-          <p className="mb-2 text-xs text-fd-muted-foreground">
+          <p className="mb-2 text-xs text-muted-foreground">
             Changes from{" "}
-            <strong className="text-fd-foreground">{pr.fromBranch}</strong> vs{" "}
-            <strong className="text-fd-foreground">{pr.toBranch}</strong>
+            <strong className="text-foreground">{pr.fromBranch}</strong> vs{" "}
+            <strong className="text-foreground">{pr.toBranch}</strong>
           </p>
-          <div className="overflow-hidden rounded-lg border border-fd-border">
+          <div className="overflow-hidden rounded-lg border border-border">
             <DiffTable diff={diff} loading={loading} />
           </div>
         </div>
@@ -167,8 +167,8 @@ function NewPRForm({
   }
 
   return (
-    <div className="mb-3 overflow-hidden rounded-xl border border-fd-border bg-fd-card">
-      <div className="flex items-center justify-between border-b border-fd-border bg-fd-muted/30 px-4 py-2.5">
+    <div className="mb-3 overflow-hidden rounded-xl border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
         <span className="text-sm font-semibold">Open a new pull request</span>
         <Button variant="ghost" size="sm" onClick={onDone}>
           Cancel
@@ -176,7 +176,7 @@ function NewPRForm({
       </div>
       <div className="grid gap-3 p-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1 sm:col-span-2">
-          <label className="text-[11px] font-semibold text-fd-muted-foreground">
+          <label className="text-[11px] font-semibold text-muted-foreground">
             Title
           </label>
           <Input
@@ -188,11 +188,11 @@ function NewPRForm({
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-[11px] font-semibold text-fd-muted-foreground">
+          <label className="text-[11px] font-semibold text-muted-foreground">
             From branch
           </label>
           <select
-            className="h-8 rounded-lg border border-fd-border bg-fd-background px-2 text-sm"
+            className="h-8 rounded-lg border border-border bg-background px-2 text-sm"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
           >
@@ -204,11 +204,11 @@ function NewPRForm({
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-[11px] font-semibold text-fd-muted-foreground">
+          <label className="text-[11px] font-semibold text-muted-foreground">
             Into branch
           </label>
           <select
-            className="h-8 rounded-lg border border-fd-border bg-fd-background px-2 text-sm"
+            className="h-8 rounded-lg border border-border bg-background px-2 text-sm"
             value={to}
             onChange={(e) => setTo(e.target.value)}
           >
@@ -249,8 +249,8 @@ export function PRView({ nuska }: { nuska: NuskaDemoReturn }) {
       {showForm && (
         <NewPRForm nuska={nuska} onDone={() => setShowForm(false)} />
       )}
-      <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card">
-        <div className="flex items-center justify-between border-b border-fd-border bg-fd-muted/30 px-4">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4">
           <div className="flex">
             {(["open", "merged", "closed"] as const).map((f) => (
               <button
@@ -258,8 +258,8 @@ export function PRView({ nuska }: { nuska: NuskaDemoReturn }) {
                 className={cn(
                   "flex h-10 items-center gap-1.5 border-b-2 px-3 text-sm transition-colors",
                   filter === f
-                    ? "border-fd-primary font-semibold text-fd-foreground"
-                    : "border-transparent text-fd-muted-foreground hover:text-fd-foreground",
+                    ? "border-primary font-semibold text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground",
                 )}
                 onClick={() => setFilter(f)}
               >
@@ -271,8 +271,8 @@ export function PRView({ nuska }: { nuska: NuskaDemoReturn }) {
                   className={cn(
                     "rounded-full px-1.5 py-0.5 text-[11px]",
                     filter === f
-                      ? "bg-fd-primary text-fd-primary-foreground"
-                      : "bg-fd-muted text-fd-muted-foreground",
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground",
                   )}
                 >
                   {counts[f]}
@@ -285,7 +285,7 @@ export function PRView({ nuska }: { nuska: NuskaDemoReturn }) {
           </Button>
         </div>
         {filtered.length === 0 ? (
-          <div className="py-12 text-center text-sm text-fd-muted-foreground">
+          <div className="py-12 text-center text-sm text-muted-foreground">
             No {filter} pull requests.
           </div>
         ) : (

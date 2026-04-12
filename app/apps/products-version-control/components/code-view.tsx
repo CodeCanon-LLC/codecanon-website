@@ -119,8 +119,8 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
       {/* Data table */}
-      <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card">
-        <div className="flex items-center justify-between border-b border-fd-border bg-fd-muted/30 px-4 py-2.5">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
           <span className="text-sm font-semibold">
             {rows.length} row{rows.length !== 1 ? "s" : ""} ·{" "}
             {nuska.currentBranch}
@@ -135,9 +135,9 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
         </div>
 
         {showAdd && (
-          <div className="flex flex-wrap items-end gap-2 border-b border-fd-border bg-fd-primary/5 px-4 py-3">
+          <div className="flex flex-wrap items-end gap-2 border-b border-border bg-primary/5 px-4 py-3">
             <div className="flex min-w-[80px] flex-1 flex-col gap-1">
-              <label className="text-[11px] font-semibold text-fd-muted-foreground">
+              <label className="text-[11px] font-semibold text-muted-foreground">
                 Key
               </label>
               <Input
@@ -150,7 +150,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
               />
             </div>
             <div className="flex min-w-[100px] flex-[2] flex-col gap-1">
-              <label className="text-[11px] font-semibold text-fd-muted-foreground">
+              <label className="text-[11px] font-semibold text-muted-foreground">
                 Value
               </label>
               <Input
@@ -162,7 +162,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
               />
             </div>
             <select
-              className="h-7 rounded-lg border border-fd-border bg-fd-background px-2 text-xs"
+              className="h-7 rounded-lg border border-border bg-background px-2 text-xs"
               value={addType}
               onChange={(e) => setAddType(e.target.value)}
             >
@@ -190,20 +190,20 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
         )}
 
         {rows.length === 0 && pendingAdditions.length === 0 ? (
-          <div className="py-12 text-center text-sm text-fd-muted-foreground">
+          <div className="py-12 text-center text-sm text-muted-foreground">
             No data yet. Add a row to get started.
           </div>
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-fd-border bg-fd-muted/20">
-                <th className="px-4 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-fd-muted-foreground">
+              <tr className="border-b border-border bg-muted/20">
+                <th className="px-4 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                   Key
                 </th>
-                <th className="px-4 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-fd-muted-foreground">
+                <th className="px-4 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                   Value
                 </th>
-                <th className="px-4 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-fd-muted-foreground">
+                <th className="px-4 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                   Type
                 </th>
                 <th className="w-16 px-4 py-2"></th>
@@ -222,7 +222,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                 return (
                   <tr
                     key={key}
-                    className="group/row border-b border-fd-border/50 last:border-0 hover:bg-fd-muted/10"
+                    className="group/row border-b border-border/50 last:border-0 hover:bg-muted/10"
                     style={pDel ? { opacity: 0.4 } : undefined}
                   >
                     <td className="px-4 py-2.5 font-mono text-xs">
@@ -266,7 +266,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                             }}
                           />
                           <select
-                            className="h-6 rounded border border-fd-border bg-fd-background px-1 text-xs"
+                            className="h-6 rounded border border-border bg-background px-1 text-xs"
                             value={editType}
                             onChange={(e) => setEditType(e.target.value)}
                           >
@@ -378,7 +378,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
               {pendingAdditions.map((op) => (
                 <tr
                   key={op._id}
-                  className="border-b border-fd-border/50 last:border-0 bg-green-50 dark:bg-green-500/5"
+                  className="border-b border-border/50 last:border-0 bg-green-50 dark:bg-green-500/5"
                 >
                   <td className="px-4 py-2.5 font-mono text-xs text-green-500">
                     {op.key}
@@ -406,8 +406,8 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
       </div>
 
       {/* Commit panel */}
-      <div className="sticky top-4 overflow-hidden rounded-xl border border-fd-border bg-fd-card">
-        <div className="border-b border-fd-border bg-fd-muted/30 px-4 py-2.5">
+      <div className="sticky top-4 overflow-hidden rounded-xl border border-border bg-card">
+        <div className="border-b border-border bg-muted/30 px-4 py-2.5">
           <span className="text-sm font-semibold">
             {pending.length > 0
               ? `${pending.length} staged change${pending.length !== 1 ? "s" : ""}`
@@ -416,7 +416,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
         </div>
         <div className="p-4">
           {pending.length === 0 ? (
-            <p className="text-xs text-fd-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Edit or add rows to stage changes, then commit.
             </p>
           ) : (
@@ -445,7 +445,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                       {op.key}
                     </span>
                     {op.type === "set" && (
-                      <span className="max-w-[60px] truncate text-fd-muted-foreground">
+                      <span className="max-w-[60px] truncate text-muted-foreground">
                         {JSON.stringify(op.value)}
                       </span>
                     )}
@@ -460,11 +460,11 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                 ))}
               </div>
 
-              <div className="h-px bg-fd-border" />
+              <div className="h-px bg-border" />
 
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-semibold text-fd-muted-foreground">
+                  <label className="text-[11px] font-semibold text-muted-foreground">
                     Commit message
                   </label>
                   <Input
@@ -476,7 +476,7 @@ export function CodeView({ nuska }: { nuska: NuskaDemoReturn }) {
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-semibold text-fd-muted-foreground">
+                  <label className="text-[11px] font-semibold text-muted-foreground">
                     Author
                   </label>
                   <Input

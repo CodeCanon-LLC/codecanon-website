@@ -178,7 +178,7 @@ export function SliderPreview() {
     <PreviewBox>
       <div className="w-64">
         <Slider value={val} onValueChange={setVal} min={0} max={100} step={1} />
-        <p className="mt-2 text-center text-xs text-fd-muted-foreground">
+        <p className="mt-2 text-center text-xs text-muted-foreground">
           {val}%
         </p>
       </div>
@@ -219,19 +219,19 @@ export function TabsPreview() {
         </TabsList>
         <TabsContent
           value="style"
-          className="p-2 text-xs text-fd-muted-foreground"
+          className="p-2 text-xs text-muted-foreground"
         >
           Style panel content
         </TabsContent>
         <TabsContent
           value="layout"
-          className="p-2 text-xs text-fd-muted-foreground"
+          className="p-2 text-xs text-muted-foreground"
         >
           Layout panel content
         </TabsContent>
         <TabsContent
           value="effects"
-          className="p-2 text-xs text-fd-muted-foreground"
+          className="p-2 text-xs text-muted-foreground"
         >
           Effects panel content
         </TabsContent>
@@ -268,12 +268,12 @@ export function ToggleGroupPreview() {
 export function SeparatorPreview() {
   return (
     <PreviewBox>
-      <div className="flex w-48 flex-col gap-3 text-xs text-fd-muted-foreground">
+      <div className="flex w-48 flex-col gap-3 text-xs text-muted-foreground">
         <span>Above the separator</span>
         <Separator />
         <span>Below the separator</span>
       </div>
-      <div className="flex h-12 items-center gap-3 text-xs text-fd-muted-foreground">
+      <div className="flex h-12 items-center gap-3 text-xs text-muted-foreground">
         <span>Left</span>
         <Separator orientation="vertical" />
         <span>Right</span>
@@ -347,7 +347,7 @@ export function PopoverPreview() {
         </PopoverTrigger>
         <PopoverContent className="w-56 p-3 text-sm">
           <p className="font-medium">Settings</p>
-          <p className="mt-1 text-xs text-fd-muted-foreground">
+          <p className="mt-1 text-xs text-muted-foreground">
             Manage your layer settings and preferences here.
           </p>
         </PopoverContent>

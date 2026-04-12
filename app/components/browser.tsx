@@ -17,13 +17,13 @@ export function Browser({
       )}
       {...props}
     >
-      <div className="flex items-center gap-2 bg-fd-muted/70 px-4 py-3 border-b">
+      <div className="flex items-center gap-2 bg-muted/70 px-4 py-3 border-b">
         <span className="h-3 w-3 rounded-full bg-[#FF5F57]" />
         <span className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
         <span className="h-3 w-3 rounded-full bg-[#28C840]" />
         <Link
           to={link}
-          className="truncate ml-3 flex-1 rounded-md bg-[#e5e5e5] dark:bg-fd-background/70 px-3 py-1 text-xs text-fd-muted-foreground hover:text-fd-primary hover:underline"
+          className="truncate ml-3 flex-1 rounded-md bg-[#e5e5e5] dark:bg-background/70 px-3 py-1 text-xs text-muted-foreground hover:text-primary hover:underline"
         >
           {globalThis.location?.origin}
           {link}
@@ -37,7 +37,7 @@ export function Browser({
         </Button>
       </div>
 
-      <div className="h-145 bg-fd-background overflow-auto">{children}</div>
+      <div className="h-145 bg-background overflow-auto">{children}</div>
     </div>
   );
 }
