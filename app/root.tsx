@@ -8,6 +8,7 @@ import {
 import { RootProvider } from "fumadocs-ui/provider/react-router";
 import {
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -20,6 +21,9 @@ import { PresetPickerButton } from "@/components/preset-picker-button";
 import SearchDialog from "@/components/search";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "./routes/not-found";
+import { getDocsNextPresetsLink, getNextPresetsDemoLink } from "@/lib/links";
+import { Button } from "@/components/ui/button";
+import { AppWindowIcon, FileIcon, FileText } from "lucide-react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -64,6 +68,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <PresetPickerSheet>
                   <PresetPickerThemeToggleGroup />
                   <PresetPickerContent />
+                  <div className="mb-4 flex gap-2 *:flex-1">
+                    <Button asChild variant="outline">
+                      <Link to={getDocsNextPresetsLink()}>
+                        <FileText />
+                        Docs
+                      </Link>
+                      </Button>
+                      <Button asChild variant="outline">
+                      <Link to={getNextPresetsDemoLink()}>
+                        <AppWindowIcon />
+                        Demo
+                      </Link>
+                    </Button>
+                  </div>
                 </PresetPickerSheet>
                 <PresetPickerButton />
               </PresetPicker>
