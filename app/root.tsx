@@ -58,6 +58,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var p=localStorage.getItem("preset");if(p)document.documentElement.setAttribute("data-preset",JSON.parse(p));}catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="flex flex-col min-h-screen">
         <TooltipProvider>
