@@ -74,8 +74,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         <FileText />
                         Docs
                       </Link>
-                      </Button>
-                      <Button asChild variant="outline">
+                    </Button>
+                    <Button asChild variant="outline">
                       <Link to={getNextPresetsDemoLink()}>
                         <AppWindowIcon />
                         Demo

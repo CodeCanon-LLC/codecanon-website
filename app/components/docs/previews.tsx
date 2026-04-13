@@ -178,9 +178,7 @@ export function SliderPreview() {
     <PreviewBox>
       <div className="w-64">
         <Slider value={val} onValueChange={setVal} min={0} max={100} step={1} />
-        <p className="mt-2 text-center text-xs text-muted-foreground">
-          {val}%
-        </p>
+        <p className="mt-2 text-center text-xs text-muted-foreground">{val}%</p>
       </div>
     </PreviewBox>
   );

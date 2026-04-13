@@ -6,5 +6,5 @@ export function meta(_: Route.MetaArgs) {
 }
 
 export default function Page() {
-  return <WaraqDemo />
+  return <WaraqDemo />;
 }

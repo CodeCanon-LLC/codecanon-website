@@ -1,7 +1,7 @@
 import { buttonVariants } from "fumadocs-ui/components/ui/button";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { lazy, Suspense } from "react";
-import { Link } from "react-router";
+import { Link, type To } from "react-router";
 import { Browser } from "@/components/browser";
 import { Loader } from "@/components/loader";
 import { baseOptions } from "@/lib/layout.shared";
@@ -130,72 +130,45 @@ export default function Home() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Link
+            <LibraryCard
+              paid
               to={getDocsWaraqLink()}
-              className="group flex flex-col rounded-xl border bg-card p-6 hover:border-primary transition-colors"
-            >
-              <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-                  v2
-                </span>
-                <span className="font-mono font-semibold">
-                  @codecanon/waraq
-                </span>
-              </div>
-              <p className="flex-1 mb-4 text-sm text-muted-foreground leading-relaxed">
-                Canva-like drag-and-drop design editor for React 19. Composable
-                panels, 50+ action components, Google Fonts, undo/redo, and
-                serializable JSON state.
-              </p>
-              <span className="flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-                View documentation →
-              </span>
-            </Link>
-
-            <Link
+              version="v2"
+              title="@codecanon/waraq"
+              description={
+                <>
+                  Canva-like drag-and-drop design editor for React 19.
+                  Composable panels, 50+ action components, Google Fonts,
+                  undo/redo, and serializable JSON state.
+                </>
+              }
+            />
+            <LibraryCard
+              paid
               to={getDocsNuskaLink()}
-              className="group flex flex-col rounded-xl border bg-card p-6 hover:border-primary transition-colors"
-            >
-              <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-                  v0.1
-                </span>
-                <span className="font-mono font-semibold">
-                  @codecanon/nuska
-                </span>
-              </div>
-              <p className="flex-1 mb-4 text-sm text-muted-foreground leading-relaxed">
-                Headless git-like version control for any key/value datasource.
-                Commits, branches, diffs, 3-way merge, and pull requests —
-                framework-agnostic, with adapters for IndexedDB, PostgreSQL,
-                MongoDB, or any custom store.
-              </p>
-              <span className="flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-                View documentation →
-              </span>
-            </Link>
-
-            <Link
+              version="v0.1"
+              title="@codecanon/nuska"
+              description={
+                <>
+                  Headless git-like version control for any key/value
+                  datasource. Commits, branches, diffs, 3-way merge, and pull
+                  requests — framework-agnostic, with adapters for IndexedDB,
+                  PostgreSQL, MongoDB, or any custom store.
+                </>
+              }
+            />
+            <LibraryCard
               to={getDocsNextPresetsLink()}
-              className="group flex flex-col rounded-xl border bg-card p-6 hover:border-primary transition-colors"
-            >
-              <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-                  v0.0.4
-                </span>
-                <span className="font-mono font-semibold">
-                  @codecanon/next-presets
-                </span>
-              </div>
-              <p className="flex-1 mb-4 text-sm text-muted-foreground leading-relaxed">
-                50+ shadcn/ui color presets with light/dark mode support.
-                Drop-in theme switching for any React app — violet-bloom,
-                catppuccin, cyberpunk, and more.
-              </p>
-              <span className="flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-                View documentation →
-              </span>
-            </Link>
+              version="v0.0.4"
+              title="@codecanon/next-presets"
+              description={
+                <>
+                  50+ shadcn/ui color presets with light/dark mode support.
+                  Drop-in theme switching for any React app — violet-bloom,
+                  catppuccin, cyberpunk, and more.
+                </>
+              }
+            />
           </div>
         </div>
       </section>
@@ -272,3 +245,58 @@ const features = [
       "Panels collapse to bottom drawers on mobile via a configurable breakpoint.",
   },
 ] as const;
+
+/*
+<LibraryCard
+  paid
+  to={}
+  version=""
+  title=""
+  description={
+    <>
+    </>
+  }
+/>
+*/
+function LibraryCard({
+  to,
+  version,
+  paid,
+  title,
+  description,
+}: {
+  to: To;
+  version: React.ReactNode;
+  paid?: boolean;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+}) {
+  return (
+    <Link
+      to={to}
+      className="group flex flex-col rounded-xl border bg-card p-6 hover:border-primary transition-colors"
+    >
+      <div className="mb-2 flex items-center gap-2">
+        <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+          {version}
+        </span>
+        {paid ? (
+          <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
+            Paid
+          </span>
+        ) : (
+          <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+            Free
+          </span>
+        )}
+        <span className="font-mono font-semibold">{title}</span>
+      </div>
+      <p className="flex-1 mb-4 text-sm text-muted-foreground leading-relaxed">
+        {description}
+      </p>
+      <span className="flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
+        View documentation →
+      </span>
+    </Link>
+  );
+}
