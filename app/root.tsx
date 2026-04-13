@@ -62,7 +62,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="flex flex-col min-h-screen">
         <TooltipProvider>
           <RootProvider search={{ SearchDialog }}>
-            <PresetProvider>
+            <PresetProvider defaultPreset="codecanon">
               <PresetPicker>
                 {children}
                 <PresetPickerSheet>
