@@ -56,14 +56,14 @@ You can swap `nuteral.css` for any other preset to change the default:
 @import "@codecanon/next-presets/styles.css";
 ```
 
-## Available entry points
+## Entry points
 
 | Import | Contents |
 |---|---|
-| `@codecanon/next-presets` | Providers, hooks, components, constants, types |
-| `@codecanon/next-presets/default/<id>.css` | **Required.** Sets the default `:root` variables. Import before `styles.css`. |
-| `@codecanon/next-presets/styles.css` | **Required.** All preset overrides scoped to `[data-preset="..."]`. Import after the preset file. |
-| `@codecanon/next-presets/custom-variants.css` | `@variant preset-light` and `@variant preset-dark` directives for writing custom presets in your own CSS |
+| <code className="whitespace-nowrap">@codecanon/next-presets</code> | Providers, hooks, components, constants, types |
+| <code className="whitespace-nowrap">@codecanon/next-presets/default/\<id\>.css</code> | **Required.** Sets the default `:root` variables. Import before `styles.css`. |
+| <code className="whitespace-nowrap">@codecanon/next-presets/styles.css</code> | **Required.** All preset overrides scoped to `[data-preset="..."]`. Import after the preset file. |
+| <code className="whitespace-nowrap">@codecanon/next-presets/custom-variants.css</code> | `@variant preset-light` and `@variant preset-dark` directives for writing custom presets in your own CSS |
 
 ## Peer dependencies
 
