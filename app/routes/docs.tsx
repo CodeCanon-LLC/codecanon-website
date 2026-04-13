@@ -69,6 +69,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <DocsLayout
       {...baseOptions()}
+      sidebar={{
+        className: 'bg-sidebar'
+      }}
       tree={pageTree}
       tabs={[
         {
