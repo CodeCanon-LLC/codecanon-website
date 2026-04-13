@@ -10,8 +10,7 @@ If your app only uses a handful of presets, you can strip the rest from the comp
 
 ---
 
-<Tabs items={['Vite Plugin (Recommended)', 'Manual (Any Bundler)']}>
-  <Tab>
+## Vite Plugin (Recommended)
 
 Install the plugin in your `vite.config.ts`.  
 It intercepts the `styles.css` import and the main package import automatically — **no changes to your existing code needed**.
@@ -49,9 +48,9 @@ Your existing CSS and JS imports stay unchanged.
 @import "@codecanon/next-presets/styles.css";
 ```
 
-  </Tab>
+---
 
-  <Tab>
+## Manual (Any Bundler)
 
 Skip `styles.css` entirely and import only what you need.  
 `components.css` is pre-compiled and does **not require Tailwind** on the consumer side.
@@ -78,12 +77,9 @@ const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
 <PresetPickerContent presets={MY_PRESETS} />
 ```
 
-<Callout>
+<Callout type="tip">
 `filterPresets` preserves the original canonical order of presets.
 </Callout>
-
-  </Tab>
-</Tabs>
 
 ---
 
