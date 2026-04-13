@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@codecanon/logos": "^1.0.5",
-    "@codecanon/next-presets": "^0.0.17",
+    "@codecanon/next-presets": "^0.0.18",
     "@codecanon/nuska": "^0.1.0",
     "@codecanon/waraq": "^2.1.2",
     "@diceui/mention": "^0.8.0",

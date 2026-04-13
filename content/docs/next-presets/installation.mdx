@@ -43,7 +43,7 @@ yarn add @codecanon/next-presets
 Two imports are required at your app root, and **order matters**:
 
 ```css title="globals.css"
-@import "@codecanon/next-presets/presets/nuteral.css";
+@import "@codecanon/next-presets/default/nuteral.css";
 @import "@codecanon/next-presets/styles.css";
 ```
 
@@ -52,7 +52,7 @@ The preset file (e.g. `nuteral.css`) applies its variables to `:root` — this i
 You can swap `nuteral.css` for any other preset to change the default:
 
 ```css title="globals.css"
-@import "@codecanon/next-presets/presets/blue.css";
+@import "@codecanon/next-presets/default/blue.css";
 @import "@codecanon/next-presets/styles.css";
 ```
 
@@ -61,7 +61,7 @@ You can swap `nuteral.css` for any other preset to change the default:
 | Import | Contents |
 |---|---|
 | `@codecanon/next-presets` | Providers, hooks, components, constants, types |
-| `@codecanon/next-presets/presets/<id>.css` | **Required.** Sets the default `:root` variables. Import before `styles.css`. |
+| `@codecanon/next-presets/default/<id>.css` | **Required.** Sets the default `:root` variables. Import before `styles.css`. |
 | `@codecanon/next-presets/styles.css` | **Required.** All preset overrides scoped to `[data-preset="..."]`. Import after the preset file. |
 | `@codecanon/next-presets/custom-variants.css` | `@variant preset-light` and `@variant preset-dark` directives for writing custom presets in your own CSS |
 
