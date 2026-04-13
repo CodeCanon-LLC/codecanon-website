@@ -14,6 +14,7 @@ description: 50+ shadcn/ui color presets with light/dark mode support for React.
 | Persistence | localStorage with cross-tab sync |
 | Picker UI | Slide-out sheet with search and arrow-key navigation |
 | Preview | Live mini-app preview card per preset |
+| Custom presets | Extend with your own via `@variant preset-light` / `preset-dark` |
 | Peer deps | React 19, next-themes |
 
 ## Entry points
@@ -21,7 +22,9 @@ description: 50+ shadcn/ui color presets with light/dark mode support for React.
 | Import | Contents |
 |---|---|
 | `@codecanon/next-presets` | Providers, hooks, components, constants, types |
-| `@codecanon/next-presets/styles.css` | All 50+ preset CSS definitions — import once at your app root |
+| `@codecanon/next-presets/presets/<id>.css` | **Required first.** Sets default `:root` variables (e.g. `presets/nuteral.css`) |
+| `@codecanon/next-presets/styles.css` | **Required second.** All preset overrides scoped to `[data-preset="..."]` |
+| `@codecanon/next-presets/custom-variants.css` | `@variant` directives for writing custom presets |
 
 ## Quick navigation
 

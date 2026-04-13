@@ -3,7 +3,7 @@ title: Preset picker
 description: PresetPicker, PresetPickerSheet, PresetPickerContent, and related components.
 ---
 
-The preset picker is a composable slide-out sheet UI that lets users search, preview, and select from all available presets. It is built from four collaborating components that share state through a React context.
+The preset picker is a composable slide-out sheet UI that lets users search, preview, and select from all available presets. It is built from collaborating components that share state through a React context.
 
 ## PresetPicker
 
@@ -14,10 +14,14 @@ import {
   PresetPicker,
   PresetPickerSheet,
   PresetPickerContent,
+  PresetPickerToggleButton,
+  PresetPickerThemeToggleGroup,
 } from "@codecanon/next-presets";
 
 <PresetPicker>
+  <PresetPickerToggleButton />
   <PresetPickerSheet>
+    <PresetPickerThemeToggleGroup />
     <PresetPickerContent />
   </PresetPickerSheet>
 </PresetPicker>
@@ -65,18 +69,19 @@ Renders the slide-out sheet container. Animates in from the left. Non-modal — 
 </PresetPicker>
 ```
 
-Extends the `Sheet` component props. The `open` and `onOpenChange` values are wired automatically from `PresetPicker` context.
+Extends the `Sheet` component props. The `open` and `onOpenChange` values are wired automatically from `PresetPicker` context. Pointer events outside the sheet do not close it.
 
 ---
 
 ## PresetPickerContent
 
-The main body of the picker — renders a search field, the full preset list with live previews, and optional theme toggles.
+The main body of the picker — renders a search field and the full preset list with live previews.
 
 ```tsx
 <PresetPickerContent
   showDock={false}
   previewCard={DefaultAppPreviewCard}
+  presets={PRESETS}
 />
 ```
 
@@ -84,9 +89,9 @@ The main body of the picker — renders a search field, the full preset list wit
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `showDock` | `boolean` | `false` | Render previews in a compact dock style at the bottom. |
+| `showDock` | `boolean` | `false` | Render previews in a compact dock style. |
 | `previewCard` | `typeof DefaultAppPreviewCard` | `DefaultAppPreviewCard` | Custom preview card component. Must accept the same props. |
-| `presets` | `readonly [string, string][]` | `PRESETS` | The list of presets to display. Spread to extend with custom entries. |
+| `presets` | `readonly PresetTuple[]` | `PRESETS` | The list of presets to display. Spread to extend with custom entries. |
 
 ### Extending with custom presets
 
@@ -96,47 +101,12 @@ Pass your own presets alongside the built-ins using the `presets` prop. Each ent
 import { PRESETS, PresetPickerContent } from "@codecanon/next-presets";
 
 const MY_PRESETS = [
-  ...PRESETS,
   ["my-brand", "My Brand"],
-  ["my-brand-dark", "My Brand (Dark)"],
+  ...PRESETS,
 ] as const;
 
 <PresetPickerContent presets={MY_PRESETS} />
 ```
-
-Define the CSS variables for your custom presets in your global stylesheet **after** the library import:
-
-```css
-/* globals.css */
-@import "@codecanon/next-presets/styles.css";
-
-/* Light mode */
-[data-preset="my-brand"],
-[data-preset="my-brand"].dark .scheme-light,
-:root[data-preset="my-brand"] {
-  --background: oklch(0.99 0.005 220);
-  --foreground: oklch(0.1 0 0);
-  --primary: oklch(0.45 0.2 220);
-  --primary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.95 0.01 220);
-  --muted-foreground: oklch(0.5 0 0);
-  --border: oklch(0.88 0.01 220);
-  --input: oklch(0.88 0.01 220);
-  --ring: oklch(0.55 0.18 220);
-  --radius: 0.5rem;
-  /* ... all other tokens */
-}
-
-/* Dark mode */
-[data-preset="my-brand"] .scheme-dark,
-[data-preset="my-brand"].dark {
-  --background: oklch(0.1 0.005 220);
-  --foreground: oklch(0.97 0 0);
-  /* ... dark mode tokens */
-}
-```
-
-The picker automatically picks up and displays your custom entries alongside the built-ins, including search filtering and keyboard navigation.
 
 ### Keyboard navigation
 
@@ -150,7 +120,7 @@ The picker automatically picks up and displays your custom entries alongside the
 
 ## PresetPickerThemeToggleGroup
 
-Three-button toggle for switching between light, dark, and system modes. Can be rendered independently — e.g. in a nav or settings panel — without needing to be inside a `<PresetPickerSheet>`.
+Three-button toggle for switching between light, dark, and system modes. Place it inside `<PresetPickerSheet>` or anywhere else inside a `<PresetPicker>`.
 
 ```tsx
 import { PresetPickerThemeToggleGroup } from "@codecanon/next-presets";
@@ -158,7 +128,33 @@ import { PresetPickerThemeToggleGroup } from "@codecanon/next-presets";
 <PresetPickerThemeToggleGroup />
 ```
 
-Internally calls `useTheme()` to read and set the current theme.
+Accepts all `React.ComponentProps<"div">` props. Internally calls `useTheme()` to read and set the current theme.
+
+---
+
+## PresetPickerToggleButton
+
+A ready-made button that opens and closes the preset picker sheet. Use it as a drop-in trigger without writing a custom `usePresetPicker` wrapper.
+
+```tsx
+import {
+  PresetPicker,
+  PresetPickerSheet,
+  PresetPickerContent,
+  PresetPickerThemeToggleGroup,
+  PresetPickerToggleButton,
+} from "@codecanon/next-presets";
+
+<PresetPicker>
+  <PresetPickerToggleButton>🎨 Themes</PresetPickerToggleButton>
+  <PresetPickerSheet>
+    <PresetPickerThemeToggleGroup />
+    <PresetPickerContent />
+  </PresetPickerSheet>
+</PresetPicker>
+```
+
+Accepts all `Button` props including radix-ui `asChild`. The `onClick` handler is wired to `toggleOpen` automatically.
 
 ---
 
@@ -182,11 +178,11 @@ import { DefaultAppPreviewCard } from "@codecanon/next-presets";
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `presetKey` | `PresetKeys` | — | Which preset's colors to render. |
-| `label` | `string` | — | Display name shown below the card. |
-| `active` | `boolean` | `false` | Highlights the card with a primary-color ring (current preset). |
+| `presetKey` | `string` | — | Any preset ID (built-in or custom) whose colors to render. |
+| `label` | `string` | Auto-generated from `presetKey` | Display name shown on the card. |
+| `active` | `boolean` | `false` | Highlights the card with a primary-color ring (currently applied preset). |
 | `highlighted` | `boolean` | `false` | Highlights the card with a secondary ring (keyboard focus). |
-| `showDock` | `boolean` | `false` | Compact dock layout. |
+| `showDock` | `boolean` | `false` | Compact dock layout instead of sidebar layout. |
 | `ref` | `React.Ref<HTMLDivElement>` | — | Forwarded to the root element. |
 
 The card renders a miniature app chrome — sidebar, header, content cards, and footer — using the preset's CSS variables. This gives an accurate preview of how the preset will look in a real UI.
@@ -238,8 +234,8 @@ export function ThemePicker() {
     <PresetPicker>
       <TriggerButton />
       <PresetPickerSheet>
-        <PresetPickerContent />
         <PresetPickerThemeToggleGroup />
+        <PresetPickerContent />
       </PresetPickerSheet>
     </PresetPicker>
   );

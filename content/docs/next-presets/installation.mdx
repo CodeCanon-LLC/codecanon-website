@@ -3,10 +3,6 @@ title: Installation
 description: Add @codecanon/next-presets to your React project.
 ---
 
-## Access
-
-`@codecanon/next-presets` is a private CodeCanon package. Contact [codecanonllc@gmail.com](mailto:codecanonllc@gmail.com) for registry access.
-
 ## Requirements
 
 - React 19 or later
@@ -44,13 +40,30 @@ yarn add @codecanon/next-presets
 
 ## Import styles
 
-Add the stylesheet once at your app root. It injects all 50+ preset CSS variable definitions globally:
+Two imports are required at your app root, and **order matters**:
 
-```tsx title="app/layout.tsx"
-import "@codecanon/next-presets/styles.css";
+```css title="globals.css"
+@import "@codecanon/next-presets/presets/nuteral.css";
+@import "@codecanon/next-presets/styles.css";
 ```
 
-The stylesheet uses `[data-preset="..."]` selectors on `<html>`, so it has no render cost until a preset is active.
+The preset file (e.g. `nuteral.css`) applies its variables to `:root` — this is the **default appearance** shown before any preset is selected or while the picker loads. `styles.css` then loads all preset overrides scoped to `[data-preset="..."]` selectors that activate when a user picks a theme.
+
+You can swap `nuteral.css` for any other preset to change the default:
+
+```css title="globals.css"
+@import "@codecanon/next-presets/presets/blue.css";
+@import "@codecanon/next-presets/styles.css";
+```
+
+## Available entry points
+
+| Import | Contents |
+|---|---|
+| `@codecanon/next-presets` | Providers, hooks, components, constants, types |
+| `@codecanon/next-presets/presets/<id>.css` | **Required.** Sets the default `:root` variables. Import before `styles.css`. |
+| `@codecanon/next-presets/styles.css` | **Required.** All preset overrides scoped to `[data-preset="..."]`. Import after the preset file. |
+| `@codecanon/next-presets/custom-variants.css` | `@variant preset-light` and `@variant preset-dark` directives for writing custom presets in your own CSS |
 
 ## Peer dependencies
 

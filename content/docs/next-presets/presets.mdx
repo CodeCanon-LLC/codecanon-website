@@ -3,32 +3,46 @@ title: Presets
 description: All 50+ built-in color presets and how to use the preset system.
 ---
 
-Each preset defines a complete set of CSS variables for **both light and dark mode** — covering background, foreground, primary, secondary, muted, accent, destructive, border, input, ring, sidebar colors, and five chart colors.
+Each preset defines a complete set of CSS variables for **both light and dark mode** — covering background, foreground, primary, secondary, muted, accent, destructive, border, input, ring, sidebar colors, chart colors, and optional typography and shadow tokens.
 
 ## How presets work
 
-When a preset is active, `PresetProvider` sets `data-preset="<id>"` on `document.documentElement`. The imported stylesheet uses these selector groups:
+When a preset is active, `PresetProvider` sets `data-preset="<id>"` on `document.documentElement`. The library's CSS uses `@variant preset-light` and `@variant preset-dark` directives (from `custom-variants.css`) which expand into the full selector set:
 
 ```css
-/* Light mode */
-[data-preset="violet-bloom"],
-[data-preset="violet-bloom"].dark .scheme-light,
-:root[data-preset="violet-bloom"] {
-  --primary: oklch(0.6 0.25 290);
-  --background: oklch(0.98 0.01 290);
-  /* ... full light mode token set */
-}
+/* Example: how violet-bloom is defined internally */
+[data-preset="violet-bloom"] {
+  @variant preset-light {
+    --primary: #7033ff;
+    --background: #fdfdfd;
+    /* ... full light mode token set */
+  }
 
-/* Dark mode */
-[data-preset="violet-bloom"] .scheme-dark,
-[data-preset="violet-bloom"].dark {
-  --primary: oklch(0.75 0.22 290);
-  --background: oklch(0.1 0.02 290);
-  /* ... full dark mode token set */
+  @variant preset-dark {
+    --primary: #8c5cff;
+    --background: #1a1b1e;
+    /* ... full dark mode token set */
+  }
 }
 ```
 
-This means **presets and dark/light mode are fully independent** — every preset works in both modes. The `.scheme-light` / `.scheme-dark` selectors allow scoping light or dark mode to a specific subtree.
+The `preset-light` variant applies variables when the element (or its ancestor) is in light mode — and also to any `.scheme-light` subtree. The `preset-dark` variant applies when in dark mode — and also to any `.scheme-dark` subtree. This means **presets and dark/light mode are fully independent** — every preset works in both modes.
+
+## scheme-light / scheme-dark
+
+Scope light or dark mode to a specific subtree regardless of the global theme:
+
+```tsx
+{/* Always renders in light mode, even when the app is dark */}
+<div className="scheme-light">
+  <MyCard />
+</div>
+
+{/* Always renders in dark mode, even when the app is light */}
+<div className="scheme-dark">
+  <MyCard />
+</div>
+```
 
 ## Using a preset
 
@@ -43,15 +57,12 @@ setPreset("violet-bloom");
 ## Listing all presets
 
 ```tsx
-import { PRESETS, DEFAULT_PRESET } from "@codecanon/next-presets";
+import { PRESETS } from "@codecanon/next-presets";
 
 // Array of [id, label] tuples
 PRESETS.forEach(([key, label]) => {
   console.log(key, label);
 });
-
-// Default preset ID
-console.log(DEFAULT_PRESET); // "nuteral"
 ```
 
 ---
@@ -62,7 +73,8 @@ console.log(DEFAULT_PRESET); // "nuteral"
 |---|---|
 | `nuteral` | Nuteral |
 | `nuteral-accent` | Nuteral (Accent) |
-| `new` | Anew |
+| `codecanon` | CodeCanon |
+| `anew` | Anew |
 | `red` | Red |
 | `rose` | Rose |
 | `orange` | Orange |
@@ -115,47 +127,83 @@ console.log(DEFAULT_PRESET); // "nuteral"
 
 ---
 
+## CSS tokens per preset
+
+Each preset can define any of the following tokens. Typography and shadow tokens are optional — presets that omit them fall back to your app's base values.
+
+| Token | Description |
+|---|---|
+| `--background` / `--foreground` | Page background and text |
+| `--card` / `--card-foreground` | Card surface and text |
+| `--popover` / `--popover-foreground` | Popover surface and text |
+| `--primary` / `--primary-foreground` | Primary action color |
+| `--secondary` / `--secondary-foreground` | Secondary surface |
+| `--muted` / `--muted-foreground` | Subtle background and muted text |
+| `--accent` / `--accent-foreground` | Highlight / hover surface |
+| `--destructive` / `--destructive-foreground` | Destructive / error color |
+| `--border` / `--input` / `--ring` | Borders, inputs, focus rings |
+| `--sidebar` / `--sidebar-foreground` / … | Sidebar-specific tokens |
+| `--chart-1` … `--chart-5` | Data visualization palette |
+| `--radius` | Base border radius |
+| `--font-sans` / `--font-serif` / `--font-mono` | _(optional)_ Preset-specific fonts |
+| `--letter-spacing` / `--spacing` | _(optional)_ Typographic rhythm |
+| `--shadow-color` / `--shadow-opacity` / … | _(optional)_ Shadow appearance |
+
+---
+
 ## Custom presets
 
-You can extend the preset system with your own CSS. Define the preset's variables using `[data-preset="my-preset"]` selectors and add them to your global stylesheet after the library styles:
+Write your own preset CSS using the `@variant preset-light` and `@variant preset-dark` directives from `custom-variants.css`. Import this file in your CSS entry point alongside the library styles:
 
-```css
-/* globals.css — after @import "@codecanon/next-presets/styles.css" */
+```css title="my-brand-preset.css"
+@import "@codecanon/next-presets/custom-variants.css";
 
-/* Light mode */
-[data-preset="my-brand"],
-[data-preset="my-brand"].dark .scheme-light,
-:root[data-preset="my-brand"] {
-  --background: oklch(0.99 0.005 220);
-  --foreground: oklch(0.1 0 0);
-  --primary: oklch(0.45 0.2 220);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.93 0.02 220);
-  --secondary-foreground: oklch(0.2 0 0);
-  --muted: oklch(0.95 0.01 220);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.9 0.04 220);
-  --accent-foreground: oklch(0.15 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.01 220);
-  --input: oklch(0.88 0.01 220);
-  --ring: oklch(0.55 0.18 220);
-  --radius: 0.5rem;
-}
+:root, /* <-- add root if you want the preset to be default, otherwise remove */
+[data-preset="my-brand"] {
+  @variant preset-light {
+    --background: oklch(0.99 0.005 220);
+    --foreground: oklch(0.1 0 0);
+    --primary: oklch(0.45 0.2 220);
+    --primary-foreground: oklch(0.98 0 0);
+    --secondary: oklch(0.93 0.02 220);
+    --secondary-foreground: oklch(0.2 0 0);
+    --muted: oklch(0.95 0.01 220);
+    --muted-foreground: oklch(0.5 0 0);
+    --accent: oklch(0.9 0.04 220);
+    --accent-foreground: oklch(0.15 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.88 0.01 220);
+    --input: oklch(0.88 0.01 220);
+    --ring: oklch(0.55 0.18 220);
+    --radius: 0.5rem;
+    /* sidebar, chart, font tokens... */
+  }
 
-/* Dark mode */
-[data-preset="my-brand"] .scheme-dark,
-[data-preset="my-brand"].dark {
-  --background: oklch(0.1 0.005 220);
-  --foreground: oklch(0.97 0 0);
-  --primary: oklch(0.65 0.18 220);
-  /* ... dark mode values */
+  @variant preset-dark {
+    --background: oklch(0.1 0.005 220);
+    --foreground: oklch(0.97 0 0);
+    --primary: oklch(0.65 0.18 220);
+    /* ... dark mode values */
+  }
 }
 ```
 
-Then activate it with `setPreset`:
+```css title="globals.css"
+@import "./my-brand-preset.css";
+@import "@codecanon/next-presets/styles.css";
+```
+
+Then register it in the picker and activate it:
 
 ```tsx
+import { PRESETS, PresetPickerContent } from "@codecanon/next-presets";
+
+const MY_PRESETS = [["my-brand", "My Brand"], ...PRESETS] as const;
+
+// In your picker:
+<PresetPickerContent presets={MY_PRESETS} />
+
+// Programmatically:
 const { setPreset } = usePreset();
 setPreset("my-brand");
 ```

@@ -8,6 +8,7 @@ All types are exported directly from `@codecanon/next-presets`.
 ```tsx
 import type {
   PresetKeys,
+  PresetTuple,
   ColorScheme,
   Theme,
   ThemeProviderProps,
@@ -19,13 +20,14 @@ import type {
 
 ## PresetKeys
 
-A union of all valid preset IDs, derived from the `PRESETS` constant.
+A union of all valid built-in preset IDs, derived from the `PRESETS` constant.
 
 ```ts
 type PresetKeys =
   | "nuteral"
   | "nuteral-accent"
-  | "new"
+  | "codecanon"
+  | "anew"
   | "red"
   | "rose"
   | "orange"
@@ -79,6 +81,16 @@ type PresetKeys =
 
 ---
 
+## PresetTuple
+
+A single `[id, label]` pair describing one preset. Used when passing custom entries to `PresetPickerContent`.
+
+```ts
+type PresetTuple = readonly [string, string];
+```
+
+---
+
 ## ColorScheme
 
 The resolved color mode — never includes `"system"`.
@@ -106,8 +118,9 @@ Props accepted by `<ThemeProvider>`.
 ```ts
 type ThemeProviderProps = {
   children: React.ReactNode;
-  defaultTheme?: Theme;
-  themeKey?: string;
+  defaultTheme?: Theme;       // default: "system"
+  themeKey?: string;          // default: "theme"
+  attribute?: string | string[];
   // + all next-themes ThemeProviderProps
 };
 ```
@@ -121,8 +134,8 @@ Props accepted by `<PresetProvider>`.
 ```ts
 type PresetProviderProps = {
   children: React.ReactNode;
-  defaultPreset?: PresetKeys;
-  presetKey?: string;
+  presetKey?: string;    // default: "preset"
+  presetAttr?: string;   // default: "data-preset"
 };
 ```
 
@@ -134,8 +147,11 @@ Returned by `usePreset()`.
 
 ```ts
 type PresetState = {
-  preset?: PresetKeys;
-  setPreset: (preset: PresetKeys) => void;
+  /** The currently active preset ID, or undefined when none is set. */
+  preset?: string | undefined;
+  /** Switch to any preset by ID — built-in or custom. */
+  setPreset: React.Dispatch<React.SetStateAction<string | undefined>>;
+  /** Clears the active preset and removes the data-preset attribute. */
   resetPreset: () => void;
 };
 ```
@@ -149,37 +165,26 @@ Returned by `usePresetPicker()`.
 ```ts
 type PresetPickerState = {
   open: boolean;
-  setOpen: (value: boolean) => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   toggleOpen: () => void;
 };
 ```
 
 ---
 
-## PresetTuple
+## PRESETS (constant)
 
-A single `[id, label]` pair describing one preset — used when passing custom entries to `PresetPickerContent`.
-
-```ts
-type PresetTuple = readonly [string, string];
-```
-
----
-
-## PRESETS
-
-The full preset registry — a readonly array of `[id, label]` tuples.
+The full preset registry — a readonly array of `[id, label]` tuples exported from `@codecanon/next-presets`.
 
 ```ts
 const PRESETS: readonly [PresetKeys, string][];
 ```
 
----
-
-## DEFAULT_PRESET
-
-The preset used when no stored value exists and no `defaultPreset` prop is provided.
+Example:
 
 ```ts
-const DEFAULT_PRESET: PresetKeys; // "nuteral"
+import { PRESETS } from "@codecanon/next-presets";
+
+PRESETS[0]; // ["nuteral", "Nuteral"]
+PRESETS.find(([id]) => id === "violet-bloom"); // ["violet-bloom", "Violet Bloom"]
 ```

@@ -10,7 +10,7 @@ Wraps your app with light/dark mode context via `next-themes`. Must be the outer
 ```tsx
 import { ThemeProvider } from "@codecanon/next-presets";
 
-<ThemeProvider defaultTheme="dark" themeKey="theme">
+<ThemeProvider defaultTheme="system" themeKey="theme">
   {children}
 </ThemeProvider>
 ```
@@ -20,8 +20,9 @@ import { ThemeProvider } from "@codecanon/next-presets";
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `children` | `ReactNode` | — | Required. Your app content. |
-| `defaultTheme` | `Theme` | `"dark"` | Initial theme when no persisted value exists. |
+| `defaultTheme` | `Theme` | `"system"` | Initial theme when no persisted value exists. |
 | `themeKey` | `string` | `"theme"` | `localStorage` key used to persist the theme. |
+| `attribute` | `string \| string[]` | `"class"` | HTML attribute(s) used to apply the theme. `data-preset-theme` is always added automatically. |
 
 All other props are forwarded to `next-themes` `ThemeProvider`.
 
@@ -35,7 +36,7 @@ Manages which color preset is active. Applies `data-preset="<id>"` to `document.
 import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
 
 <ThemeProvider>
-  <PresetProvider defaultPreset="nuteral" presetKey="preset">
+  <PresetProvider presetKey="preset">
     {children}
   </PresetProvider>
 </ThemeProvider>
@@ -46,8 +47,10 @@ import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `children` | `ReactNode` | — | Required. Your app content. |
-| `defaultPreset` | `PresetKeys` | `"nuteral"` | Initial preset when no persisted value exists. |
-| `presetKey` | `string` | `"preset"` | `localStorage` key used to persist the preset. |
+| `presetKey` | `string` | `"preset"` | `localStorage` key used to persist the active preset. |
+| `presetAttr` | `string` | `"data-preset"` | HTML attribute set on `<html>` to activate a preset. |
+
+When no stored preset exists the attribute is not set — the base shadcn/ui styles apply.
 
 ---
 
@@ -107,9 +110,9 @@ Returns the active preset and controls. Must be called inside a `<PresetProvider
 import { usePreset } from "@codecanon/next-presets";
 
 const {
-  preset,       // PresetKeys | undefined
-  setPreset,    // (preset: PresetKeys) => void
-  resetPreset,  // () => void
+  preset,       // string | undefined — active preset ID
+  setPreset,    // (preset: string) => void
+  resetPreset,  // () => void — clears the preset
 } = usePreset();
 ```
 
@@ -117,9 +120,9 @@ const {
 
 | Property | Type | Description |
 |---|---|---|
-| `preset` | `PresetKeys \| undefined` | The currently active preset ID. |
-| `setPreset` | `(preset: PresetKeys) => void` | Switch to a different preset. Persists to localStorage. |
-| `resetPreset` | `() => void` | Resets to the `defaultPreset` passed to `PresetProvider`. |
+| `preset` | `string \| undefined` | The currently active preset ID, or `undefined` if none is set. |
+| `setPreset` | `(preset: string) => void` | Switch to any preset by ID — built-in or custom. Persists to localStorage. |
+| `resetPreset` | `() => void` | Clears the active preset and removes the `data-preset` attribute. |
 
 ### Example: preset switcher
 
@@ -151,11 +154,8 @@ function PresetList() {
 ## Constants
 
 ```tsx
-import { PRESETS, DEFAULT_PRESET } from "@codecanon/next-presets";
+import { PRESETS } from "@codecanon/next-presets";
 
-// Array of [id, label] tuples for all 50+ built-in presets
+// Array of [id, label] tuples for all built-in presets
 PRESETS; // [["nuteral", "Nuteral"], ["violet-bloom", "Violet Bloom"], ...]
-
-// The default preset ID
-DEFAULT_PRESET; // "nuteral"
 ```

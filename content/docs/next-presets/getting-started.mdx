@@ -3,20 +3,22 @@ title: Getting started
 description: Wrap your app with providers and add a theme preset picker.
 ---
 
-## 1. Import the stylesheet
+## 1. Import the stylesheets
 
-Add the preset CSS once at your app root:
+Add both imports at your app root — the preset file must come first:
 
-```tsx title="app/layout.tsx"
-import "@codecanon/next-presets/styles.css";
+```css title="globals.css"
+@import "@codecanon/next-presets/presets/nuteral.css";
+@import "@codecanon/next-presets/styles.css";
 ```
+
+The first import sets the **default `:root` variables** (the appearance before any preset is chosen). The second loads all preset overrides. Swap `nuteral.css` for any other preset ID to change the default.
 
 ## 2. Wrap your app with providers
 
 Add `ThemeProvider` and `PresetProvider` at the root. `PresetProvider` must be nested inside `ThemeProvider`:
 
 ```tsx title="app/layout.tsx"
-import "@codecanon/next-presets/styles.css";
 import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
 
 export default function RootLayout({
@@ -27,8 +29,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider defaultTheme="dark">
-          <PresetProvider defaultPreset="nuteral">
+        <ThemeProvider>
+          <PresetProvider>
             {children}
           </PresetProvider>
         </ThemeProvider>
@@ -56,6 +58,7 @@ export function ThemeSidebar() {
   return (
     <PresetPicker>
       <PresetPickerSheet>
+        <PresetPickerThemeToggleGroup />
         <PresetPickerContent />
       </PresetPickerSheet>
     </PresetPicker>
@@ -74,19 +77,31 @@ import {
   PresetPicker,
   PresetPickerSheet,
   PresetPickerContent,
+  PresetPickerToggleButton,
+  PresetPickerThemeToggleGroup,
   usePresetPicker,
 } from "@codecanon/next-presets";
 
-function OpenButton() {
+function CustomOpenButton() {
   const { toggleOpen } = usePresetPicker();
-  return <button onClick={toggleOpen}>Change theme</button>;
+  return <button onClick={toggleOpen}>Change Preset</button>;
 }
 
 export function App() {
   return (
     <PresetPicker>
-      <OpenButton />
+      <main className="my-app">
+        {/*Option A*/}
+        <PresetPickerToggleButton>Choose Preset</PresetPickerToggleButton>
+        {/*Option B*/}
+        <PresetPickerToggleButton asChild> 
+          <button onClick={toggleOpen}>Change Preset</button>
+        </PresetPickerToggleButton>
+        {/*Option C: see above*/}
+        <CustomOpenButton />
+      </main>
       <PresetPickerSheet>
+        <PresetPickerThemeToggleGroup />
         <PresetPickerContent />
       </PresetPickerSheet>
     </PresetPicker>
@@ -104,10 +119,10 @@ function PresetControls() {
 
   return (
     <div>
-      <p>Active: {preset}</p>
+      <p>Active: {preset ?? "none"}</p>
       <button onClick={() => setPreset("violet-bloom")}>Violet Bloom</button>
       <button onClick={() => setPreset("catppuccin")}>Catppuccin</button>
-      <button onClick={resetPreset}>Reset to default</button>
+      <button onClick={resetPreset}>Reset</button>
     </div>
   );
 }
