@@ -1,0 +1,98 @@
+---
+title: Reducing Bundle Size
+description: Optimize your bundle by including only the presets you actually use.
+---
+
+## Reducing Bundle Size
+
+By default, `styles.css` includes all **50+ preset definitions**.  
+If your app only uses a handful of presets, you can strip the rest from the compiled CSS and from the `PresetPicker` UI.
+
+---
+
+<Tabs items={['Vite Plugin (Recommended)', 'Manual (Any Bundler)']}>
+  <Tab>
+
+Install the plugin in your `vite.config.ts`.  
+It intercepts the `styles.css` import and the main package import automatically — **no changes to your existing code needed**.
+
+```ts
+// vite.config.ts
+import { nextPresetsPlugin } from "@codecanon/next-presets/vite"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [
+    nextPresetsPlugin({
+      presets: ["claude", "anew", "rose"],
+    }),
+  ],
+})
+```
+
+### What the plugin does
+
+- Replaces `styles.css` with a virtual bundle containing only:
+  - `components.css`
+  - Selected preset files
+- Overrides the `PRESETS` export so `PresetPicker` only shows selected presets
+- Warns at startup if an unknown preset ID is passed
+- Falls back to all presets if none are valid
+
+<Callout>
+Your existing CSS and JS imports stay unchanged.
+</Callout>
+
+```css
+/* app/globals.css — no changes needed */
+@import "@codecanon/next-presets/default/nuteral.css";
+@import "@codecanon/next-presets/styles.css";
+```
+
+  </Tab>
+
+  <Tab>
+
+Skip `styles.css` entirely and import only what you need.  
+`components.css` is pre-compiled and does **not require Tailwind** on the consumer side.
+
+```css
+/* app/globals.css */
+@import "@codecanon/next-presets/default/nuteral.css";
+@import "@codecanon/next-presets/components.css";
+
+/* only the presets you want in the picker */
+@import "@codecanon/next-presets/presets/nuteral.css";
+@import "@codecanon/next-presets/presets/claude.css";
+@import "@codecanon/next-presets/presets/anew.css";
+```
+
+### Filter presets in your UI
+
+```tsx
+import { filterPresets, PresetPickerContent } from "@codecanon/next-presets"
+
+const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
+
+// Inside your picker:
+<PresetPickerContent presets={MY_PRESETS} />
+```
+
+<Callout>
+`filterPresets` preserves the original canonical order of presets.
+</Callout>
+
+  </Tab>
+</Tabs>
+
+---
+
+## CSS Export Reference
+
+| Import path                                   | Contents                                              |
+|----------------------------------------------|------------------------------------------------------|
+| `@codecanon/next-presets/styles.css`         | All-in-one: components + all presets                 |
+| `@codecanon/next-presets/components.css`     | Pre-compiled Tailwind/shadcn/custom variants         |
+| `@codecanon/next-presets/default/{id}.css`   | Single preset — `:root` scoped (initial default)     |
+| `@codecanon/next-presets/presets/{id}.css`   | Single preset — `[data-preset]` scoped (switching)   |
+| `@codecanon/next-presets/custom-variants.css`| `@custom-variant` definitions for preset authoring   |

@@ -11,6 +11,8 @@
     "providers",
     "preset-picker",
     "presets",
+    "---Advanced---",
+    "reduce-bundle-size",
     "---Reference---",
     "types",
     "---Apps and Demos---",
