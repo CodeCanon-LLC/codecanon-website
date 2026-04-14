@@ -13,6 +13,7 @@ import {
   getWaraqDemoLink,
 } from "@/lib/links";
 import type { Route } from "./+types/home";
+import packageJson from '@/../package.json'
 
 const WaraqDemo = lazy(() => import("@/components/waraq-demo"));
 
@@ -133,7 +134,7 @@ export default function Home() {
             <LibraryCard
               paid
               to={getDocsWaraqLink()}
-              version="v2"
+              version={packageJson?.dependencies["@codecanon/waraq"]}
               title="@codecanon/waraq"
               description={
                 <>
@@ -146,8 +147,7 @@ export default function Home() {
             <LibraryCard
               paid
               to={getDocsNuskaLink()}
-              version="v0.1"
-              title="@codecanon/nuska"
+              version={packageJson?.dependencies["@codecanon/nuska"]}
               description={
                 <>
                   Headless git-like version control for any key/value
@@ -159,7 +159,7 @@ export default function Home() {
             />
             <LibraryCard
               to={getDocsNextPresetsLink()}
-              version="v0.0.4"
+              version={packageJson?.dependencies["@codecanon/next-presets"]}
               title="@codecanon/next-presets"
               description={
                 <>
@@ -266,7 +266,7 @@ function LibraryCard({
   description,
 }: {
   to: To;
-  version: React.ReactNode;
+  version: string;
   paid?: boolean;
   title?: React.ReactNode;
   description?: React.ReactNode;
@@ -278,7 +278,7 @@ function LibraryCard({
     >
       <div className="mb-2 flex items-center gap-2">
         <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-          {version}
+          {version.replace('^', '')}
         </span>
         {paid ? (
           <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
