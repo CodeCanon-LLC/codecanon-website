@@ -80,7 +80,7 @@ The main body of the picker — renders a search field and the full preset list 
 ```tsx
 <PresetPickerContent
   showDock={false}
-  previewCard={PresetPreviewCard}
+  card={PresetPreviewCard}
   presets={PRESETS}
 />
 ```
@@ -90,7 +90,7 @@ The main body of the picker — renders a search field and the full preset list 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `showDock` | `boolean` | `false` | Render previews in a compact dock style. |
-| `previewCard` | `typeof PresetPreviewCard` | `PresetPreviewCard` | Custom preview card component. Must accept the same props. |
+| `card` | `typeof PresetPreviewCard` | `PresetPreviewCard` | Custom preview card component. Must accept the same props. |
 | `presets` | `readonly PresetTuple[]` | `PRESETS` | The list of presets to display. Spread to extend with custom entries. |
 
 ### Extending with custom presets
@@ -189,7 +189,7 @@ The card renders a miniature app chrome — sidebar, header, content cards, and 
 
 ### Custom preview card
 
-Pass a custom component to `PresetPickerContent` via the `previewCard` prop. It receives the same props as `PresetPreviewCard`:
+Pass a custom component to `PresetPickerContent` via the `card` prop. It receives the same props as `PresetPreviewCard`:
 
 ```tsx
 import type { PresetPreviewCard } from "@codecanon/next-presets";
@@ -204,7 +204,7 @@ function MyPreviewCard({ preset, label, active }: PreviewCardProps) {
   );
 }
 
-<PresetPickerContent previewCard={MyPreviewCard} />
+<PresetPickerContent card={MyPreviewCard} />
 ```
 
 You can also get the data from the `usePreset` hook.
@@ -227,7 +227,7 @@ function MyPreviewCard({ preset }: PreviewCardProps) {
   );
 }
 
-<PresetPickerContent previewCard={MyPreviewCard} />
+<PresetPickerContent card={MyPreviewCard} />
 ```
 
 ---
