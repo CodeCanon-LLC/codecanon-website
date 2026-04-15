@@ -10,7 +10,7 @@ Wraps your app with light/dark mode context via `next-themes`. Must be the outer
 ```tsx
 import { ThemeProvider } from "@codecanon/next-presets";
 
-<ThemeProvider defaultTheme="system" themeKey="theme">
+<ThemeProvider defaultTheme="system" storageKey="theme">
   {children}
 </ThemeProvider>
 ```
@@ -21,7 +21,7 @@ import { ThemeProvider } from "@codecanon/next-presets";
 |---|---|---|---|
 | `children` | `ReactNode` | — | Required. Your app content. |
 | `defaultTheme` | `Theme` | `"system"` | Initial theme when no persisted value exists. |
-| `themeKey` | `string` | `"theme"` | `localStorage` key used to persist the theme. |
+| `storageKey` | `string` | `"theme"` | `localStorage` key used to persist the theme. |
 | `attribute` | `string \| string[]` | `"class"` | HTML attribute(s) used to apply the theme. `data-preset-theme` is always added automatically. |
 
 All other props are forwarded to `next-themes` `ThemeProvider`.
@@ -36,7 +36,7 @@ Manages which color preset is active. Applies `data-preset="<id>"` to `document.
 import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
 
 <ThemeProvider>
-  <PresetProvider presetKey="preset">
+  <PresetProvider storageKey="preset">
     {children}
   </PresetProvider>
 </ThemeProvider>
@@ -47,8 +47,10 @@ import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `children` | `ReactNode` | — | Required. Your app content. |
-| `presetKey` | `string` | `"preset"` | `localStorage` key used to persist the active preset. |
-| `presetAttr` | `string` | `"data-preset"` | HTML attribute set on `<html>` to activate a preset. |
+| `storageKey` | `string` | `"preset"` | `localStorage` key used to persist the active preset. |
+| `attributes` | `data-${string}` | `"data-preset"` | HTML attribute set on `<html>` to activate a preset. |
+| `preset`         | `string \| undefined`                   | `undefined` | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
+| `onPresetChange` | `(preset: string \| undefined) => void` | `undefined` | Fires when the user selects a new preset. Use this to persist the value to your database.                         |
 
 When no stored preset exists the attribute is not set — the base shadcn/ui styles apply.
 
@@ -151,11 +153,58 @@ function PresetList() {
 
 ---
 
+## Controlled Preset (Database-backed)
+
+`PresetProvider` supports a **controlled mode** for cases where the active preset is stored in a database. Pass `preset` and `onPresetChange` to take control of the value:
+
+```typescript
+// app/providers.tsx
+"use client"
+
+import { useState, useEffect } from "react"
+import { PresetProvider } from "@codecanon/next-presets"
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  const [dbPreset, setDbPreset] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    fetchUserPreset().then(setDbPreset)
+  }, [])
+
+  async function handlePresetChange(preset: string | undefined) {
+    setDbPreset(preset) // optimistic update — no visual delay
+    await saveUserPreset(preset) // persist to DB in the background
+  }
+
+  return (
+    <PresetProvider preset={dbPreset} onPresetChange={handlePresetChange}>
+      {children}
+    </PresetProvider>
+  )
+}
+```
+
+<Callout>
+**How it works:**
+1. **Fast initial render** — on first load, `preset` is `undefined` (DB not yet fetched). `PresetProvider` falls back to the localStorage value so the page renders with the correct preset immediately, with no flash.
+2. **DB value takes over** — once `preset` resolves to a string, it becomes the authoritative value and overrides localStorage.
+3. **User picks a preset** — `onPresetChange` fires immediately. Update your state optimistically (as shown above) so the UI switches with no delay while the DB write happens in the background.
+4. **localStorage stays in sync** — every preset change (user-initiated or controlled) is written to localStorage, so the next page load is fast regardless of DB latency.
+</Callout>
+| Prop             | Type                                    | Description                                                                                                       |
+| ---------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `preset`         | `string \| undefined`                   | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
+| `onPresetChange` | `(preset: string \| undefined) => void` | Fires when the user selects a new preset. Use this to persist the value to your database.                         |
+
+
+---
+
 ## Constants
 
 ```tsx
-import { PRESETS } from "@codecanon/next-presets";
+import { PRESETS, PRESET_BY_ID } from "@codecanon/next-presets";
 
 // Array of [id, label] tuples for all built-in presets
 PRESETS; // [["nuteral", "Nuteral"], ["violet-bloom", "Violet Bloom"], ...]
+PRESET_BY_ID; // { "nuteral": "Nuteral", "violet-bloom": "Violet Bloom", ... }
 ```

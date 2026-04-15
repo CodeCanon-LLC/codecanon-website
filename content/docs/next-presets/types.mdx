@@ -119,7 +119,7 @@ Props accepted by `<ThemeProvider>`.
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;       // default: "system"
-  themeKey?: string;          // default: "theme"
+  storageKey?: string;          // default: "theme"
   attribute?: string | string[];
   // + all next-themes ThemeProviderProps
 };
@@ -134,8 +134,8 @@ Props accepted by `<PresetProvider>`.
 ```ts
 type PresetProviderProps = {
   children: React.ReactNode;
-  presetKey?: string;    // default: "preset"
-  presetAttr?: string;   // default: "data-preset"
+  storageKey?: string;            // default: "preset"
+  attributes?: `data-${string}`;  // default: "data-preset"
 };
 ```
 

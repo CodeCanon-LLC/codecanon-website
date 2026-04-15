@@ -80,7 +80,7 @@ The main body of the picker — renders a search field and the full preset list 
 ```tsx
 <PresetPickerContent
   showDock={false}
-  previewCard={DefaultAppPreviewCard}
+  previewCard={PresetPreviewCard}
   presets={PRESETS}
 />
 ```
@@ -90,7 +90,7 @@ The main body of the picker — renders a search field and the full preset list 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `showDock` | `boolean` | `false` | Render previews in a compact dock style. |
-| `previewCard` | `typeof DefaultAppPreviewCard` | `DefaultAppPreviewCard` | Custom preview card component. Must accept the same props. |
+| `previewCard` | `typeof PresetPreviewCard` | `PresetPreviewCard` | Custom preview card component. Must accept the same props. |
 | `presets` | `readonly PresetTuple[]` | `PRESETS` | The list of presets to display. Spread to extend with custom entries. |
 
 ### Extending with custom presets
@@ -158,19 +158,19 @@ Accepts all `Button` props including radix-ui `asChild`. The `onClick` handler i
 
 ---
 
-## DefaultAppPreviewCard
+## PresetPreviewCard
 
 A mock app UI that renders in the colors of any preset — useful for previewing themes before applying them.
 
 ```tsx
-import { DefaultAppPreviewCard } from "@codecanon/next-presets";
+import { PresetPreviewCard } from "@codecanon/next-presets";
 
-<DefaultAppPreviewCard
-  presetKey="violet-bloom"
+<PresetPreviewCard
+  preset="violet-bloom"
   label="Violet Bloom"
   active={false}
   highlighted={false}
-  showDock={false}
+  variant='default'
 />
 ```
 
@@ -178,27 +178,50 @@ import { DefaultAppPreviewCard } from "@codecanon/next-presets";
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `presetKey` | `string` | — | Any preset ID (built-in or custom) whose colors to render. |
-| `label` | `string` | Auto-generated from `presetKey` | Display name shown on the card. |
+| `preset` | `string` | — | Any preset ID (built-in or custom) whose colors to render. |
+| `label` | `string` | Auto-generated from `preset` | Display name shown on the card. |
 | `active` | `boolean` | `false` | Highlights the card with a primary-color ring (currently applied preset). |
 | `highlighted` | `boolean` | `false` | Highlights the card with a secondary ring (keyboard focus). |
-| `showDock` | `boolean` | `false` | Compact dock layout instead of sidebar layout. |
+| `variant` | `"default" \| "dock"` | `"default"` | Sidebar layout or compact dock layout |
 | `ref` | `React.Ref<HTMLDivElement>` | — | Forwarded to the root element. |
 
 The card renders a miniature app chrome — sidebar, header, content cards, and footer — using the preset's CSS variables. This gives an accurate preview of how the preset will look in a real UI.
 
 ### Custom preview card
 
-Pass a custom component to `PresetPickerContent` via the `previewCard` prop. It receives the same props as `DefaultAppPreviewCard`:
+Pass a custom component to `PresetPickerContent` via the `previewCard` prop. It receives the same props as `PresetPreviewCard`:
 
 ```tsx
-import type { DefaultAppPreviewCard } from "@codecanon/next-presets";
+import type { PresetPreviewCard } from "@codecanon/next-presets";
 
-type PreviewCardProps = React.ComponentProps<typeof DefaultAppPreviewCard>;
+type PreviewCardProps = React.ComponentProps<typeof PresetPreviewCard>;
 
-function MyPreviewCard({ presetKey, label, active }: PreviewCardProps) {
+function MyPreviewCard({ preset, label, active }: PreviewCardProps) {
   return (
-    <div data-preset={presetKey} style={{ border: active ? "2px solid blue" : "none" }}>
+    <div data-preset={preset} style={{ border: active ? "2px solid blue" : "none" }}>
+      {label}
+    </div>
+  );
+}
+
+<PresetPickerContent previewCard={MyPreviewCard} />
+```
+
+You can also get the data from the `usePreset` hook.
+
+```tsx
+import { usePreset, PRESET_BY_NAME, type PresetPreviewCard } from "@codecanon/next-presets";
+
+type PreviewCardProps = React.ComponentProps<typeof PresetPreviewCard>;
+
+function MyPreviewCard({ preset }: PreviewCardProps) {
+  const { preset: activePreset } = usePreset()
+
+  const active = preset === activePrest
+  const label = PRESET_BY_NAME[preset]
+
+  return (
+    <div data-preset={preset} style={{ border: active ? "2px solid blue" : "none" }}>
       {label}
     </div>
   );
