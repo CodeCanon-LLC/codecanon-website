@@ -148,6 +148,7 @@ export default function Home() {
               paid
               to={getDocsNuskaLink()}
               version={packageJson?.dependencies["@codecanon/nuska"]}
+              title="@codecanon/nuska"
               description={
                 <>
                   Headless git-like version control for any key/value
