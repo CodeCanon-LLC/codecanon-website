@@ -15,5 +15,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "off"
   }
 }
