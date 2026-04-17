@@ -16,7 +16,7 @@
 
 ## What is CodeCanon?
 
-CodeCanon LLC builds **composable React libraries** that bring powerful design tooling into your applications — without the complexity of building from scratch. We also offer **software consultation services** for teams that need architecture expertise.
+**CodeCanon LLC** is a software development company specializing in open-source and commercial developer tools, React/TypeScript component libraries, and custom software solutions for web and mobile platforms.
 
 Our flagship product, **@codecanon/waraq**, is a production-ready Canva-like drag-and-drop design editor library for React — available to authorized users.
 
