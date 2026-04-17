@@ -1,0 +1,10 @@
+name = "codecanon-purchase-worker"
+main = "src/index.ts"
+compatibility_date = "2025-04-17"
+
+# Secrets — set via: wrangler secret put <NAME>
+# Required:
+#   STRIPE_WEBHOOK_SECRET  — from Stripe Dashboard > Webhooks > signing secret
+#   NPM_TOKEN              — npm automation token with org:team:write scope
+#   RESEND_API_KEY         — from resend.com
+#   RESEND_FROM_EMAIL      — verified sender, e.g. "CodeCanon <noreply@codecanon.com>"

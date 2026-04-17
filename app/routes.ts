@@ -20,6 +20,8 @@ export default [
       route("template/:id", "routes/waraq/price-tag/template.tsx"),
     ]),
   ]),
+  route("purchase", "routes/purchase.tsx"),
+  route("purchase/success", "routes/purchase.success.tsx"),
   route("docs/*", "routes/docs.tsx"),
   route("api/search", "routes/search.ts"),
 

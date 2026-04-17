@@ -28,3 +28,7 @@ export const getWaraqPriceTagDesignLink = (id: string) =>
 
 export const getWaraqPriceTagTemplateLink = (id: string) =>
   `${getWaraqPriceTagLink()}/template/${id}`;
+
+export const getPurchaseLink = () => `/purchase`;
+
+export const getPurchaseSuccessLink = () => `/purchase/success`;

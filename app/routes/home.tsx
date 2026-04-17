@@ -10,6 +10,7 @@ import {
   getDocsNextPresetsLink,
   getDocsNuskaLink,
   getDocsWaraqLink,
+  getPurchaseLink,
   getWaraqDemoLink,
 } from "@/lib/links";
 import type { Route } from "./+types/home";
@@ -273,10 +274,7 @@ function LibraryCard({
   description?: React.ReactNode;
 }) {
   return (
-    <Link
-      to={to}
-      className="group flex flex-col rounded-xl border bg-card p-6 hover:border-primary transition-colors"
-    >
+    <div className="flex flex-col rounded-xl border bg-card p-6 hover:border-primary transition-colors">
       <div className="mb-2 flex items-center gap-2">
         <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
           {version.replace('^', '')}
@@ -295,9 +293,22 @@ function LibraryCard({
       <p className="flex-1 mb-4 text-sm text-muted-foreground leading-relaxed">
         {description}
       </p>
-      <span className="flex items-center gap-1 text-xs font-medium text-primary group-hover:gap-2 transition-all">
-        View documentation →
-      </span>
-    </Link>
+      <div className="flex items-center gap-3 mt-auto">
+        <Link
+          to={to}
+          className="text-xs font-medium text-primary hover:underline"
+        >
+          Documentation →
+        </Link>
+        {paid && (
+          <Link
+            to={getPurchaseLink()}
+            className="inline-flex items-center rounded-md bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          >
+            Purchase
+          </Link>
+        )}
+      </div>
+    </div>
   );
 }

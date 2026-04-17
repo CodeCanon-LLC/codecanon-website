@@ -1,6 +1,7 @@
 import browserCollections from "collections/browser";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { useLocation } from "react-router";
 import {
   DocsBody,
   DocsDescription,
@@ -15,6 +16,7 @@ import { baseOptions } from "@/lib/layout.shared";
 import { gitConfig } from "@/lib/shared";
 import { getPageMarkdownUrl, source } from "@/lib/source";
 import type { Route } from "./+types/docs";
+import { getDocsNextPresetsLink } from "@/lib/links";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const slugs = params["*"].split("/").filter((v) => v.length > 0);
@@ -65,10 +67,12 @@ const clientLoader = browserCollections.docs.createClientLoader({
 
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { pageTree, path, markdownUrl } = useFumadocsLoader(loaderData);
+  const { pathname } = useLocation();
+  const hidePurchase = pathname.startsWith(getDocsNextPresetsLink());
 
   return (
     <DocsLayout
-      {...baseOptions()}
+      {...baseOptions({ hidePurchase })}
       sidebar={{
         className: 'bg-sidebar'
       }}
