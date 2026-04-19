@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
@@ -74,19 +74,12 @@ export default function Purchase() {
     });
   }
 
-  function handleCheckout() {
-    let url: string | undefined;
-
-    if (selected.has("waraq") && selected.has("nuska")) {
-      url = PAYMENT_LINKS.bundle;
-    } else if (selected.has("waraq")) {
-      url = PAYMENT_LINKS.waraq;
-    } else if (selected.has("nuska")) {
-      url = PAYMENT_LINKS.nuska;
-    }
-
-    if (url) window.location.href = url;
-  }
+  const checkoutLink = useMemo(() => {
+    if (selected.has("waraq") && selected.has("nuska")) return PAYMENT_LINKS.bundle;
+    if (selected.has("waraq")) return PAYMENT_LINKS.waraq;
+    if (selected.has("nuska")) return PAYMENT_LINKS.nuska;
+    return undefined;
+  }, [selected]);
 
   const total =
     selected.has("waraq") && selected.has("nuska")
@@ -208,21 +201,20 @@ export default function Purchase() {
 
         {/* CTA */}
         <div className="flex flex-col items-center gap-3">
-          <button
-            type="button"
-            disabled={selected.size === 0}
-            onClick={handleCheckout}
+          <a
+            href={checkoutLink}
+            aria-disabled={!checkoutLink}
             className={cn(
               "inline-flex items-center justify-center gap-2 font-semibold rounded-lg",
               "px-8 h-12 text-sm w-full max-w-sm transition-all",
               "bg-primary text-primary-foreground hover:bg-primary/90",
-              selected.size === 0 && "opacity-40 cursor-not-allowed pointer-events-none",
+              !checkoutLink && "opacity-40 cursor-not-allowed pointer-events-none",
             )}
           >
             {total !== null
               ? `Proceed to checkout — $${total}`
               : "Select a library to continue"}
-          </button>
+          </a>
 
           <p className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
             You'll be asked for your npm username during checkout so we can
