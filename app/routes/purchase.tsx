@@ -33,7 +33,7 @@ const PRODUCTS: {
   {
     id: "waraq",
     name: "@codecanon/waraq",
-    price: 99,
+    price: 149,
     description:
       "Canva-like drag-and-drop design editor for React 19. Composable panels, 50+ action components, Google Fonts, undo/redo, and serializable JSON state.",
     highlights: [
@@ -47,7 +47,7 @@ const PRODUCTS: {
   {
     id: "nuska",
     name: "@codecanon/nuska",
-    price: 79,
+    price: 99,
     description:
       "Headless git-like version control for any key/value datasource. Commits, branches, diffs, 3-way merge — framework-agnostic with adapters for IndexedDB, PostgreSQL, MongoDB.",
     highlights: [
@@ -60,7 +60,7 @@ const PRODUCTS: {
   },
 ];
 
-const BUNDLE_PRICE = 149;
+const BUNDLE_PRICE = 199;
 
 export default function Purchase() {
   const [selected, setSelected] = useState<Set<ProductId>>(new Set());
