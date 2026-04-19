@@ -10,14 +10,20 @@ const PAYMENT_LINKS = {
   bundle: import.meta.env.VITE_STRIPE_PAYMENT_LINK_BUNDLE as string,
 };
 
-export function meta(_: Route.MetaArgs) {
+export function meta({ matches }: Route.MetaArgs) {
+  const parentMeta = matches.flatMap((m) => m.meta ?? []);
+  const title = "Purchase — CodeCanon";
+  const description =
+    "Get lifetime access to CodeCanon libraries. One-time purchase, instant npm access.";
   return [
-    { title: "Purchase — CodeCanon" },
-    {
-      name: "description",
-      content:
-        "Get lifetime access to CodeCanon libraries. One-time purchase, instant npm access.",
-    },
+    ...parentMeta,
+    { title },
+    { name: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: "https://codecanon.dev/purchase" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
   ];
 }
 

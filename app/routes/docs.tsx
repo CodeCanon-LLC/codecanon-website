@@ -44,8 +44,12 @@ const clientLoader = browserCollections.docs.createClientLoader({
   ) {
     return (
       <DocsPage toc={toc} tableOfContent={{ style: "clerk" }}>
-        <title>{frontmatter.title}</title>
+        <title>{frontmatter.title} — CodeCanon</title>
         <meta name="description" content={frontmatter.description} />
+        <meta property="og:title" content={`${frontmatter.title} — CodeCanon`} />
+        <meta property="og:description" content={frontmatter.description} />
+        <meta name="twitter:title" content={`${frontmatter.title} — CodeCanon`} />
+        <meta name="twitter:description" content={frontmatter.description} />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <div className="flex flex-row gap-2 items-center border-b -mt-4 pb-6">

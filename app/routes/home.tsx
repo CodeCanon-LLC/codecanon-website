@@ -18,14 +18,20 @@ import packageJson from '@/../package.json'
 
 const WaraqDemo = lazy(() => import("@/components/waraq-demo"));
 
-export function meta(_: Route.MetaArgs) {
+export function meta({ matches }: Route.MetaArgs) {
+  const parentMeta = matches.flatMap((m) => m.meta ?? []);
+  const title = "CodeCanon — Software & Consultation";
+  const description =
+    "Composable TypeScript libraries and software consultation by CodeCanon LLC. Design editors, version control, and more — for any stack.";
   return [
-    { title: "CodeCanon — Software & Consultation" },
-    {
-      name: "description",
-      content:
-        "Composable TypeScript libraries and software consultation by CodeCanon LLC. Design editors, version control, and more — for any stack.",
-    },
+    ...parentMeta,
+    { title },
+    { name: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:url", content: "https://codecanon.dev" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
   ];
 }
 
