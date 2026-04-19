@@ -1,6 +1,6 @@
 {
   "name": "codecanon-website",
-  "homepage": "https://codecanon-llc.github.io",
+  "homepage": "https://codecanon.dev",
   "private": true,
   "type": "module",
   "scripts": {

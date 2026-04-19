@@ -161,8 +161,8 @@ async function sendConfirmationEmail(
   <pre style="background:#f4f4f5;padding:12px 16px;border-radius:8px;font-size:13px;overflow-x:auto">${installLines}</pre>
 
   <p style="color:#555;margin:16px 0 8px">Then head to the docs:</p>
-  <a href="https://codecanon-llc.github.io/docs" style="color:#6d28d9;font-weight:500">
-    codecanon-llc.github.io/docs →
+  <a href="https://codecanon.dev/docs" style="color:#6d28d9;font-weight:500">
+    codecanon.dev/docs →
   </a>
 
   ${failedNote}

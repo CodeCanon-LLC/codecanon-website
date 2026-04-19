@@ -4,11 +4,11 @@
 
 ### Composable React Libraries for Design Tooling
 
-[![Visit Website](https://img.shields.io/badge/Visit%20Website-codecanon--llc.github.io-5B3B2C?style=for-the-badge&logo=github&logoColor=white)](https://codecanon-llc.github.io/)
+[![Visit Website](https://img.shields.io/badge/Visit%20Website-codecanon.dev-5B3B2C?style=for-the-badge&logo=github&logoColor=white)](https://codecanon.dev/)
 
 ---
 
-**[🌐 Explore the Website →](https://codecanon-llc.github.io/)**
+**[🌐 Explore the Website →](https://codecanon.dev/)**
 
 </div>
 
@@ -26,7 +26,7 @@ Our flagship product, **@codecanon/waraq**, is a production-ready Canva-like dra
 
 <div align="center">
 
-### ✨ [codecanon-llc.github.io](https://codecanon-llc.github.io/) ✨
+### ✨ [codecanon.dev](https://codecanon.dev/) ✨
 
 Explore the live interactive demo, browse the full documentation, and see what CodeCanon can do for your project.
 
@@ -92,7 +92,7 @@ bun run build
 
 | | |
 |---|---|
-| **Website** | [codecanon-llc.github.io](https://codecanon-llc.github.io/) |
+| **Website** | [codecanon.dev](https://codecanon.dev/) |
 | **Email** | codecanonllc@gmail.com |
 | **GitHub** | [@CodeCanon-LLC](https://github.com/CodeCanon-LLC) |
 
@@ -102,6 +102,6 @@ bun run build
 
 Built with care by **CodeCanon LLC**
 
-**[🌐 Visit codecanon-llc.github.io](https://codecanon-llc.github.io/)**
+**[🌐 Visit codecanon.dev](https://codecanon.dev/)**
 
 </div>
