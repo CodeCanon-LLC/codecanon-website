@@ -44,7 +44,7 @@ export default {
 async function handleCheckout(session: CheckoutSession, env: Env) {
   const email = session.customer_details?.email;
   const npmUsername = session.custom_fields?.find(
-    (f) => f.key === "npm_username",
+    (f) => f.key === "your_npm_username",
   )?.text?.value;
 
   // packages is set via Payment Link metadata, e.g. "waraq" | "nuska" | "waraq,nuska"
