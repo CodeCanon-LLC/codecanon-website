@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --env=\"\"",
-    "deploy:staging": "wrangler deploy --env staging"
+    "deploy:staging": "wrangler deploy --env staging",
+    "log": "npx wrangler tail --env=\"\"",
+    "log:staging": "npx wrangler tail --env= staging"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240208.0",

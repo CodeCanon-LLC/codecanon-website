@@ -82,14 +82,20 @@ export default {
 
     // ── Proxy to npm registry ─────────────────────────────────────────────────
     const npmUrl = `https://registry.npmjs.org${pathname}${url.search}`;
+    const isTarball = pathname.endsWith(".tgz");
+
+    const npmHeaders: Record<string, string> = {
+      Authorization: `Bearer ${env.NPM_ORG_TOKEN}`,
+      Accept: request.headers.get("Accept") ?? "application/json",
+      "User-Agent": request.headers.get("User-Agent") ?? "codecanon-registry/1.0",
+      // Do NOT forward If-None-Match / If-Modified-Since — we must always get
+      // the full response so we can rewrite tarball URLs before returning to client.
+      // Do NOT set Accept-Encoding — Workers' fetch() auto-decompresses via .text()
+    };
 
     const npmRes = await fetch(npmUrl, {
       method: request.method,
-      headers: {
-        Authorization: `Bearer ${env.NPM_ORG_TOKEN}`,
-        Accept: request.headers.get("Accept") ?? "application/json",
-        "User-Agent": request.headers.get("User-Agent") ?? "codecanon-registry/1.0",
-      },
+      headers: npmHeaders,
     });
 
     const responseHeaders = new Headers(npmRes.headers);
@@ -97,15 +103,17 @@ export default {
 
     // Rewrite tarball URLs in metadata responses so npm fetches tarballs
     // back through our proxy (with auth) instead of directly from registry.npmjs.org
-    const isTarball = pathname.endsWith(".tgz");
     const contentType = npmRes.headers.get("content-type") ?? "";
 
-    if (!isTarball && contentType.includes("application/json")) {
+    if (!isTarball) {
       const proxyOrigin = `https://${url.hostname}`;
       const body = await npmRes.text();
+      const hasNpmUrls = body.includes("https://registry.npmjs.org");
+      console.log(`Rewriting metadata: contentType=${contentType} hasNpmUrls=${hasNpmUrls} proxyOrigin=${proxyOrigin} bodyLength=${body.length}`);
       const rewritten = body.replaceAll("https://registry.npmjs.org", proxyOrigin);
       responseHeaders.set("content-type", "application/json");
       responseHeaders.delete("content-encoding");
+      responseHeaders.set("cache-control", "no-store");
       return new Response(rewritten, {
         status: npmRes.status,
         headers: responseHeaders,
