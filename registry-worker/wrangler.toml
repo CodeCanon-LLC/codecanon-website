@@ -1,6 +1,8 @@
 name = "codecanon-registry"
 main = "src/index.ts"
 compatibility_date = "2026-04-20"
+workers_dev = true
+preview_urls = false
 
 [observability]
 enabled = true
