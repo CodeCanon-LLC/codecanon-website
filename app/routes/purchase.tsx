@@ -224,8 +224,7 @@ export default function Purchase() {
           </a>
 
           <p className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-            You'll be asked for your npm username during checkout so we can
-            grant you access instantly after payment.
+            After payment you'll receive an email with your private install token and setup instructions.
           </p>
         </div>
 
@@ -253,15 +252,15 @@ export default function Purchase() {
 const FAQ = [
   {
     q: "How do I install after purchase?",
-    a: "After payment you'll receive an email with setup instructions. We'll add your npm account to the package so you can install it with your existing credentials.",
+    a: "After payment you'll receive an email with a private install token and setup instructions. Add two lines to your .npmrc and you're ready to install.",
   },
   {
-    q: "What npm username should I use?",
-    a: "Use the username of the npm account you install packages from. You can find it by running `npm whoami` in your terminal.",
+    q: "How many machines can I use the token on?",
+    a: "Each token allows up to 3 unique machines (e.g. your dev machine, CI, and a staging server). Need more seats? Email us.",
   },
   {
     q: "Can I use it in multiple projects?",
-    a: "Yes. One purchase grants your npm account access — you can use it in any number of personal or commercial projects.",
+    a: "Yes. One token works across any number of projects on your licensed machines.",
   },
   {
     q: "What's included with updates?",

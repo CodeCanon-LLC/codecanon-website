@@ -1,0 +1,26 @@
+name = "codecanon-registry"
+main = "src/index.ts"
+compatibility_date = "2026-04-20"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[kv_namespaces]]
+binding = "TOKENS"
+id = "e681c21e282e4263be2a8dd3b59ea050"
+
+[env.staging]
+name = "codecanon-registry-staging"
+
+[env.staging.observability]
+enabled = true
+head_sampling_rate = 1
+
+[[env.staging.kv_namespaces]]
+binding = "TOKENS"
+id = "6ff1bb84eb894cc1a6bda2e8da3f4a6f"
+
+# Secrets — set via: wrangler secret put <NAME>
+# Required:
+#   NPM_ORG_TOKEN — org automation token with read access to @codecanon/* packages

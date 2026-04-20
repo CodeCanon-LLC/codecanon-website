@@ -1,10 +1,21 @@
 interface Env {
+  TOKENS: KVNamespace;
   STRIPE_WEBHOOK_SECRET: string;
-  NPM_TOKEN: string;
   RESEND_API_KEY: string;
-  // e.g. "CodeCanon <noreply@codecanon.com>" — must be a verified Resend domain
   RESEND_FROM_EMAIL: string;
 }
+
+interface TokenRecord {
+  email: string;
+  packages: PackageId[];
+  ips: string[];
+  seats: number;
+  createdAt: string;
+  lastUsed: string;
+  revoked: boolean;
+}
+
+type PackageId = "waraq" | "nuska";
 
 // ── Entry point ──────────────────────────────────────────────────────────────
 
@@ -43,9 +54,6 @@ export default {
 
 async function handleCheckout(session: CheckoutSession, env: Env) {
   const email = session.customer_details?.email;
-  const npmUsername = session.custom_fields?.find(
-    (f) => f.key === "yournpmusername",
-  )?.text?.value;
 
   // packages is set via Payment Link metadata, e.g. "waraq" | "nuska" | "waraq,nuska"
   const packages = (session.metadata?.packages ?? "")
@@ -53,93 +61,49 @@ async function handleCheckout(session: CheckoutSession, env: Env) {
     .map((s) => s.trim())
     .filter(Boolean) as PackageId[];
 
-  if (!npmUsername || packages.length === 0) {
-    console.error("Missing npm_username or packages in session", session.id);
+  if (!email || packages.length === 0) {
+    console.error("Missing email or packages in session", session.id);
     return;
   }
 
-  // Grant npm access for each package
-  const granted: PackageId[] = [];
-  const failed: PackageId[] = [];
+  // Generate a unique install token for this buyer
+  const token = crypto.randomUUID();
+  const now = new Date().toISOString();
 
-  for (const pkg of packages) {
-    try {
-      await grantNpmAccess(env.NPM_TOKEN, pkg, npmUsername);
-      granted.push(pkg);
-    } catch (err) {
-      console.error(`Failed to grant npm access for ${pkg}:`, err);
-      failed.push(pkg);
-    }
-  }
+  const record: TokenRecord = {
+    email,
+    packages,
+    ips: [],
+    seats: 3,
+    createdAt: now,
+    lastUsed: now,
+    revoked: false,
+  };
 
-  if (email) {
-    await sendConfirmationEmail(env, {
-      to: email,
-      npmUsername,
-      granted,
-      failed,
-    });
-  }
-}
+  await env.TOKENS.put(`token:${token}`, JSON.stringify(record));
+  console.log(`Token created for ${email} — packages: ${packages.join(", ")}`);
 
-// ── npm access ────────────────────────────────────────────────────────────────
-
-type PackageId = "waraq" | "nuska";
-
-const NPM_TEAMS: Record<PackageId, string> = {
-  waraq: "buyers-waraq",
-  nuska: "buyers-nuska",
-};
-
-// Adds the user to the npm org team for the given package.
-// Prereqs in npm dashboard:
-//   1. Create org teams "buyers-waraq" and "buyers-nuska" under the "codecanon" org
-//   2. Grant each team read access to the respective @codecanon/* package
-async function grantNpmAccess(token: string, pkg: PackageId, username: string) {
-  const team = NPM_TEAMS[pkg];
-  const url = `https://registry.npmjs.org/-/team/codecanon/${team}/user`;
-
-  const res = await fetch(url, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({ user: username }),
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`npm API ${res.status} for team ${team} / user ${username}: ${text}`);
-  }
+  await sendConfirmationEmail(env, { to: email, token, packages });
 }
 
 // ── Email ─────────────────────────────────────────────────────────────────────
 
 async function sendConfirmationEmail(
   env: Env,
-  opts: {
-    to: string;
-    npmUsername: string;
-    granted: PackageId[];
-    failed: PackageId[];
-  },
+  opts: { to: string; token: string; packages: PackageId[] },
 ) {
-  const { to, npmUsername, granted, failed } = opts;
+  const { to, token, packages } = opts;
 
-  const packageList = granted
-    .map((p) => `@codecanon/${p}`)
-    .join(" and ");
+  const packageList = packages.map((p) => `@codecanon/${p}`).join(" and ");
 
-  const installLines = granted
+  const npmrcLines = [
+    `@codecanon:registry=https://registry.codecanon.dev/`,
+    `//registry.codecanon.dev/:_authToken=${token}`,
+  ].join("\n");
+
+  const installLines = packages
     .map((p) => `npm install @codecanon/${p}`)
     .join("\n");
-
-  const failedNote =
-    failed.length > 0
-      ? `<p style="color:#ef4444;margin-top:16px">We had trouble granting access to: ${failed.map((p) => `@codecanon/${p}`).join(", ")}. We'll sort this out manually and follow up shortly.</p>`
-      : "";
 
   const html = `
 <!DOCTYPE html>
@@ -148,24 +112,27 @@ async function sendConfirmationEmail(
 <body style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 16px;color:#111">
   <h1 style="font-size:24px;font-weight:700;margin-bottom:8px">You're in 🎉</h1>
   <p style="color:#555;margin-bottom:24px">
-    Thanks for purchasing ${packageList}! Your npm account
-    <strong>${npmUsername}</strong> now has read access.
+    Thanks for purchasing ${packageList}! Follow the steps below to get set up.
   </p>
 
-  <h2 style="font-size:16px;font-weight:600;margin-bottom:8px">Getting started</h2>
+  <h2 style="font-size:16px;font-weight:600;margin-bottom:8px">1. Add to your <code>.npmrc</code></h2>
+  <p style="color:#555;margin-bottom:8px">
+    In your project root (or <code>~/.npmrc</code> for global access), add:
+  </p>
+  <pre style="background:#f4f4f5;padding:12px 16px;border-radius:8px;font-size:13px;overflow-x:auto">${npmrcLines}</pre>
 
-  <p style="color:#555;margin-bottom:8px">Make sure you're logged in to npm:</p>
-  <pre style="background:#f4f4f5;padding:12px 16px;border-radius:8px;font-size:13px;overflow-x:auto">npm login</pre>
-
-  <p style="color:#555;margin:16px 0 8px">Install the package(s):</p>
+  <h2 style="font-size:16px;font-weight:600;margin:24px 0 8px">2. Install the package(s)</h2>
   <pre style="background:#f4f4f5;padding:12px 16px;border-radius:8px;font-size:13px;overflow-x:auto">${installLines}</pre>
 
-  <p style="color:#555;margin:16px 0 8px">Then head to the docs:</p>
+  <h2 style="font-size:16px;font-weight:600;margin:24px 0 8px">3. Read the docs</h2>
   <a href="https://codecanon.dev/docs" style="color:#6d28d9;font-weight:500">
     codecanon.dev/docs →
   </a>
 
-  ${failedNote}
+  <div style="margin-top:24px;padding:12px 16px;background:#fefce8;border:1px solid #fde68a;border-radius:8px;font-size:13px;color:#92400e">
+    <strong>Keep your token private.</strong> It is tied to your purchase and allows up to 3 unique machines.
+    Do not commit it to version control — use environment variables or a secrets manager instead.
+  </div>
 
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0">
   <p style="font-size:13px;color:#888">
@@ -184,7 +151,7 @@ async function sendConfirmationEmail(
     body: JSON.stringify({
       from: env.RESEND_FROM_EMAIL,
       to,
-      subject: `Your CodeCanon purchase — ${packageList}`,
+      subject: `Your CodeCanon access token — ${packageList}`,
       html,
     }),
   });
@@ -244,10 +211,5 @@ interface StripeEvent {
 interface CheckoutSession {
   id: string;
   customer_details?: { email?: string };
-  custom_fields?: Array<{
-    key: string;
-    type: string;
-    text?: { value?: string };
-  }>;
   metadata?: Record<string, string>;
 }
