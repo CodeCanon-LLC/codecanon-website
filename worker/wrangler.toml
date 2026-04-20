@@ -8,3 +8,6 @@ compatibility_date = "2025-04-17"
 #   NPM_TOKEN              — npm automation token with org:team:write scope
 #   RESEND_API_KEY         — from resend.com
 #   RESEND_FROM_EMAIL      — verified sender, e.g. "CodeCanon <noreply@codecanon.com>"
+
+[env.staging]
+name = "codecanon-purchase-worker-staging"
