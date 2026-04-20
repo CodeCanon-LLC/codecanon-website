@@ -38,8 +38,8 @@ export default function PurchaseSuccess() {
         <h1 className="text-3xl font-bold mb-3">Payment confirmed</h1>
 
         <p className="text-muted-foreground leading-relaxed mb-8">
-          Thank you for your purchase! Check your email — you'll receive setup
-          instructions and npm access within a few minutes.
+          Thank you for your purchase! Check your email — you'll receive your
+          private install token and setup instructions within a few minutes.
         </p>
 
         <div className="rounded-xl border bg-card p-6 text-left mb-8 space-y-4">
@@ -73,8 +73,8 @@ export default function PurchaseSuccess() {
 }
 
 const STEPS = [
-  "We'll add your npm username to the package within minutes.",
-  "You'll receive a confirmation email with full installation instructions.",
-  "Run npm install @codecanon/waraq (or nuska) — it'll work with your existing npm login.",
+  "You'll receive a confirmation email with your private install token.",
+  "Add two lines to your project's .npmrc to point @codecanon packages to our registry.",
+  "Run npm install @codecanon/waraq (or nuska) — your token authenticates the download.",
   "Questions? Reply to the email or reach us at codecanonllc@gmail.com.",
 ];
