@@ -111,7 +111,7 @@ async function grantNpmAccess(token: string, pkg: PackageId, username: string) {
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`npm API ${res.status}: ${text}`);
+    throw new Error(`npm API ${res.status} for team ${team} / user ${username}: ${text}`);
   }
 }
 

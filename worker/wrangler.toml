@@ -2,6 +2,10 @@ name = "codecanon-purchase-worker"
 main = "src/index.ts"
 compatibility_date = "2025-04-17"
 
+[observability]
+enabled = true
+head_sampling_rate = 1
+
 # Secrets — set via: wrangler secret put <NAME>
 # Required:
 #   STRIPE_WEBHOOK_SECRET  — from Stripe Dashboard > Webhooks > signing secret
@@ -11,3 +15,7 @@ compatibility_date = "2025-04-17"
 
 [env.staging]
 name = "codecanon-purchase-worker-staging"
+
+[env.staging.observability]
+enabled = true
+head_sampling_rate = 1
