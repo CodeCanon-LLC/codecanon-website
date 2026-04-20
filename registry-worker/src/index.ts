@@ -92,9 +92,25 @@ export default {
       },
     });
 
-    // Stream the response back, stripping internal headers
     const responseHeaders = new Headers(npmRes.headers);
     responseHeaders.delete("www-authenticate");
+
+    // Rewrite tarball URLs in metadata responses so npm fetches tarballs
+    // back through our proxy (with auth) instead of directly from registry.npmjs.org
+    const isTarball = pathname.endsWith(".tgz");
+    const contentType = npmRes.headers.get("content-type") ?? "";
+
+    if (!isTarball && contentType.includes("application/json")) {
+      const proxyOrigin = `https://${url.hostname}`;
+      const body = await npmRes.text();
+      const rewritten = body.replaceAll("https://registry.npmjs.org", proxyOrigin);
+      responseHeaders.set("content-type", "application/json");
+      responseHeaders.delete("content-encoding");
+      return new Response(rewritten, {
+        status: npmRes.status,
+        headers: responseHeaders,
+      });
+    }
 
     return new Response(npmRes.body, {
       status: npmRes.status,
