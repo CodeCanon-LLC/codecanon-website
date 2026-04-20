@@ -66,33 +66,63 @@ async function handleCheckout(session: CheckoutSession, env: Env) {
     return;
   }
 
-  // Generate a unique install token for this buyer
-  const token = crypto.randomUUID();
   const now = new Date().toISOString();
 
-  const record: TokenRecord = {
-    email,
-    packages,
-    ips: [],
-    seats: 3,
-    createdAt: now,
-    lastUsed: now,
-    revoked: false,
-  };
+  // Check if this buyer already has a token — if so, merge packages into it
+  const existingTokenId = await env.TOKENS.get(`email:${email}`);
+  let token: string;
+  let isNewToken: boolean;
 
-  await env.TOKENS.put(`token:${token}`, JSON.stringify(record));
-  console.log(`Token created for ${email} — packages: ${packages.join(", ")}`);
+  if (existingTokenId) {
+    const existing = await env.TOKENS.get<TokenRecord>(`token:${existingTokenId}`, "json");
+    if (existing && !existing.revoked) {
+      // Merge new packages into existing token
+      const merged = Array.from(new Set([...existing.packages, ...packages])) as PackageId[];
+      existing.packages = merged;
+      existing.lastUsed = now;
+      await env.TOKENS.put(`token:${existingTokenId}`, JSON.stringify(existing));
+      console.log(`Token updated for ${email} — packages: ${merged.join(", ")}`);
+      token = existingTokenId;
+      isNewToken = false;
+    } else {
+      // Existing token is revoked — issue a fresh one
+      token = crypto.randomUUID();
+      isNewToken = true;
+    }
+  } else {
+    token = crypto.randomUUID();
+    isNewToken = true;
+  }
 
-  await sendConfirmationEmail(env, { to: email, token, packages });
+  if (isNewToken) {
+    const record: TokenRecord = {
+      email,
+      packages,
+      ips: [],
+      seats: 3,
+      createdAt: now,
+      lastUsed: now,
+      revoked: false,
+    };
+    await env.TOKENS.put(`token:${token}`, JSON.stringify(record));
+    await env.TOKENS.put(`email:${email}`, token);
+    console.log(`Token created for ${email} — packages: ${packages.join(", ")}`);
+  }
+
+  // Re-read final record to get accurate package list for the email
+  const finalRecord = await env.TOKENS.get<TokenRecord>(`token:${token}`, "json");
+  const allPackages = finalRecord?.packages ?? packages;
+
+  await sendConfirmationEmail(env, { to: email, token, packages: allPackages, isNewToken });
 }
 
 // ── Email ─────────────────────────────────────────────────────────────────────
 
 async function sendConfirmationEmail(
   env: Env,
-  opts: { to: string; token: string; packages: PackageId[] },
+  opts: { to: string; token: string; packages: PackageId[]; isNewToken: boolean },
 ) {
-  const { to, token, packages } = opts;
+  const { to, token, packages, isNewToken } = opts;
 
   const packageList = packages.map((p) => `@codecanon/${p}`).join(" and ");
 
@@ -105,15 +135,18 @@ async function sendConfirmationEmail(
     .map((p) => `npm install @codecanon/${p}`)
     .join("\n");
 
+  const heading = isNewToken ? "You're in 🎉" : "Your access has been updated 🎉";
+  const intro = isNewToken
+    ? `Thanks for purchasing ${packageList}! Follow the steps below to get set up.`
+    : `You now have access to ${packageList}. Your token is unchanged — update your <code>.npmrc</code> if needed and install the new package(s) below.`;
+
   const html = `
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
 <body style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 16px;color:#111">
-  <h1 style="font-size:24px;font-weight:700;margin-bottom:8px">You're in 🎉</h1>
-  <p style="color:#555;margin-bottom:24px">
-    Thanks for purchasing ${packageList}! Follow the steps below to get set up.
-  </p>
+  <h1 style="font-size:24px;font-weight:700;margin-bottom:8px">${heading}</h1>
+  <p style="color:#555;margin-bottom:24px">${intro}</p>
 
   <h2 style="font-size:16px;font-weight:600;margin-bottom:8px">1. Add to your <code>.npmrc</code></h2>
   <p style="color:#555;margin-bottom:8px">
