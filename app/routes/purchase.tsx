@@ -22,6 +22,7 @@ export function meta({ matches }: Route.MetaArgs) {
     { property: "og:title", content: title },
     { property: "og:description", content: description },
     { property: "og:url", content: "https://codecanon.dev/purchase" },
+    { tagName: "link", rel: "canonical", href: "https://codecanon.dev/purchase" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
   ];
