@@ -1,6 +1,6 @@
 import {
-  PresetPicker,
   PresetPickerContent,
+  PresetPickerList,
   PresetPickerSheet,
   PresetPickerThemeToggleGroup,
   PresetProvider,
@@ -79,11 +79,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <TooltipProvider>
           <RootProvider search={{ SearchDialog }}>
             <PresetProvider>
-              <PresetPicker>
+              <PresetPickerSheet>
                 {children}
-                <PresetPickerSheet>
+                <PresetPickerContent>
                   <PresetPickerThemeToggleGroup />
-                  <PresetPickerContent />
+                  <PresetPickerList />
                   <div className="mb-4 flex gap-2 *:flex-1">
                     <Button asChild variant="outline">
                       <Link to={getDocsNextPresetsLink()}>
@@ -98,9 +98,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                       </Link>
                     </Button>
                   </div>
-                </PresetPickerSheet>
+                </PresetPickerContent>
                 <PresetPickerButton />
-              </PresetPicker>
+              </PresetPickerSheet>
             </PresetProvider>
           </RootProvider>
         </TooltipProvider>

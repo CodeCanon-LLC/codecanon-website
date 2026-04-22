@@ -72,12 +72,12 @@ Skip `styles.css` entirely and import only what you need.
 ### Filter presets in your UI
 
 ```tsx
-import { filterPresets, PresetPickerContent } from "@codecanon/next-presets"
+import { filterPresets, PresetPickerSheet } from "@codecanon/next-presets"
 
 const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
 
 // Inside your picker:
-<PresetPickerContent presets={MY_PRESETS} />
+<PresetPickerSheet presets={MY_PRESETS} />
 ```
 
 <Callout type="tip">

@@ -44,39 +44,40 @@ Both providers persist their state to `localStorage` and restore it on the next 
 
 ## 3. Add a preset picker
 
-Use `PresetPicker`, `PresetPickerSheet`, and `PresetPickerContent` together to render a slide-out theme selector:
+Use `PresetPickerSheet`, `PresetPickerContent`, and `PresetPickerList` together to render a slide-out theme selector:
 
 ```tsx
 import {
   PresetPicker,
   PresetPickerSheet,
   PresetPickerContent,
+  PresetPickerList,
   PresetPickerThemeToggleGroup,
 } from "@codecanon/next-presets";
 
 export function ThemeSidebar() {
   return (
-    <PresetPicker>
-      <PresetPickerSheet>
+    <PresetPickerSheet>
+      <PresetPickerContent>
         <PresetPickerThemeToggleGroup />
-        <PresetPickerContent />
-      </PresetPickerSheet>
-    </PresetPicker>
+        <PresetPickerList />
+      </PresetPickerContent>
+    </PresetPickerSheet>
   );
 }
 ```
 
-`PresetPickerContent` renders a searchable list of presets with live mini-app previews. It supports arrow-key navigation and Enter to select.
+`PresetPickerList` renders a searchable list of presets with live mini-app previews. It supports arrow-key navigation and Enter to select.
 
 ## 4. Open the picker programmatically
 
-Use `usePresetPicker` to toggle the sheet from any button or trigger inside a `<PresetPicker>`:
+Use `usePresetPicker` to toggle the sheet from any button or trigger inside a `<PresetPickerSheet>`:
 
 ```tsx
 import {
-  PresetPicker,
   PresetPickerSheet,
   PresetPickerContent,
+  PresetPickerList,
   PresetPickerToggleButton,
   PresetPickerThemeToggleGroup,
   usePresetPicker,
@@ -89,22 +90,18 @@ function CustomOpenButton() {
 
 export function App() {
   return (
-    <PresetPicker>
+    <PresetPickerSheet>
       <main className="my-app">
         {/*Option A*/}
         <PresetPickerToggleButton>Choose Preset</PresetPickerToggleButton>
-        {/*Option B*/}
-        <PresetPickerToggleButton asChild> 
-          <button onClick={toggleOpen}>Change Preset</button>
-        </PresetPickerToggleButton>
-        {/*Option C: see above*/}
+        {/*Option B: see above*/}
         <CustomOpenButton />
       </main>
-      <PresetPickerSheet>
+      <PresetPickerContent>
         <PresetPickerThemeToggleGroup />
-        <PresetPickerContent />
-      </PresetPickerSheet>
-    </PresetPicker>
+        <PresetPickerList />
+      </PresetPickerContent>
+    </PresetPickerSheet>
   );
 }
 ```

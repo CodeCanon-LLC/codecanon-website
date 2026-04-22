@@ -196,12 +196,12 @@ Write your own preset CSS using the `@variant preset-light` and `@variant preset
 Then register it in the picker and activate it:
 
 ```tsx
-import { PRESETS, PresetPickerContent } from "@codecanon/next-presets";
+import { PRESETS, PresetPickerSheet } from "@codecanon/next-presets";
 
 const MY_PRESETS = [["my-brand", "My Brand"], ...PRESETS] as const;
 
 // In your picker:
-<PresetPickerContent presets={MY_PRESETS} />
+<PresetPickerSheet presets={MY_PRESETS} />
 
 // Programmatically:
 const { setPreset } = usePreset();
