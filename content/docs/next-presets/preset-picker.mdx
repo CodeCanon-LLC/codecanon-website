@@ -8,18 +8,36 @@ The preset picker is a composable slide-out sheet UI that lets users search, pre
 ## PresetPicker
 
 ```tsx
-<PresetPicker card={SomeCard} {...buttonProps} />
+<PresetPicker presets={presets} card={SomeCard} {...buttonProps} />
 ```
 
 Shorthand for:
 ```tsx
-<PresetPickerSheet>
+<PresetPickerSheet presets={presets}>
   <PresetPickerToggleButton {...buttonProps} />
   <PresetPickerContent>
     <PresetPickerThemeToggleGroup />
     <PresetPickerList card={SomeCard} />
   </PresetPickerContent>
 </PresetPickerSheet>
+```
+
+## PresetDropdownPicker
+
+```tsx
+<PresetDropdownPicker presets={presets} {...buttonProps} />
+```
+
+Shorthand for:
+```tsx
+<PresetDropdownPickerMenu presets={presets}>
+  <PresetDropdownPickerTrigger {...props} />
+  <PresetDropdownPickerContent>
+    <PresetDropdownPickerSearch />
+    <PresetDropdownPickerToolbar />
+    <PresetDropdownPickerList />
+  </PresetDropdownPickerContent>
+</PresetDropdownPickerMenu>
 ```
 
 ## PresetPickerSheet
