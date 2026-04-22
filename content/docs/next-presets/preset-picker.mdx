@@ -122,7 +122,7 @@ import { PresetPickerList, PresetDockPreviewCard } from '@codecanon/next-presets
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `card` | `typeof PresetPreviewCard` | `PresetPreviewCard` | Custom preview card component. Must accept the same props. |
+| `card` | `React.ComponentType<PresetPreviewCardProps>` | `PresetPreviewCard` | Custom preview card component. Must accept the same props as [PresetPreviewCard](#presetpreviewcard). |
 
 ### Keyboard navigation
 
@@ -174,7 +174,7 @@ Accepts all `Button` props including radix-ui `asChild`. The `onClick` handler i
 
 ---
 
-## PresetPreviewCard and PresetDockPreviewCard
+## PresetPreviewCard
 
 A mock app UI that renders in the colors of any preset — useful for previewing themes before applying them.
 
@@ -183,18 +183,33 @@ import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-preset
 
 <PresetPreviewCard
   preset="violet-bloom"
-  label="Violet Bloom"
+  label="Violet Bloom (Sidebar)"
   active={false}
   highlighted={false}
 />
 
 <PresetDockPreviewCard
   preset="violet-bloom"
-  label="Violet Bloom"
+  label="Violet Bloom (Dock)"
   active={false}
   highlighted={false}
 />
 ```
+
+import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets";
+
+<PresetPreviewCard
+  preset="violet-bloom"
+  label="Violet Bloom (Sidebar)"
+  active={false}
+  highlighted={false}
+/>
+<PresetDockPreviewCard
+  preset="violet-bloom"
+  label="Violet Bloom (Dock)"
+  active={false}
+  highlighted={false}
+/>
 
 ### Props
 
