@@ -7,6 +7,23 @@ The preset picker is a composable slide-out sheet UI that lets users search, pre
 
 ## PresetPicker
 
+```tsx
+<PresetPicker card={SomeCard} {...buttonProps} />
+```
+
+Shorthand for:
+```tsx
+<PresetPickerSheet>
+  <PresetPickerToggleButton {...buttonProps} />
+  <PresetPickerContent>
+    <PresetPickerThemeToggleGroup />
+    <PresetPickerList card={SomeCard} />
+  </PresetPickerContent>
+</PresetPickerSheet>
+```
+
+## PresetPickerSheet
+
 Context provider that wires together the picker components. Wrap all picker sub-components inside it.
 
 ```tsx
@@ -32,6 +49,22 @@ import {
 | Prop | Type | Description |
 |---|---|---|
 | `children` | `ReactNode` | Required. Picker sub-components. |
+| `presets` | `readonly PresetTuple[]` | The list of presets to display. Spread to extend with custom entries. |
+
+### Extending with custom presets
+
+Pass your own presets alongside the built-ins using the `presets` prop. Each entry is a `[id, label]` tuple — the `id` must match the `data-preset` value in your CSS:
+
+```tsx
+import { PRESETS, PresetPickerSheet } from "@codecanon/next-presets";
+
+const MY_PRESETS = [
+  ["my-brand", "My Brand"],
+  ...PRESETS,
+] as const;
+
+<PresetPickerSheet presets={MY_PRESETS} />
+```
 
 ---
 
@@ -78,10 +111,10 @@ Extends the `Sheet` component props. The `open` and `onOpenChange` values are wi
 The main body of the picker — renders a search field and the full preset list with live previews.
 
 ```tsx
+import { PresetPickerList, PresetDockPreviewCard } from '@codecanon/next-presets'
+
 <PresetPickerList
-  showDock={false}
-  card={PresetPreviewCard}
-  presets={PRESETS}
+  card={PresetDockPreviewCard}
 />
 ```
 
@@ -89,24 +122,7 @@ The main body of the picker — renders a search field and the full preset list 
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `showDock` | `boolean` | `false` | Render previews in a compact dock style. |
 | `card` | `typeof PresetPreviewCard` | `PresetPreviewCard` | Custom preview card component. Must accept the same props. |
-| `presets` | `readonly PresetTuple[]` | `PRESETS` | The list of presets to display. Spread to extend with custom entries. |
-
-### Extending with custom presets
-
-Pass your own presets alongside the built-ins using the `presets` prop. Each entry is a `[id, label]` tuple — the `id` must match the `data-preset` value in your CSS:
-
-```tsx
-import { PRESETS, PresetPickerSheet } from "@codecanon/next-presets";
-
-const MY_PRESETS = [
-  ["my-brand", "My Brand"],
-  ...PRESETS,
-] as const;
-
-<PresetPickerSheet presets={MY_PRESETS} />
-```
 
 ### Keyboard navigation
 
@@ -158,19 +174,25 @@ Accepts all `Button` props including radix-ui `asChild`. The `onClick` handler i
 
 ---
 
-## PresetPreviewCard
+## PresetPreviewCard and PresetDockPreviewCard
 
 A mock app UI that renders in the colors of any preset — useful for previewing themes before applying them.
 
 ```tsx
-import { PresetPreviewCard } from "@codecanon/next-presets";
+import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets";
 
 <PresetPreviewCard
   preset="violet-bloom"
   label="Violet Bloom"
   active={false}
   highlighted={false}
-  variant='default'
+/>
+
+<PresetDockPreviewCard
+  preset="violet-bloom"
+  label="Violet Bloom"
+  active={false}
+  highlighted={false}
 />
 ```
 
@@ -182,7 +204,6 @@ import { PresetPreviewCard } from "@codecanon/next-presets";
 | `label` | `string` | Auto-generated from `preset` | Display name shown on the card. |
 | `active` | `boolean` | `false` | Highlights the card with a primary-color ring (currently applied preset). |
 | `highlighted` | `boolean` | `false` | Highlights the card with a secondary ring (keyboard focus). |
-| `variant` | `"default" \| "dock"` | `"default"` | Sidebar layout or compact dock layout |
 | `ref` | `React.Ref<HTMLDivElement>` | — | Forwarded to the root element. |
 
 The card renders a miniature app chrome — sidebar, header, content cards, and footer — using the preset's CSS variables. This gives an accurate preview of how the preset will look in a real UI.
