@@ -3,8 +3,6 @@ title: Reducing Bundle Size
 description: Optimize your bundle by including only the presets you actually use.
 ---
 
-## Reducing Bundle Size
-
 By default, `styles.css` includes all **50+ preset definitions**.  
 If your app only uses a handful of presets, you can strip the rest from the compiled CSS and from the `PresetPicker` UI.
 
@@ -23,23 +21,61 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [
     nextPresetsPlugin({
-      presets: ["claude", "anew", "rose"],
+      include: ["claude", "anew", "rose"],
     }),
   ],
 })
 ```
+
+### Options
+
+| Option | Type | Description |
+|---|---|---|
+| `include` | `string[]` | Built-in preset IDs to include. All others are excluded from CSS and the picker UI. Alias: `presets`. |
+| `exclude` | `string[]` | Built-in preset IDs to exclude. Ignored when `include` is set (use one or the other). |
+| `add` | `PresetTuple[]` | Custom `[id, label]` presets to add — injected into the JS bundle alongside any included built-ins. |
+
+### Adding custom brand presets
+
+Use `add` to include custom presets (defined in your own CSS) in the picker without passing a `presets` array to `PresetProvider` at runtime:
+
+```ts
+// vite.config.ts
+nextPresetsPlugin({
+  include: ["nuteral", "claude"],
+  add: [
+    ["my-brand", "My Brand"],
+    ["my-brand-dark", "My Brand Dark"],
+  ],
+})
+```
+
+Your custom preset CSS must be imported separately — the plugin handles JS and CSS for built-ins only:
+
+```css
+/* app/globals.css */
+@import "@codecanon/next-presets/default/nuteral.css";
+@import "@codecanon/next-presets/styles.css"; /* intercepted by plugin */
+
+/* your custom presets */
+@import "./presets/my-brand.css";
+@import "./presets/my-brand-dark.css";
+```
+
+The picker will show `My Brand` and `My Brand Dark` alongside the built-ins — no `PresetProvider` prop changes needed.
+
 <Callout>
-Also accepts `include` (alias to `presets`) and `exclude`. The `exclude` prop takes higher precedence than `include` or `presets`. Also, `include` takes higher precendence over `presets` - use either or and not both.
+`exclude` takes precedence over `include`. Both `include` and `presets` are aliases for the same option — use one or the other, not both.
 </Callout>
 
 ### What the plugin does
 
-- Replaces `styles.css` with a virtual bundle containing only:
-  - `components.css`
-  - Selected preset files
-- Overrides the `PRESETS` export so `PresetPicker` only shows selected presets
+- Replaces `styles.css` with a virtual bundle containing only `components.css` + selected preset files
+- Patches the `PRESETS` export so the picker only shows the presets you configured
+- Prepends `add` entries before built-ins in the picker list
 - Warns at startup if an unknown preset ID is passed
-- Falls back to all presets if none are valid
+- Falls back to all presets if no valid IDs are provided
+- Auto-deletes stale cached filter files when the config changes
 
 <Callout>
 Your existing CSS and JS imports stay unchanged.
@@ -71,28 +107,46 @@ Skip `styles.css` entirely and import only what you need.
 
 ### Filter presets in your UI
 
+Pass a filtered preset list to `PresetProvider` so the picker only shows what you import:
+
 ```tsx
-import { filterPresets, PresetPickerSheet } from "@codecanon/next-presets"
+import { filterPresets, PresetProvider } from "@codecanon/next-presets"
 
 const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
 
-// Inside your picker:
-<PresetPickerSheet presets={MY_PRESETS} />
+<PresetProvider presets={MY_PRESETS}>
+  {children}
+</PresetProvider>
+```
+
+Or add custom presets alongside built-ins:
+
+```tsx
+import { filterPresets, PresetProvider } from "@codecanon/next-presets"
+
+const MY_PRESETS = [
+  ["my-brand", "My Brand"] as const,
+  ...filterPresets(["nuteral", "claude"]),
+]
+
+<PresetProvider presets={MY_PRESETS}>
+  {children}
+</PresetProvider>
 ```
 
 <Callout type="tip">
-`filterPresets` preserves the original canonical order of presets.
+`filterPresets` preserves the original canonical order of built-in presets.
 </Callout>
 
 ---
 
 ## CSS Export Reference
 
-| Import path                                   | Contents                                              |
-|----------------------------------------------|------------------------------------------------------|
-| <code className="whitespace-nowrap">@codecanon/next-presets/styles.css</code>        | All-in-one: components + all 50+ presets                 |
-| <code className="whitespace-nowrap">@codecanon/next-presets/presets.css</code>  | Pre-compiled 50+ presets combined         |
-| <code className="whitespace-nowrap">@codecanon/next-presets/components.css</code>  | Pre-compiled Tailwind/shadcn/custom variants         |
-| <code className="whitespace-nowrap">@codecanon/next-presets/default/\{id\}.css</code>  | Single preset — `:root` scoped (initial default)     |
-| <code className="whitespace-nowrap">@codecanon/next-presets/presets/\{id\}.css </code>  | Single preset — `[data-preset]` scoped (switching)   |
-| <code className="whitespace-nowrap">@codecanon/next-presets/custom-variants.css</code>| `@custom-variant` definitions for preset authoring   |
+| Import path | Contents |
+|---|---|
+| `@codecanon/next-presets/styles.css` | All-in-one: components + all 50+ presets |
+| `@codecanon/next-presets/presets.css` | All 50+ presets combined (no component styles) |
+| `@codecanon/next-presets/components.css` | Pre-compiled Tailwind/shadcn/custom variants |
+| `@codecanon/next-presets/custom-variants.css` | `@custom-variant` definitions for preset authoring |
+| `@codecanon/next-presets/default/{id}.css` | Single preset — `:root` scoped (initial default) |
+| `@codecanon/next-presets/presets/{id}.css` | Single preset — `[data-preset]` scoped (switching) |

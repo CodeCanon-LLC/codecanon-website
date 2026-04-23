@@ -15,7 +15,7 @@ import { ThemeProvider } from "@codecanon/next-presets";
 </ThemeProvider>
 ```
 
-### Props
+<h3>Props</h3>
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
@@ -28,35 +28,7 @@ All other props are forwarded to `next-themes` `ThemeProvider`.
 
 ---
 
-## PresetProvider
-
-Manages which color preset is active. Applies `data-preset="<id>"` to `document.documentElement` so the CSS variables take effect. Must be nested inside `ThemeProvider`.
-
-```tsx
-import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
-
-<ThemeProvider>
-  <PresetProvider storageKey="preset">
-    {children}
-  </PresetProvider>
-</ThemeProvider>
-```
-
-### Props
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `ReactNode` | — | Required. Your app content. |
-| `storageKey` | `string` | `"preset"` | `localStorage` key used to persist the active preset. |
-| `attributes` | `data-${string}` | `"data-preset"` | HTML attribute set on `<html>` to activate a preset. |
-| `preset`         | `string \| undefined`                   | `undefined` | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
-| `onPresetChange` | `(preset: string \| undefined) => void` | `undefined` | Fires when the user selects a new preset. Use this to persist the value to your database.                         |
-
-When no stored preset exists the attribute is not set — the base shadcn/ui styles apply.
-
----
-
-## useTheme()
+### useTheme()
 
 Returns current theme state and setters. Must be called inside a `<ThemeProvider>`.
 
@@ -75,7 +47,7 @@ const {
 } = useTheme();
 ```
 
-### Return values
+<h4>Return values</h4>
 
 | Property | Type | Description |
 |---|---|---|
@@ -88,7 +60,7 @@ const {
 | `themes` | `Theme[]` | All available theme names. |
 | `forcedTheme` | `Theme \| undefined` | Present when a route forces a specific theme. |
 
-### Example: toggle button
+<h4>Example: toggle button</h4>
 
 ```tsx
 function DarkModeToggle() {
@@ -104,7 +76,37 @@ function DarkModeToggle() {
 
 ---
 
-## usePreset()
+
+## PresetProvider
+
+Manages which color preset is active. Applies `data-preset="<id>"` to `document.documentElement` so the CSS variables take effect. Must be nested inside `ThemeProvider`.
+
+```tsx
+import { ThemeProvider, PresetProvider } from "@codecanon/next-presets";
+
+<ThemeProvider>
+  <PresetProvider storageKey="preset">
+    {children}
+  </PresetProvider>
+</ThemeProvider>
+```
+
+<h3>Props</h3>
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | — | Required. Your app content. |
+| `storageKey` | `string` | `"preset"` | `localStorage` key used to persist the active preset. |
+| `attribute` | `` `data-${string}` `` | `"data-preset"` | HTML attribute set on `<html>` to activate a preset. |
+| `preset` | `string \| undefined` | `undefined` | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
+| `onPresetChange` | `(preset: string \| undefined) => void` | `undefined` | Fires when the user selects a new preset. Use this to persist the value to your database. |
+| `presets` | `PresetTuple[]` | Built-in `PRESETS` | Override the full preset list — add brand presets or exclude built-ins. Every component and hook reads from this list. |
+
+When no stored preset exists the attribute is not set — the base shadcn/ui styles apply.
+
+---
+
+### usePreset()
 
 Returns the active preset and controls. Must be called inside a `<PresetProvider>`.
 
@@ -112,31 +114,35 @@ Returns the active preset and controls. Must be called inside a `<PresetProvider
 import { usePreset } from "@codecanon/next-presets";
 
 const {
-  preset,       // string | undefined — active preset ID
-  setPreset,    // (preset: string) => void
-  resetPreset,  // () => void — clears the preset
+  preset,      // string | undefined — active preset ID
+  presetName,  // string — display label for the active preset
+  presets,     // PresetTuple[] — full list (built-ins + any custom presets)
+  setPreset,   // (preset: string | undefined) => void
+  resetPreset, // () => void — clears the preset
 } = usePreset();
 ```
 
-### Return values
+<h4>Return values</h4>
 
 | Property | Type | Description |
 |---|---|---|
 | `preset` | `string \| undefined` | The currently active preset ID, or `undefined` if none is set. |
-| `setPreset` | `(preset: string) => void` | Switch to any preset by ID — built-in or custom. Persists to localStorage. |
+| `presetName` | `string` | Display label for the active preset (e.g. `"Violet Bloom"`). Falls back to a title-cased ID or `"Preset"` when none is active. |
+| `presets` | `PresetTuple[]` | The full list of available presets — reflects any custom entries passed to `<PresetProvider presets={...}>`. |
+| `setPreset` | `(preset: string \| undefined) => void` | Switch to any preset by ID — built-in or custom. Persists to localStorage. |
 | `resetPreset` | `() => void` | Clears the active preset and removes the `data-preset` attribute. |
 
-### Example: preset switcher
+<h4>Example: preset switcher</h4>
 
 ```tsx
-import { usePreset, PRESETS } from "@codecanon/next-presets";
+import { usePreset } from "@codecanon/next-presets";
 
 function PresetList() {
-  const { preset, setPreset } = usePreset();
+  const { preset, presets, setPreset } = usePreset();
 
   return (
     <ul>
-      {PRESETS.map(([key, label]) => (
+      {presets.map(([key, label]) => (
         <li key={key}>
           <button
             onClick={() => setPreset(key)}
@@ -191,20 +197,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
 3. **User picks a preset** — `onPresetChange` fires immediately. Update your state optimistically (as shown above) so the UI switches with no delay while the DB write happens in the background.
 4. **localStorage stays in sync** — every preset change (user-initiated or controlled) is written to localStorage, so the next page load is fast regardless of DB latency.
 </Callout>
-| Prop             | Type                                    | Description                                                                                                       |
-| ---------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `preset`         | `string \| undefined`                   | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
-| `onPresetChange` | `(preset: string \| undefined) => void` | Fires when the user selects a new preset. Use this to persist the value to your database.                         |
 
-
----
-
-## Constants
-
-```tsx
-import { PRESETS, PRESET_BY_ID } from "@codecanon/next-presets";
-
-// Array of [id, label] tuples for all built-in presets
-PRESETS; // [["nuteral", "Nuteral"], ["violet-bloom", "Violet Bloom"], ...]
-PRESET_BY_ID; // { "nuteral": "Nuteral", "violet-bloom": "Violet Bloom", ... }
-```

@@ -1,164 +1,79 @@
 ---
 title: Preset picker
-description: PresetPickerSheet, PresetPickerContent, PresetPickerList, and related components.
+description: PresetPicker, PresetPickerContent, PresetPickerSearch, PresetPickerList, and related components.
 ---
 
-The preset picker is a composable slide-out sheet UI that lets users search, preview, and select from all available presets. It is built from collaborating components that share state through a React context.
+The preset picker is a composable slide-out sheet UI that lets users search, preview, and select from all available presets. All sub-components share state through a React context.
 
 ## PresetPicker
 
-```tsx
-<PresetPicker presets={presets} card={SomeCard} {...buttonProps} />
-```
-
-Shorthand for:
-```tsx
-<PresetPickerSheet presets={presets}>
-  <PresetPickerToggleButton {...buttonProps} />
-  <PresetPickerContent>
-    <PresetPickerThemeToggleGroup />
-    <PresetPickerList card={SomeCard} />
-  </PresetPickerContent>
-</PresetPickerSheet>
-```
-
-## PresetDropdownPicker
-
-import { PresetDropdownPicker } from '@codecanon/next-presets'
-
-<PresetDropdownPicker size="lg" />
-
-```tsx
-<PresetDropdownPicker presets={presets} {...buttonProps} />
-```
-
-Shorthand for:
-```tsx
-<PresetDropdownPickerMenu presets={presets}>
-  <PresetDropdownPickerTrigger {...props} />
-  <PresetDropdownPickerContent>
-    <PresetDropdownPickerSearch />
-    <PresetDropdownPickerToolbar />
-    <PresetDropdownPickerList />
-  </PresetDropdownPickerContent>
-</PresetDropdownPickerMenu>
-```
-
-## PresetPickerSheet
-
-Context provider that wires together the picker components. Wrap all picker sub-components inside it.
+Context provider and Sheet root. Wrap all picker sub-components inside it.
 
 ```tsx
 import {
-  PresetPickerSheet,
+  PresetPicker,
+  PresetPickerTrigger,
   PresetPickerContent,
-  PresetPickerList,
-  PresetPickerToggleButton,
   PresetPickerThemeToggleGroup,
+  PresetPickerSearch,
+  PresetPickerList,
 } from "@codecanon/next-presets";
 
-<PresetPickerSheet>
-  <PresetPickerToggleButton />
+<PresetPicker>
+  <PresetPickerTrigger />
   <PresetPickerContent>
     <PresetPickerThemeToggleGroup />
+    <PresetPickerSearch />
     <PresetPickerList />
   </PresetPickerContent>
-</PresetPickerSheet>
+</PresetPicker>
 ```
 
-### Props
-
-| Prop | Type | Description |
-|---|---|---|
-| `children` | `ReactNode` | Required. Picker sub-components. |
-| `presets` | `readonly PresetTuple[]` | The list of presets to display. Spread to extend with custom entries. |
-
-### Extending with custom presets
-
-Pass your own presets alongside the built-ins using the `presets` prop. Each entry is a `[id, label]` tuple — the `id` must match the `data-preset` value in your CSS:
-
-```tsx
-import { PRESETS, PresetPickerSheet } from "@codecanon/next-presets";
-
-const MY_PRESETS = [
-  ["my-brand", "My Brand"],
-  ...PRESETS,
-] as const;
-
-<PresetPickerSheet presets={MY_PRESETS} />
-```
-
----
-
-## usePresetPicker(caller?)
-
-Hook to access the picker's open/close state from any component inside a `<PresetPickerSheet>`. Useful for building custom triggers.
-
-```tsx
-import { usePresetPicker } from "@codecanon/next-presets";
-
-const { open, setOpen, toggleOpen } = usePresetPicker();
-```
-
-### Return values
-
-| Property | Type | Description |
-|---|---|---|
-| `open` | `boolean` | Whether the picker sheet is open. |
-| `setOpen` | `(value: boolean) => void` | Directly set open state. |
-| `toggleOpen` | `() => void` | Toggle open/closed. |
-
-Throws an error if called outside of a `<PresetPickerSheet>`.
-
----
-
-## PresetPickerContent
-
-Renders the slide-out sheet container. Animates in from the left. Non-modal — the rest of the app stays interactive while open.
-
-```tsx
-<PresetPickerSheet>
-  <PresetPickerContent>
-    {/* content here */}
-  </PresetPickerContent>
-</PresetPickerSheet>
-```
-
-Extends the `Sheet` component props. The `open` and `onOpenChange` values are wired automatically from `PresetPickerSheet` context. Pointer events outside the sheet do not close it.
-
----
-
-## PresetPickerList
-
-The main body of the picker — renders a search field and the full preset list with live previews.
-
-```tsx
-import { PresetPickerList, PresetDockPreviewCard } from '@codecanon/next-presets'
-
-<PresetPickerList
-  card={PresetDockPreviewCard}
-/>
-```
-
-### Props
+<h4>Props</h4>
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `card` | `React.ComponentType<PresetPreviewCardProps>` | `PresetPreviewCard` | Custom preview card component. Must accept the same props as [PresetPreviewCard](#presetpreviewcard). |
-
-### Keyboard navigation
-
-| Key | Action |
-|---|---|
-| `↑` / `↓` | Move through the preset list |
-| `Enter` | Apply the highlighted preset |
-| Type | Filters the preset list by name |
+| `children` | `ReactNode` | — | Required. Picker sub-components. |
+| `modal` | `boolean` | `false` | When `true`, clicking outside closes the sheet. When `false`, the rest of the app stays interactive. |
+| `onOpenChange` | `(open: boolean) => void` | — | Fires when the sheet opens or closes. |
 
 ---
 
-## PresetPickerThemeToggleGroup
+### PresetPickerTrigger
 
-Three-button toggle for switching between light, dark, and system modes. Place it inside `<PresetPickerContent>` or anywhere else inside a `<PresetPickerSheet>`.
+A ready-made button that opens and closes the preset picker sheet. Shows the active preset name and a palette icon.
+
+```tsx
+import { PresetPickerTrigger } from "@codecanon/next-presets";
+
+<PresetPickerTrigger />
+// or with custom content:
+<PresetPickerTrigger size="lg">🎨 Themes</PresetPickerTrigger>
+```
+
+Accepts all `Button` props. Must be inside a `<PresetPicker>`.
+
+---
+
+### PresetPickerContent
+
+Renders the slide-out sheet container. Animates in from the left. Non-modal by default — the rest of the app stays interactive while open.
+
+```tsx
+<PresetPicker>
+  <PresetPickerContent>
+    {/* content here */}
+  </PresetPickerContent>
+</PresetPicker>
+```
+
+Extends `SheetContent` props. Open state is wired automatically from `PresetPicker` context.
+
+---
+
+### PresetPickerThemeToggleGroup
+
+Three-button toggle for switching between system, light, and dark modes. Place it inside `<PresetPickerContent>`.
 
 ```tsx
 import { PresetPickerThemeToggleGroup } from "@codecanon/next-presets";
@@ -166,159 +81,127 @@ import { PresetPickerThemeToggleGroup } from "@codecanon/next-presets";
 <PresetPickerThemeToggleGroup />
 ```
 
-Accepts all `React.ComponentProps<"div">` props. Internally calls `useTheme()` to read and set the current theme.
+Accepts standard `div` props. Internally calls `useTheme()` to read and set the current theme.
 
 ---
 
-## PresetPickerToggleButton
+### PresetPickerSearch
 
-A ready-made button that opens and closes the preset picker sheet. Use it as a drop-in trigger without writing a custom `usePresetPicker` wrapper.
+Search input with clear and random preset buttons. Handles arrow key and Enter key events for keyboard navigation.
 
 ```tsx
-import {
-  PresetPickerSheet,
-  PresetPickerContent,
-  PresetPickerList,
-  PresetPickerThemeToggleGroup,
-  PresetPickerToggleButton,
-} from "@codecanon/next-presets";
+import { PresetPickerSearch } from "@codecanon/next-presets";
 
-<PresetPickerSheet>
-  <PresetPickerToggleButton>🎨 Themes</PresetPickerToggleButton>
-  <PresetPickerContent>
-    <PresetPickerThemeToggleGroup />
-    <PresetPickerList />
-  </PresetPickerContent>
-</PresetPickerSheet>
+<PresetPickerSearch />
 ```
 
-Accepts all `Button` props including radix-ui `asChild`. The `onClick` handler is wired to `toggleOpen` automatically.
+Accepts all `InputGroupInput` props. Must be inside a `<PresetPicker>`.
+
+<h4>Keyboard navigation</h4>
+
+| Key | Action |
+|---|---|
+| `↑` / `↓` | Move through the preset list |
+| `Enter` | Apply the highlighted preset |
+| Type | Filter the preset list by name |
 
 ---
 
-## PresetPreviewCard
+### PresetPickerList
 
-A mock app UI that renders in the colors of any preset — useful for previewing themes before applying them.
+Renders the full preset list with live preview cards. Scrolls to the active preset on open.
 
 ```tsx
-import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets";
+import { PresetPickerList, PresetDockPreviewCard } from "@codecanon/next-presets";
 
-<PresetPreviewCard
-  preset="violet-bloom"
-  label="Violet Bloom (Sidebar)"
-  active={false}
-  highlighted={false}
-/>
-
-<PresetDockPreviewCard
-  preset="violet-bloom"
-  label="Violet Bloom (Dock)"
-  active={false}
-  highlighted={false}
-/>
+<PresetPickerList card={PresetDockPreviewCard} />
 ```
 
-import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets";
-
-<PresetPreviewCard
-  preset="violet-bloom"
-  label="Violet Bloom (Sidebar)"
-  active={false}
-  highlighted={false}
-/>
-<PresetDockPreviewCard
-  preset="violet-bloom"
-  label="Violet Bloom (Dock)"
-  active={false}
-  highlighted={false}
-/>
-
-### Props
+<h4>Props</h4>
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `preset` | `string` | — | Any preset ID (built-in or custom) whose colors to render. |
-| `label` | `string` | Auto-generated from `preset` | Display name shown on the card. |
-| `active` | `boolean` | `false` | Highlights the card with a primary-color ring (currently applied preset). |
-| `highlighted` | `boolean` | `false` | Highlights the card with a secondary ring (keyboard focus). |
-| `ref` | `React.Ref<HTMLDivElement>` | — | Forwarded to the root element. |
-
-The card renders a miniature app chrome — sidebar, header, content cards, and footer — using the preset's CSS variables. This gives an accurate preview of how the preset will look in a real UI.
-
-### Custom preview card
-
-Pass a custom component to `PresetPickerList` via the `card` prop. It receives the same props as `PresetPreviewCard`:
-
-```tsx
-import type { PresetPreviewCard } from "@codecanon/next-presets";
-
-type PreviewCardProps = React.ComponentProps<typeof PresetPreviewCard>;
-
-function MyPreviewCard({ preset, label, active }: PreviewCardProps) {
-  return (
-    <div data-preset={preset} style={{ border: active ? "2px solid blue" : "none" }}>
-      {label}
-    </div>
-  );
-}
-
-<PresetPickerList card={MyPreviewCard} />
-```
-
-You can also get the data from the `usePreset` hook.
-
-```tsx
-import { usePreset, PRESET_BY_NAME, type PresetPreviewCard } from "@codecanon/next-presets";
-
-type PreviewCardProps = React.ComponentProps<typeof PresetPreviewCard>;
-
-function MyPreviewCard({ preset }: PreviewCardProps) {
-  const { preset: activePreset } = usePreset()
-
-  const active = preset === activePrest
-  const label = PRESET_BY_NAME[preset]
-
-  return (
-    <div data-preset={preset} style={{ border: active ? "2px solid blue" : "none" }}>
-      {label}
-    </div>
-  );
-}
-
-<PresetPickerList card={MyPreviewCard} />
-```
+| `card` | `React.ComponentType<PresetPreviewCardProps>` | `PresetPreviewCard` | Custom preview card component. |
 
 ---
 
-## Full example
+### usePresetPicker(caller?)
+
+Hook to access the picker's open/close state from any component inside a `<PresetPicker>`. Useful for building custom triggers.
+
+```tsx
+import { usePresetPicker } from "@codecanon/next-presets";
+
+const { open, modal, query, highlightedIndex, filteredPresets, setOpen, toggleOpen, setQuery, setHighlightedIndex } = usePresetPicker();
+```
+
+<h4>Return values</h4>
+
+| Property | Type | Description |
+|---|---|---|
+| `open` | `boolean` | Whether the picker sheet is open. |
+| `modal` | `boolean` | Whether the sheet is in modal mode. |
+| `query` | `string` | Current search query. |
+| `highlightedIndex` | `number` | Keyboard-focused preset index (`-1` if none). |
+| `filteredPresets` | `PresetTuple[]` | Search-filtered preset list. |
+| `setOpen` | `(value: boolean) => void` | Directly set open state. |
+| `toggleOpen` | `() => void` | Toggle open/closed. |
+| `setQuery` | `(query: string) => void` | Update search query. |
+| `setHighlightedIndex` | `(index: number) => void` | Update keyboard-highlighted index. |
+
+Throws an error if called outside of a `<PresetPicker>`.
+
+---
+
+## PresetDropdownPicker
+
+A compact dropdown alternative to the sheet picker. Also composable.
 
 ```tsx
 import {
-  PresetPickerSheet,
-  PresetPickerContent,
-  PresetPickerList,
-  PresetPickerThemeToggleGroup,
-  usePresetPicker,
+  PresetDropdownPicker,
+  PresetDropdownPickerTrigger,
+  PresetDropdownPickerContent,
+  PresetDropdownPickerSearch,
+  PresetDropdownPickerToolbar,
+  PresetDropdownPickerList,
 } from "@codecanon/next-presets";
 
-function TriggerButton() {
-  const { toggleOpen } = usePresetPicker();
-  return (
-    <button onClick={toggleOpen}>
-      🎨 Themes
-    </button>
-  );
-}
-
-export function ThemePicker() {
-  return (
-    <PresetPickerSheet>
-      <TriggerButton />
-      <PresetPickerContent>
-        <PresetPickerThemeToggleGroup />
-        <PresetPickerList />
-      </PresetPickerContent>
-    </PresetPickerSheet>
-  );
-}
+<PresetDropdownPicker>
+  <PresetDropdownPickerTrigger />
+  <PresetDropdownPickerContent>
+    <PresetDropdownPickerSearch />
+    <PresetDropdownPickerToolbar />
+    <PresetDropdownPickerList />
+  </PresetDropdownPickerContent>
+</PresetDropdownPicker>
 ```
+
+<h3>PresetDropdownPicker Props</h3>
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `defaultOpen` | `boolean` | `false` | Initial open state. |
+
+<h3>PresetDropdownPickerTrigger Props</h3>
+
+Accepts all `Button` props (`size`, `variant`, `className`, etc.).
+
+<h3>PresetDropdownPickerSearch Props</h3>
+
+| Prop | Type | Description |
+|---|---|---|
+| `containerClassName` | `string` | Class applied to the wrapper `div`. |
+| ...rest | `InputGroupInput` props | Forwarded to the search input. |
+
+<h3>PresetDropdownPickerToolbar</h3>
+
+Shows preset count, theme toggle, clear, and random buttons. Accepts standard `div` props.
+
+<h3>usePresetDropdownPicker()</h3>
+
+```tsx
+const { open, query, setOpen, toggleOpen, setQuery } = usePresetDropdownPicker();
+```
+
+Must be called inside a `<PresetDropdownPicker>`.

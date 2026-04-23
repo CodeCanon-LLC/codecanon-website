@@ -22,7 +22,11 @@ export function meta({ matches }: Route.MetaArgs) {
     { property: "og:title", content: title },
     { property: "og:description", content: description },
     { property: "og:url", content: "https://codecanon.dev/purchase" },
-    { tagName: "link", rel: "canonical", href: "https://codecanon.dev/purchase" },
+    {
+      tagName: "link",
+      rel: "canonical",
+      href: "https://codecanon.dev/purchase",
+    },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
   ];
@@ -82,7 +86,8 @@ export default function Purchase() {
   }
 
   const checkoutLink = useMemo(() => {
-    if (selected.has("waraq") && selected.has("nuska")) return PAYMENT_LINKS.bundle;
+    if (selected.has("waraq") && selected.has("nuska"))
+      return PAYMENT_LINKS.bundle;
     if (selected.has("waraq")) return PAYMENT_LINKS.waraq;
     if (selected.has("nuska")) return PAYMENT_LINKS.nuska;
     return undefined;
@@ -215,7 +220,8 @@ export default function Purchase() {
               "inline-flex items-center justify-center gap-2 font-semibold rounded-lg",
               "px-8 h-12 text-sm w-full max-w-sm transition-all",
               "bg-primary text-primary-foreground hover:bg-primary/90",
-              !checkoutLink && "opacity-40 cursor-not-allowed pointer-events-none",
+              !checkoutLink &&
+                "opacity-40 cursor-not-allowed pointer-events-none",
             )}
           >
             {total !== null
@@ -224,7 +230,8 @@ export default function Purchase() {
           </a>
 
           <p className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">
-            After payment you'll receive an email with your private install token and setup instructions.
+            After payment you'll receive an email with your private install
+            token and setup instructions.
           </p>
         </div>
 

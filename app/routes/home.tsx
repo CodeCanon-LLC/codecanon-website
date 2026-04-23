@@ -14,7 +14,7 @@ import {
   getWaraqDemoLink,
 } from "@/lib/links";
 import type { Route } from "./+types/home";
-import packageJson from '@/../package.json'
+import packageJson from "@/../package.json";
 
 const WaraqDemo = lazy(() => import("@/components/waraq-demo"));
 
@@ -284,7 +284,7 @@ function LibraryCard({
     <div className="flex flex-col rounded-xl border bg-card p-6 hover:border-primary transition-colors">
       <div className="mb-2 flex items-center gap-2">
         <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-          {version.replace('^', '')}
+          {version.replace("^", "")}
         </span>
         {paid ? (
           <span className="rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400">

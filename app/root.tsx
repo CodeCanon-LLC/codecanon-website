@@ -1,7 +1,8 @@
 import {
+  PresetPicker,
   PresetPickerContent,
   PresetPickerList,
-  PresetPickerSheet,
+  PresetPickerSearch,
   PresetPickerThemeToggleGroup,
   PresetProvider,
 } from "@codecanon/next-presets";
@@ -47,7 +48,10 @@ export function meta() {
     { property: "og:image", content: "https://codecanon.dev/assets/og.png" },
     { property: "og:image:width", content: "2400" },
     { property: "og:image:height", content: "1264" },
-    { property: "og:image:alt", content: "CodeCanon — Software & Consultation" },
+    {
+      property: "og:image:alt",
+      content: "CodeCanon — Software & Consultation",
+    },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:image", content: "https://codecanon.dev/assets/og.png" },
     { name: "twitter:site", content: "@codecanon" },
@@ -79,10 +83,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <TooltipProvider>
           <RootProvider search={{ SearchDialog }}>
             <PresetProvider>
-              <PresetPickerSheet>
+              <PresetPicker>
                 {children}
                 <PresetPickerContent>
                   <PresetPickerThemeToggleGroup />
+                  <PresetPickerSearch />
                   <PresetPickerList />
                   <div className="mb-4 flex gap-2 *:flex-1">
                     <Button asChild variant="outline">
@@ -100,7 +105,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                 </PresetPickerContent>
                 <PresetPickerButton />
-              </PresetPickerSheet>
+              </PresetPicker>
             </PresetProvider>
           </RootProvider>
         </TooltipProvider>

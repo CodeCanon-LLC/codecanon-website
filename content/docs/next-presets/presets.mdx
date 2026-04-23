@@ -57,12 +57,15 @@ setPreset("violet-bloom");
 ## Listing all presets
 
 ```tsx
-import { PRESETS } from "@codecanon/next-presets";
+import { usePreset } from "@codecanon/next-presets";
 
-// Array of [id, label] tuples
-PRESETS.forEach(([key, label]) => {
-  console.log(key, label);
-});
+function PresetDebug() {
+  const { presets } = usePreset();
+
+  presets.forEach(([key, label]) => {
+    console.log(key, label);
+  });
+}
 ```
 
 ---
@@ -193,17 +196,44 @@ Write your own preset CSS using the `@variant preset-light` and `@variant preset
 @import "@codecanon/next-presets/styles.css";
 ```
 
-Then register it in the picker and activate it:
+Then register it in the picker. **Prefer the Vite plugin** — it wires up the JS bundle automatically so no `PresetProvider` prop changes are needed:
+
+### Option A — Vite plugin (recommended)
+
+```ts title="vite.config.ts"
+import { nextPresetsPlugin } from "@codecanon/next-presets/vite"
+
+export default defineConfig({
+  plugins: [
+    nextPresetsPlugin({
+      add: [["my-brand", "My Brand"]],
+      // optionally limit built-ins too:
+      // include: ["nuteral", "claude"],
+    }),
+  ],
+})
+```
+
+The picker and `usePreset().presets` will include `My Brand` automatically. No changes to `PresetProvider`.
+
+### Option B — PresetProvider prop
 
 ```tsx
-import { PRESETS, PresetPickerSheet } from "@codecanon/next-presets";
+import { filterPresets, PresetProvider } from "@codecanon/next-presets";
 
-const MY_PRESETS = [["my-brand", "My Brand"], ...PRESETS] as const;
+const MY_PRESETS = [
+  ["my-brand", "My Brand"] as const,
+  ...filterPresets(["nuteral", "claude"]), // or omit to include all built-ins
+];
 
-// In your picker:
-<PresetPickerSheet presets={MY_PRESETS} />
+<PresetProvider presets={MY_PRESETS}>
+  {children}
+</PresetProvider>
+```
 
-// Programmatically:
+Either way, activate the preset with `setPreset`:
+
+```tsx
 const { setPreset } = usePreset();
 setPreset("my-brand");
 ```

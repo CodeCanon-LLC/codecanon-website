@@ -1,7 +1,13 @@
 import { Link } from "react-router";
 import { getDocsNextPresetsLink } from "@/lib/links";
-import { PresetDropdownPicker } from "@codecanon/next-presets";
-
+import {
+  PresetDropdownPicker,
+  PresetDropdownPickerContent,
+  PresetDropdownPickerList,
+  PresetDropdownPickerSearch,
+  PresetDropdownPickerToolbar,
+  PresetDropdownPickerTrigger,
+} from "@codecanon/next-presets";
 
 function ColorSwatch({ label, variable }: { label: string; variable: string }) {
   return (
@@ -64,7 +70,14 @@ function NextPresetsDemo() {
               50+ shadcn theme presets, one click away
             </p>
           </div>
-          <PresetDropdownPicker size="lg" />
+          <PresetDropdownPicker>
+            <PresetDropdownPickerTrigger size="lg" />
+            <PresetDropdownPickerContent>
+              <PresetDropdownPickerSearch />
+              <PresetDropdownPickerToolbar />
+              <PresetDropdownPickerList />
+            </PresetDropdownPickerContent>
+          </PresetDropdownPicker>
         </div>
       </header>
 

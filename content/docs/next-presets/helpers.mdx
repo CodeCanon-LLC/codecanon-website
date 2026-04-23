@@ -1,0 +1,215 @@
+---
+title: Helpers & utilities
+description: Hooks and functions for working with preset and theme names.
+---
+
+All helpers are exported from `@codecanon/next-presets`.
+
+---
+
+## usePresetName
+
+A hook that returns the display label for any preset ID. Reads the `presets` list from the nearest `<PresetProvider>` so custom presets added via the `presets` prop are included automatically.
+
+```tsx
+import { usePresetName } from "@codecanon/next-presets"
+
+function PresetBadge({ presetId }: { presetId: string }) {
+  const name = usePresetName(presetId)
+  return <span>{name}</span> // e.g. "Violet Bloom"
+}
+```
+
+### Signature
+
+```ts
+function usePresetName(preset: string): string
+```
+
+Must be called inside a `<PresetProvider>`. Falls back to a title-cased version of the ID if the preset is not found (`"my-brand"` → `"My Brand"`).
+
+---
+
+## getPresetName
+
+The non-hook equivalent of `usePresetName`. Useful outside of React components — in server code, utility functions, or anywhere you already have the preset list available.
+
+```tsx
+import { getPresetName } from "@codecanon/next-presets"
+
+getPresetName("violet-bloom")                    // "Violet Bloom"
+getPresetName("my-custom")                       // "My Custom" (title-case fallback)
+getPresetName(undefined, { defaultValue: "None" }) // "None"
+
+// with a custom preset list
+getPresetName("my-brand", { presets: [["my-brand", "My Brand"]] }) // "My Brand"
+```
+
+### Signature
+
+```ts
+function getPresetName(
+  preset?: string,
+  options?: {
+    presets?: PresetTuple[]
+    defaultValue?: string
+  }
+): string
+```
+
+| Param | Description |
+|---|---|
+| `preset` | Preset ID to look up. |
+| `options.presets` | Custom preset list to search. Defaults to the built-in `PRESETS`. |
+| `options.defaultValue` | Returned when `preset` is `undefined`. Defaults to `""`. |
+
+---
+
+## getThemeName
+
+Returns the display label for a theme value — always title-cased.
+
+```tsx
+import { getThemeName } from "@codecanon/next-presets"
+
+getThemeName("dark")    // "Dark"
+getThemeName("light")   // "Light"
+getThemeName("system")  // "System"
+getThemeName()          // "System" (default)
+```
+
+### Signature
+
+```ts
+function getThemeName(theme?: Theme, defaultTheme?: Theme): string
+```
+
+Useful for rendering accessible labels in theme toggle buttons.
+
+---
+
+## getNextTheme
+
+Returns the next theme in the cycle: `system → light → dark → system`.
+
+```tsx
+import { getNextTheme } from "@codecanon/next-presets"
+
+getNextTheme("system") // "light"
+getNextTheme("light")  // "dark"
+getNextTheme("dark")   // "system"
+```
+
+### Signature
+
+```ts
+function getNextTheme(currentTheme: Theme): Theme
+```
+
+### Example: cycle button
+
+```tsx
+import { useTheme, getNextTheme, getThemeName } from "@codecanon/next-presets"
+
+function ThemeCycleButton() {
+  const { theme = "system", setTheme } = useTheme()
+
+  return (
+    <button onClick={() => setTheme(getNextTheme(theme))}>
+      {getThemeName(theme)}
+    </button>
+  )
+}
+```
+
+---
+
+## filterPresets
+
+Returns a filtered subset of the built-in `PRESETS` array in canonical order.
+
+```tsx
+import { filterPresets } from "@codecanon/next-presets"
+
+filterPresets(["claude", "anew", "rose"])
+// → [["claude", "Claude"], ["anew", "Anew"], ["rose", "Rose"]]
+```
+
+### Signature
+
+```ts
+function filterPresets(ids: string[]): PresetTuple[]
+```
+
+The output order matches the canonical built-in order, not the order of `ids`. Unknown IDs are silently ignored.
+
+Useful when passing a subset of presets to `PresetProvider`:
+
+```tsx
+<PresetProvider presets={filterPresets(["nuteral", "claude", "anew"])}>
+  {children}
+</PresetProvider>
+```
+
+---
+
+## PresetPreviewDots
+
+Renders four colored dots representing the primary, secondary, accent, and muted colors of any preset — identical to the dots shown in `PresetDropdownPickerItem`.
+
+```tsx
+import { PresetPreviewDots } from "@codecanon/next-presets"
+
+<PresetPreviewDots preset="violet-bloom" />
+```
+
+import { PresetPreviewDots } from "@codecanon/next-presets"
+
+<PresetPreviewDots preset="violet-bloom" />
+
+### Signature
+
+```ts
+function PresetPreviewDots({ preset }: { preset: string }): JSX.Element
+```
+
+Sets `data-preset` on the wrapper so the CSS variables resolve to the correct preset colors. Useful when building custom picker UIs or displaying preset swatches in tables or grids.
+
+---
+
+## PresetPreviewCard / PresetDockPreviewCard
+
+Two preview card variants that render a miniature app UI in the colors of any preset.
+
+```tsx
+import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets"
+
+// Sidebar layout (used in PresetPickerList by default)
+<PresetPreviewCard preset="violet-bloom" highlighted={false} />
+
+// Dock/bottom-bar layout (alternative)
+<PresetDockPreviewCard preset="violet-bloom" highlighted={false} />
+```
+
+import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets"
+
+<div className="flex gap-4 flex-wrap">
+  <PresetPreviewCard preset="violet-bloom" highlighted={false} />
+  <PresetDockPreviewCard preset="violet-bloom" highlighted={false} />
+</div>
+
+### Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `preset` | `string` | — | Any preset ID whose colors to render. |
+| `highlighted` | `boolean` | `false` | Accent ring — used for keyboard focus in the picker. |
+| `ref` | `React.Ref<HTMLDivElement>` | — | Forwarded to the root element. |
+
+Pass `PresetDockPreviewCard` to `PresetPickerList` via the `card` prop to switch the preview style:
+
+```tsx
+import { PresetPickerList, PresetDockPreviewCard } from "@codecanon/next-presets"
+
+<PresetPickerList card={PresetDockPreviewCard} />
+```

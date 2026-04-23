@@ -57,8 +57,12 @@ export default {
     }
 
     if (!record.packages.includes(pkg)) {
-      console.warn(`Token ${token.slice(0, 8)}... attempted to access @codecanon/${pkg} — not in purchased packages`);
-      return registryForbidden(`Your token does not include access to @codecanon/${pkg}`);
+      console.warn(
+        `Token ${token.slice(0, 8)}... attempted to access @codecanon/${pkg} — not in purchased packages`,
+      );
+      return registryForbidden(
+        `Your token does not include access to @codecanon/${pkg}`,
+      );
     }
 
     // ── Seat / IP enforcement ─────────────────────────────────────────────────
@@ -66,9 +70,11 @@ export default {
 
     if (!record.ips.includes(clientIp)) {
       if (record.ips.length >= record.seats) {
-        console.warn(`Token ${token.slice(0, 8)}... exceeded seat limit (${record.seats}) — blocked IP ${clientIp}`);
+        console.warn(
+          `Token ${token.slice(0, 8)}... exceeded seat limit (${record.seats}) — blocked IP ${clientIp}`,
+        );
         return registryForbidden(
-          `Seat limit reached (${record.seats} unique IPs allowed). Contact codecanonllc@gmail.com to increase your seats.`
+          `Seat limit reached (${record.seats} unique IPs allowed). Contact codecanonllc@gmail.com to increase your seats.`,
         );
       }
       record.ips.push(clientIp);
@@ -77,7 +83,7 @@ export default {
     // Update lastUsed and IPs (fire-and-forget — don't block the proxy)
     record.lastUsed = new Date().toISOString();
     env.TOKENS.put(`token:${token}`, JSON.stringify(record)).catch((err) =>
-      console.error("KV update failed:", err)
+      console.error("KV update failed:", err),
     );
 
     // ── Proxy to npm registry ─────────────────────────────────────────────────
@@ -87,7 +93,8 @@ export default {
     const npmHeaders: Record<string, string> = {
       Authorization: `Bearer ${env.NPM_ORG_TOKEN}`,
       Accept: request.headers.get("Accept") ?? "application/json",
-      "User-Agent": request.headers.get("User-Agent") ?? "codecanon-registry/1.0",
+      "User-Agent":
+        request.headers.get("User-Agent") ?? "codecanon-registry/1.0",
       // Do NOT forward If-None-Match / If-Modified-Since — we must always get
       // the full response so we can rewrite tarball URLs before returning to client.
       // Do NOT set Accept-Encoding — Workers' fetch() auto-decompresses via .text()
@@ -109,8 +116,13 @@ export default {
       const proxyOrigin = `https://${url.hostname}`;
       const body = await npmRes.text();
       const hasNpmUrls = body.includes("https://registry.npmjs.org");
-      console.log(`Rewriting metadata: contentType=${contentType} hasNpmUrls=${hasNpmUrls} proxyOrigin=${proxyOrigin} bodyLength=${body.length}`);
-      const rewritten = body.replaceAll("https://registry.npmjs.org", proxyOrigin);
+      console.log(
+        `Rewriting metadata: contentType=${contentType} hasNpmUrls=${hasNpmUrls} proxyOrigin=${proxyOrigin} bodyLength=${body.length}`,
+      );
+      const rewritten = body.replaceAll(
+        "https://registry.npmjs.org",
+        proxyOrigin,
+      );
       responseHeaders.set("content-type", "application/json");
       responseHeaders.delete("content-encoding");
       responseHeaders.set("cache-control", "no-store");

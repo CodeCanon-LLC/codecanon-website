@@ -30,7 +30,11 @@ export default {
 
     const body = await request.text();
 
-    const valid = await verifyStripeSignature(body, sig, env.STRIPE_WEBHOOK_SECRET);
+    const valid = await verifyStripeSignature(
+      body,
+      sig,
+      env.STRIPE_WEBHOOK_SECRET,
+    );
     if (!valid) return new Response("Invalid signature", { status: 401 });
 
     let event: StripeEvent;
@@ -74,14 +78,24 @@ async function handleCheckout(session: CheckoutSession, env: Env) {
   let isNewToken: boolean;
 
   if (existingTokenId) {
-    const existing = await env.TOKENS.get<TokenRecord>(`token:${existingTokenId}`, "json");
+    const existing = await env.TOKENS.get<TokenRecord>(
+      `token:${existingTokenId}`,
+      "json",
+    );
     if (existing && !existing.revoked) {
       // Merge new packages into existing token
-      const merged = Array.from(new Set([...existing.packages, ...packages])) as PackageId[];
+      const merged = Array.from(
+        new Set([...existing.packages, ...packages]),
+      ) as PackageId[];
       existing.packages = merged;
       existing.lastUsed = now;
-      await env.TOKENS.put(`token:${existingTokenId}`, JSON.stringify(existing));
-      console.log(`Token updated for ${email} — packages: ${merged.join(", ")}`);
+      await env.TOKENS.put(
+        `token:${existingTokenId}`,
+        JSON.stringify(existing),
+      );
+      console.log(
+        `Token updated for ${email} — packages: ${merged.join(", ")}`,
+      );
       token = existingTokenId;
       isNewToken = false;
     } else {
@@ -106,21 +120,36 @@ async function handleCheckout(session: CheckoutSession, env: Env) {
     };
     await env.TOKENS.put(`token:${token}`, JSON.stringify(record));
     await env.TOKENS.put(`email:${email}`, token);
-    console.log(`Token created for ${email} — packages: ${packages.join(", ")}`);
+    console.log(
+      `Token created for ${email} — packages: ${packages.join(", ")}`,
+    );
   }
 
   // Re-read final record to get accurate package list for the email
-  const finalRecord = await env.TOKENS.get<TokenRecord>(`token:${token}`, "json");
+  const finalRecord = await env.TOKENS.get<TokenRecord>(
+    `token:${token}`,
+    "json",
+  );
   const allPackages = finalRecord?.packages ?? packages;
 
-  await sendConfirmationEmail(env, { to: email, token, packages: allPackages, isNewToken });
+  await sendConfirmationEmail(env, {
+    to: email,
+    token,
+    packages: allPackages,
+    isNewToken,
+  });
 }
 
 // ── Email ─────────────────────────────────────────────────────────────────────
 
 async function sendConfirmationEmail(
   env: Env,
-  opts: { to: string; token: string; packages: PackageId[]; isNewToken: boolean },
+  opts: {
+    to: string;
+    token: string;
+    packages: PackageId[];
+    isNewToken: boolean;
+  },
 ) {
   const { to, token, packages, isNewToken } = opts;
 
@@ -135,7 +164,9 @@ async function sendConfirmationEmail(
     .map((p) => `npm install @codecanon/${p}`)
     .join("\n");
 
-  const heading = isNewToken ? "You're in 🎉" : "Your access has been updated 🎉";
+  const heading = isNewToken
+    ? "You're in 🎉"
+    : "Your access has been updated 🎉";
   const intro = isNewToken
     ? `Thanks for purchasing ${packageList}! Follow the steps below to get set up.`
     : `You now have access to ${packageList}. Your token is unchanged — update your <code>.npmrc</code> if needed and install the new package(s) below.`;

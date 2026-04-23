@@ -4,7 +4,9 @@ import { NavbarLogo } from "@/components/navbar-logo";
 import { getPurchaseLink } from "./links";
 import { gitConfig } from "./shared";
 
-export function baseOptions(opts?: { hidePurchase?: boolean }): BaseLayoutProps {
+export function baseOptions(opts?: {
+  hidePurchase?: boolean;
+}): BaseLayoutProps {
   return {
     nav: {
       title: NavbarLogo,

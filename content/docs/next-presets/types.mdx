@@ -134,8 +134,11 @@ Props accepted by `<PresetProvider>`.
 ```ts
 type PresetProviderProps = {
   children: React.ReactNode;
-  storageKey?: string;            // default: "preset"
-  attributes?: `data-${string}`;  // default: "data-preset"
+  storageKey?: string;           // default: "preset"
+  attribute?: `data-${string}`; // default: "data-preset"
+  preset?: string | undefined;
+  onPresetChange?: (preset: string | undefined) => void;
+  presets?: PresetTuple[];
 };
 ```
 
@@ -165,8 +168,14 @@ Returned by `usePresetPicker()`.
 ```ts
 type PresetPickerState = {
   open: boolean;
+  modal: boolean;
+  query: string;
+  highlightedIndex: number;
+  filteredPresets: PresetTuple[];
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   toggleOpen: () => void;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
+  setHighlightedIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 ```
 
@@ -174,17 +183,25 @@ type PresetPickerState = {
 
 ## PRESETS (constant)
 
-The full preset registry — a readonly array of `[id, label]` tuples exported from `@codecanon/next-presets`.
+The full built-in preset registry — a readonly array of `[id, label]` tuples.
 
 ```ts
 const PRESETS: readonly [PresetKeys, string][];
 ```
 
-Example:
+<Callout>
+Inside React components, prefer `usePreset().presets` over importing `PRESETS` directly. It reflects any custom presets passed to `<PresetProvider presets={...}>` or injected via the Vite plugin's `add` option.
+</Callout>
 
 ```ts
+// Outside components (e.g. vite.config.ts, scripts)
 import { PRESETS } from "@codecanon/next-presets";
 
 PRESETS[0]; // ["nuteral", "Nuteral"]
 PRESETS.find(([id]) => id === "violet-bloom"); // ["violet-bloom", "Violet Bloom"]
+```
+
+```tsx
+// Inside components — picks up custom presets too
+const { presets } = usePreset();
 ```

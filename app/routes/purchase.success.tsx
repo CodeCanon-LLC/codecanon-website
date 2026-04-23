@@ -10,7 +10,8 @@ export function meta(_: Route.MetaArgs) {
     { title: "Purchase confirmed — CodeCanon" },
     {
       name: "description",
-      content: "Your purchase was successful. Check your email for access instructions.",
+      content:
+        "Your purchase was successful. Check your email for access instructions.",
     },
   ];
 }
@@ -46,7 +47,10 @@ export default function PurchaseSuccess() {
           <h2 className="font-semibold text-sm">What happens next</h2>
           <ol className="space-y-3">
             {STEPS.map((step, i) => (
-              <li key={step} className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li
+                key={step}
+                className="flex items-start gap-3 text-sm text-muted-foreground"
+              >
                 <span className="shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center mt-0.5">
                   {i + 1}
                 </span>

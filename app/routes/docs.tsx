@@ -46,9 +46,15 @@ const clientLoader = browserCollections.docs.createClientLoader({
       <DocsPage toc={toc} tableOfContent={{ style: "clerk" }}>
         <title>{frontmatter.title} — CodeCanon</title>
         <meta name="description" content={frontmatter.description} />
-        <meta property="og:title" content={`${frontmatter.title} — CodeCanon`} />
+        <meta
+          property="og:title"
+          content={`${frontmatter.title} — CodeCanon`}
+        />
         <meta property="og:description" content={frontmatter.description} />
-        <meta name="twitter:title" content={`${frontmatter.title} — CodeCanon`} />
+        <meta
+          name="twitter:title"
+          content={`${frontmatter.title} — CodeCanon`}
+        />
         <meta name="twitter:description" content={frontmatter.description} />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
@@ -78,7 +84,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
     <DocsLayout
       {...baseOptions({ hidePurchase })}
       sidebar={{
-        className: 'bg-sidebar'
+        className: "bg-sidebar",
       }}
       tree={pageTree}
       tabs={[

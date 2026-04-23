@@ -44,41 +44,45 @@ Both providers persist their state to `localStorage` and restore it on the next 
 
 ## 3. Add a preset picker
 
-Use `PresetPickerSheet`, `PresetPickerContent`, and `PresetPickerList` together to render a slide-out theme selector:
+Use `PresetPicker`, `PresetPickerContent`, `PresetPickerSearch`, and `PresetPickerList` together to render a slide-out theme selector:
 
 ```tsx
 import {
   PresetPicker,
-  PresetPickerSheet,
+  PresetPickerTrigger,
   PresetPickerContent,
+  PresetPickerSearch,
   PresetPickerList,
   PresetPickerThemeToggleGroup,
 } from "@codecanon/next-presets";
 
 export function ThemeSidebar() {
   return (
-    <PresetPickerSheet>
+    <PresetPicker>
+      <PresetPickerTrigger />
       <PresetPickerContent>
         <PresetPickerThemeToggleGroup />
+        <PresetPickerSearch />
         <PresetPickerList />
       </PresetPickerContent>
-    </PresetPickerSheet>
+    </PresetPicker>
   );
 }
 ```
 
-`PresetPickerList` renders a searchable list of presets with live mini-app previews. It supports arrow-key navigation and Enter to select.
+`PresetPickerSearch` handles text filtering and arrow-key / Enter navigation. `PresetPickerList` renders the filtered preset list with live mini-app previews.
 
 ## 4. Open the picker programmatically
 
-Use `usePresetPicker` to toggle the sheet from any button or trigger inside a `<PresetPickerSheet>`:
+Use `usePresetPicker` to toggle the sheet from any button or trigger inside a `<PresetPicker>`:
 
 ```tsx
 import {
-  PresetPickerSheet,
+  PresetPicker,
   PresetPickerContent,
+  PresetPickerSearch,
   PresetPickerList,
-  PresetPickerToggleButton,
+  PresetPickerTrigger,
   PresetPickerThemeToggleGroup,
   usePresetPicker,
 } from "@codecanon/next-presets";
@@ -90,18 +94,19 @@ function CustomOpenButton() {
 
 export function App() {
   return (
-    <PresetPickerSheet>
+    <PresetPicker>
       <main className="my-app">
-        {/*Option A*/}
-        <PresetPickerToggleButton>Choose Preset</PresetPickerToggleButton>
-        {/*Option B: see above*/}
+        {/* Option A — built-in trigger button */}
+        <PresetPickerTrigger>Choose Preset</PresetPickerTrigger>
+        {/* Option B — custom trigger (see above) */}
         <CustomOpenButton />
       </main>
       <PresetPickerContent>
         <PresetPickerThemeToggleGroup />
+        <PresetPickerSearch />
         <PresetPickerList />
       </PresetPickerContent>
-    </PresetPickerSheet>
+    </PresetPicker>
   );
 }
 ```
