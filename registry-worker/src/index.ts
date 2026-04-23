@@ -1,5 +1,6 @@
 interface Env {
   TOKENS: KVNamespace;
+  REGISTRY: KVNamespace;
   NPM_ORG_TOKEN: string;
 }
 
@@ -25,6 +26,21 @@ export default {
       return new Response("Method not allowed", { status: 405 });
     }
 
+    // ── Public shadcn registry — no auth required ─────────────────────────────
+    const url = new URL(request.url);
+    if (url.pathname.startsWith("/r/")) {
+      const name = url.pathname.slice(3).replace(/\.json$/, "");
+      const value = await env.REGISTRY.get(name);
+      if (!value) return new Response("Not found", { status: 404 });
+      return new Response(value, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Cache-Control": "public, max-age=300",
+        },
+      });
+    }
+
     // ── Auth ──────────────────────────────────────────────────────────────────
     const authHeader = request.headers.get("Authorization") ?? "";
     const token = authHeader.startsWith("Bearer ")
@@ -46,7 +62,6 @@ export default {
     }
 
     // ── Package check ─────────────────────────────────────────────────────────
-    const url = new URL(request.url);
     // Decode %2F in scoped package names: /@codecanon%2Fwaraq → /@codecanon/waraq
     const pathname = decodeURIComponent(url.pathname);
 

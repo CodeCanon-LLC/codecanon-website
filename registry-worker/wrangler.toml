@@ -12,6 +12,10 @@ head_sampling_rate = 1
 binding = "TOKENS"
 id = "e681c21e282e4263be2a8dd3b59ea050"
 
+[[kv_namespaces]]
+binding = "REGISTRY"
+id = "7fb2a9b08826496d876fc9dd3336e383"
+
 [env.staging]
 name = "codecanon-registry-staging"
 
