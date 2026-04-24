@@ -56,11 +56,45 @@ You can swap `nuteral.css` for any other preset to change the default:
 @import "@codecanon/next-presets/styles.css";
 ```
 
+## Install picker components
+
+The visual picker UI (slide-out sheet and dropdown) is distributed through a shadcn registry — the files are copied directly into your project, not shipped inside the npm package.
+
+<Tabs items={["preset-picker", "preset-dropdown-picker", "preset-preview-card", "preset-preview-dots"]}>
+
+<Tab value="preset-picker">
+```bash
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-picker
+```
+</Tab>
+
+<Tab value="preset-dropdown-picker">
+```bash
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-dropdown-picker
+```
+</Tab>
+
+<Tab value="preset-preview-card">
+```bash
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-card
+```
+</Tab>
+
+<Tab value="preset-preview-dots">
+```bash
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-dots
+```
+</Tab>
+
+</Tabs>
+
+Each command installs the component file(s) and any required shadcn dependencies (button, sheet, input-group, etc.) into your project automatically.
+
 ## Entry points
 
 | Import | Contents |
 |---|---|
-| <code className="whitespace-nowrap">@codecanon/next-presets</code> | Providers, hooks, components, constants, types |
+| <code className="whitespace-nowrap">@codecanon/next-presets</code> | Providers, hooks, constants, types |
 | <code className="whitespace-nowrap">@codecanon/next-presets/default/\<id\>.css</code> | **Required.** Sets the default `:root` variables. Import before `styles.css`. |
 | <code className="whitespace-nowrap">@codecanon/next-presets/styles.css</code> | **Required.** All preset overrides scoped to `[data-preset="..."]`. Import after the preset file. |
 | <code className="whitespace-nowrap">@codecanon/next-presets/custom-variants.css</code> | `@variant preset-light` and `@variant preset-dark` directives for writing custom presets in your own CSS |

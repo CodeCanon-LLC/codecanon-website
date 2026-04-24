@@ -44,7 +44,13 @@ Both providers persist their state to `localStorage` and restore it on the next 
 
 ## 3. Add a preset picker
 
-Use `PresetPicker`, `PresetPickerContent`, `PresetPickerSearch`, and `PresetPickerList` together to render a slide-out theme selector:
+First install the picker component into your project:
+
+```bash
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-picker
+```
+
+Then use `PresetPicker`, `PresetPickerContent`, `PresetPickerSearch`, and `PresetPickerList` together to render a slide-out theme selector:
 
 ```tsx
 import {
@@ -54,7 +60,7 @@ import {
   PresetPickerSearch,
   PresetPickerList,
   PresetPickerThemeToggleGroup,
-} from "@codecanon/next-presets";
+} from "@/components/ui/preset-picker";
 
 export function ThemeSidebar() {
   return (
@@ -85,7 +91,7 @@ import {
   PresetPickerTrigger,
   PresetPickerThemeToggleGroup,
   usePresetPicker,
-} from "@codecanon/next-presets";
+} from "@/components/ui/preset-picker";
 
 function CustomOpenButton() {
   const { toggleOpen } = usePresetPicker();

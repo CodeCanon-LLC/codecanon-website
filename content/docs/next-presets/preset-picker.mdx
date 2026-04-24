@@ -5,6 +5,27 @@ description: PresetPicker, PresetPickerContent, PresetPickerSearch, PresetPicker
 
 The preset picker is a composable slide-out sheet UI that lets users search, preview, and select from all available presets. All sub-components share state through a React context.
 
+<Callout type="info">
+  Picker components are installed via the shadcn CLI — they are not exported from the npm package.
+
+  ```bash
+  # Slide-out sheet picker
+  pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-picker
+
+  # Compact dropdown picker
+  pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-dropdown-picker
+
+  # Application preview card with sidebar
+  pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-card
+
+  # Application preview card with dock
+  pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-dock-preview-card
+
+  # Tweakcn like preset preview color dots
+  pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-dots
+  ```
+</Callout>
+
 ## PresetPicker
 
 Context provider and Sheet root. Wrap all picker sub-components inside it.
@@ -17,7 +38,7 @@ import {
   PresetPickerThemeToggleGroup,
   PresetPickerSearch,
   PresetPickerList,
-} from "@codecanon/next-presets";
+} from "@/components/ui/preset-picker";
 
 <PresetPicker>
   <PresetPickerTrigger />
@@ -44,7 +65,7 @@ import {
 A ready-made button that opens and closes the preset picker sheet. Shows the active preset name and a palette icon.
 
 ```tsx
-import { PresetPickerTrigger } from "@codecanon/next-presets";
+import { PresetPickerTrigger } from "@/components/ui/preset-picker";
 
 <PresetPickerTrigger />
 // or with custom content:
@@ -76,7 +97,7 @@ Extends `SheetContent` props. Open state is wired automatically from `PresetPick
 Three-button toggle for switching between system, light, and dark modes. Place it inside `<PresetPickerContent>`.
 
 ```tsx
-import { PresetPickerThemeToggleGroup } from "@codecanon/next-presets";
+import { PresetPickerThemeToggleGroup } from "@/components/ui/preset-picker";
 
 <PresetPickerThemeToggleGroup />
 ```
@@ -90,7 +111,7 @@ Accepts standard `div` props. Internally calls `useTheme()` to read and set the 
 Search input with clear and random preset buttons. Handles arrow key and Enter key events for keyboard navigation.
 
 ```tsx
-import { PresetPickerSearch } from "@codecanon/next-presets";
+import { PresetPickerSearch } from "@/components/ui/preset-picker";
 
 <PresetPickerSearch />
 ```
@@ -112,7 +133,8 @@ Accepts all `InputGroupInput` props. Must be inside a `<PresetPicker>`.
 Renders the full preset list with live preview cards. Scrolls to the active preset on open.
 
 ```tsx
-import { PresetPickerList, PresetDockPreviewCard } from "@codecanon/next-presets";
+import { PresetPickerList } from "@/components/ui/preset-picker";
+import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card";
 
 <PresetPickerList card={PresetDockPreviewCard} />
 ```
@@ -130,7 +152,7 @@ import { PresetPickerList, PresetDockPreviewCard } from "@codecanon/next-presets
 Hook to access the picker's open/close state from any component inside a `<PresetPicker>`. Useful for building custom triggers.
 
 ```tsx
-import { usePresetPicker } from "@codecanon/next-presets";
+import { usePresetPicker } from "@/components/ui/preset-picker";
 
 const { open, modal, query, highlightedIndex, filteredPresets, setOpen, toggleOpen, setQuery, setHighlightedIndex } = usePresetPicker();
 ```
@@ -165,7 +187,7 @@ import {
   PresetDropdownPickerSearch,
   PresetDropdownPickerToolbar,
   PresetDropdownPickerList,
-} from "@codecanon/next-presets";
+} from "@/components/ui/preset-dropdown-picker";
 
 <PresetDropdownPicker>
   <PresetDropdownPickerTrigger />
@@ -201,6 +223,8 @@ Shows preset count, theme toggle, clear, and random buttons. Accepts standard `d
 <h3>usePresetDropdownPicker()</h3>
 
 ```tsx
+import { usePresetDropdownPicker } from "@/components/ui/preset-dropdown-picker";
+
 const { open, query, setOpen, toggleOpen, setQuery } = usePresetDropdownPicker();
 ```
 

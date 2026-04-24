@@ -3,7 +3,9 @@ title: Helpers & utilities
 description: Hooks and functions for working with preset and theme names.
 ---
 
-All helpers are exported from `@codecanon/next-presets`.
+Hooks and functions (`usePresetName`, `getPresetName`, `getThemeName`, `getNextTheme`, `filterPresets`) are exported from `@codecanon/next-presets`.
+
+Preview components (`PresetPreviewDots`, `PresetPreviewCard`, `PresetDockPreviewCard`) are installed via the shadcn registry — see [Installation](/docs/next-presets/installation#install-picker-components).
 
 ---
 
@@ -157,13 +159,19 @@ Useful when passing a subset of presets to `PresetProvider`:
 
 Renders four colored dots representing the primary, secondary, accent, and muted colors of any preset — identical to the dots shown in `PresetDropdownPickerItem`.
 
+Install first:
+
+```bash
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-dots
+```
+
 ```tsx
-import { PresetPreviewDots } from "@codecanon/next-presets"
+import { PresetPreviewDots } from "@/components/ui/preset-preview-dots"
 
 <PresetPreviewDots preset="violet-bloom" />
 ```
 
-import { PresetPreviewDots } from "@codecanon/next-presets"
+import { PresetPreviewDots } from "@/components/ui/preset-preview-dots"
 
 <PresetPreviewDots preset="violet-bloom" />
 
@@ -181,8 +189,15 @@ Sets `data-preset` on the wrapper so the CSS variables resolve to the correct pr
 
 Two preview card variants that render a miniature app UI in the colors of any preset.
 
+Install first:
+
+```bash
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-card
+```
+
 ```tsx
-import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets"
+import { PresetPreviewCard } from "@/components/ui/preset-preview-card"
+import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
 
 // Sidebar layout (used in PresetPickerList by default)
 <PresetPreviewCard preset="violet-bloom" highlighted={false} />
@@ -191,7 +206,8 @@ import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-preset
 <PresetDockPreviewCard preset="violet-bloom" highlighted={false} />
 ```
 
-import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-presets"
+import { PresetPreviewCard } from "@/components/ui/preset-preview-card"
+import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
 
 <div className="flex gap-4 flex-wrap">
   <PresetPreviewCard preset="violet-bloom" highlighted={false} />
@@ -209,7 +225,8 @@ import { PresetPreviewCard, PresetDockPreviewCard } from "@codecanon/next-preset
 Pass `PresetDockPreviewCard` to `PresetPickerList` via the `card` prop to switch the preview style:
 
 ```tsx
-import { PresetPickerList, PresetDockPreviewCard } from "@codecanon/next-presets"
+import { PresetPickerList } from "@/components/ui/preset-picker"
+import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
 
 <PresetPickerList card={PresetDockPreviewCard} />
 ```

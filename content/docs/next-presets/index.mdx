@@ -12,7 +12,7 @@ description: 50+ shadcn/ui color presets with light/dark mode support for React.
 | Presets | 50+ built-in themes (violet-bloom, catppuccin, cyberpunk, …) |
 | Dark / Light | Full dual-mode per preset, system preference detection |
 | Persistence | localStorage with cross-tab sync |
-| Picker UI | Slide-out sheet with search and arrow-key navigation |
+| Picker UI | Slide-out sheet & dropdown — install via shadcn registry |
 | Preview | Live mini-app preview card per preset |
 | Custom presets | Extend with your own via `@variant preset-light` / `preset-dark` |
 | Peer deps | React 19, next-themes |
@@ -21,11 +21,11 @@ description: 50+ shadcn/ui color presets with light/dark mode support for React.
 
 | Import | Contents |
 |---|---|
-| <code className="whitespace-nowrap">@codecanon/next-presets</code> | Providers, hooks, components, constants, types |
+| <code className="whitespace-nowrap">@codecanon/next-presets</code> | Providers, hooks, constants, types |
 | <code className="whitespace-nowrap">@codecanon/next-presets/default/\<id\>.css</code> | **Required first.** Sets default `:root` variables (e.g. `default/nuteral.css`) |
 | <code className="whitespace-nowrap">@codecanon/next-presets/styles.css</code> | **Required second.** All-in-one components + 50+ presets scoped to `[data-preset="..."]` |
 | <code className="whitespace-nowrap">@codecanon/next-presets/presets.css</code> | **Optional.** Import all 50+ preset styles = scoped to `[data-preset="..."]` |
-| <code className="whitespace-nowrap">@codecanon/next-presets/components.css</code> | **Optional.** Import ui specific styles |
+| <code className="whitespace-nowrap">@codecanon/next-presets/components.css</code> | **Optional.** Tailwind/shadcn base styles only (no presets) — use when manually importing individual preset files |
 | <code className="whitespace-nowrap">@codecanon/next-presets/presets/\<id\>.css</code> | **Optional.** Import specific presets (e.g. `presets/nuteral.css`) |
 | <code className="whitespace-nowrap">@codecanon/next-presets/custom-variants.css</code> | `@variant` directives for writing custom presets |
 
