@@ -70,7 +70,7 @@ The picker will show `My Brand` and `My Brand Dark` alongside the built-ins — 
 
 ### What the plugin does
 
-- Replaces `styles.css` with a virtual bundle containing only `components.css` + selected preset files
+- Replaces `styles.css` with a virtual bundle containing only the selected preset files
 - Patches the `PRESETS` export so the picker only shows the presets you configured
 - Prepends `add` entries before built-ins in the picker list
 - Warns at startup if an unknown preset ID is passed
@@ -92,12 +92,10 @@ Your existing CSS and JS imports stay unchanged.
 ## Manual (Any Bundler)
 
 Skip `styles.css` entirely and import only what you need.  
-`components.css` is pre-compiled and does **not require Tailwind** on the consumer side.
 
 ```css
 /* app/globals.css */
 @import "@codecanon/next-presets/default/nuteral.css";
-@import "@codecanon/next-presets/components.css";
 
 /* only the presets you want in the picker */
 @import "@codecanon/next-presets/presets/nuteral.css";
@@ -144,9 +142,7 @@ const MY_PRESETS = [
 
 | Import path | Contents |
 |---|---|
-| `@codecanon/next-presets/styles.css` | All-in-one: components + all 50+ presets |
-| `@codecanon/next-presets/presets.css` | All 50+ presets combined (no component styles) |
-| `@codecanon/next-presets/components.css` | Pre-compiled Tailwind/shadcn/custom variants |
+| `@codecanon/next-presets/styles.css` | All 50+ presets combined |
 | `@codecanon/next-presets/custom-variants.css` | `@custom-variant` definitions for preset authoring |
 | `@codecanon/next-presets/default/{id}.css` | Single preset — `:root` scoped (initial default) |
 | `@codecanon/next-presets/presets/{id}.css` | Single preset — `[data-preset]` scoped (switching) |
