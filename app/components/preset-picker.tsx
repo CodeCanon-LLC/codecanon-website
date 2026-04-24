@@ -7,7 +7,7 @@ import {
   Sun,
   X,
   XIcon,
-} from "lucide-react"
+} from "lucide-react";
 import {
   createContext,
   useContext,
@@ -15,15 +15,15 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react"
+} from "react";
 
 import {
   usePreset,
   useTheme,
   type Theme,
   type PresetTuple,
-} from "@codecanon/next-presets"
-import { Scroller } from "@/components/ui/scroller"
+} from "@codecanon/next-presets";
+import { Scroller } from "@/components/ui/scroller";
 import {
   Sheet,
   SheetClose,
@@ -31,51 +31,53 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { cn } from "@/lib/utils"
-import { PresetPreviewCard } from "@/components/preset-preview-card"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/sheet";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { cn } from "@/lib/utils";
+import { PresetPreviewCard } from "@/components/preset-preview-card";
+import { Button } from "@/components/ui/button";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@/components/ui/input-group"
+} from "@/components/ui/input-group";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 
-const DEFAULT_THEME = "system"
+const DEFAULT_THEME = "system";
 
 // ---------------------------------------------------------------------------
 // Context
 // ---------------------------------------------------------------------------
 
 type PresetPickerContextValue = {
-  open: boolean
-  modal: boolean
-  query: string
-  highlightedIndex: number
-  filteredPresets: PresetTuple[]
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  toggleOpen: () => void
-  setQuery: React.Dispatch<React.SetStateAction<string>>
-  setHighlightedIndex: React.Dispatch<React.SetStateAction<number>>
-}
+  open: boolean;
+  modal: boolean;
+  query: string;
+  highlightedIndex: number;
+  filteredPresets: PresetTuple[];
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleOpen: () => void;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
+  setHighlightedIndex: React.Dispatch<React.SetStateAction<number>>;
+};
 
-const PresetPickerContext = createContext<PresetPickerContextValue | null>(null)
+const PresetPickerContext = createContext<PresetPickerContextValue | null>(
+  null,
+);
 
 function usePresetPicker(caller = "usePresetPicker") {
-  const context = useContext(PresetPickerContext)
+  const context = useContext(PresetPickerContext);
 
   if (!context) {
-    throw new Error(`${caller} must be used within a <PresetPicker>`)
+    throw new Error(`${caller} must be used within a <PresetPicker>`);
   }
 
-  return context
+  return context;
 }
 
 // ---------------------------------------------------------------------------
@@ -88,7 +90,7 @@ function PresetPickerClose() {
       <XIcon className="size-4" />
       <span className="sr-only">Close</span>
     </SheetClose>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -101,20 +103,20 @@ function PresetPicker({
   modal = false,
   ...props
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 } & Omit<React.ComponentProps<typeof Sheet>, "open">) {
-  const { presets } = usePreset("PresetPicker")
-  const [query, setQuery] = useState("")
-  const [highlightedIndex, setHighlightedIndex] = useState(-1)
-  const [open, setOpen] = useState(false)
+  const { presets } = usePreset("PresetPicker");
+  const [query, setQuery] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [open, setOpen] = useState(false);
 
-  const toggleOpen = () => setOpen((v) => !v)
+  const toggleOpen = () => setOpen((v) => !v);
 
-  const queryLower = query.toLowerCase()
+  const queryLower = query.toLowerCase();
   const filteredPresets = useMemo(
     () => presets.filter(([, t]) => t?.toLowerCase().includes(queryLower)),
-    [queryLower, presets]
-  )
+    [queryLower, presets],
+  );
 
   const context = useMemo<PresetPickerContextValue>(
     () => ({
@@ -128,8 +130,8 @@ function PresetPicker({
       setQuery,
       setHighlightedIndex,
     }),
-    [open, query, highlightedIndex, filteredPresets, modal]
-  )
+    [open, query, highlightedIndex, filteredPresets, modal],
+  );
 
   return (
     <PresetPickerContext.Provider value={context}>
@@ -139,15 +141,15 @@ function PresetPicker({
           {...props}
           open={open}
           onOpenChange={(open) => {
-            setOpen(open)
-            onOpenChange?.(open)
+            setOpen(open);
+            onOpenChange?.(open);
           }}
         >
           {children}
         </Sheet>
       </TooltipProvider>
     </PresetPickerContext.Provider>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -159,7 +161,7 @@ function PresetPickerContent({
   className,
   ...props
 }: React.ComponentProps<typeof SheetContent>) {
-  const { modal } = usePresetPicker("PresetPickerContent")
+  const { modal } = usePresetPicker("PresetPickerContent");
 
   return (
     <SheetContent
@@ -168,7 +170,7 @@ function PresetPickerContent({
         "bg-background pointer-events-auto",
         "max-w-screen data-[side=left]:w-80 data-[side=right]:w-80 sm:max-w-md",
         "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
-        className
+        className,
       )}
       {...(modal
         ? {}
@@ -187,7 +189,7 @@ function PresetPickerContent({
       </SheetHeader>
       <div className="flex min-h-0 flex-1 flex-col gap-4 px-4">{children}</div>
     </SheetContent>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -198,7 +200,7 @@ function PresetPickerThemeToggleGroup({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { theme = DEFAULT_THEME, setTheme } = useTheme()
+  const { theme = DEFAULT_THEME, setTheme } = useTheme();
 
   return (
     <ToggleGroup
@@ -230,14 +232,14 @@ function PresetPickerThemeToggleGroup({
         Dark
       </ToggleGroupItem>
     </ToggleGroup>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
 // PresetPickerSearch
 // ---------------------------------------------------------------------------
 
-type PresetPickerSearchProps = React.ComponentProps<typeof InputGroupInput>
+type PresetPickerSearchProps = React.ComponentProps<typeof InputGroupInput>;
 
 function PresetPickerSearch({
   onChange,
@@ -251,49 +253,49 @@ function PresetPickerSearch({
     filteredPresets,
     setHighlightedIndex,
     setQuery,
-  } = usePresetPicker("PresetPickerList")
-  const { presets, preset, setPreset } = usePreset("PresetPickerList")
-  const queryLower = query.trim().toLowerCase()
+  } = usePresetPicker("PresetPickerList");
+  const { presets, preset, setPreset } = usePreset("PresetPickerList");
+  const queryLower = query.trim().toLowerCase();
 
   useEffect(() => {
     if (queryLower.trim()) {
-      setHighlightedIndex(-1)
+      setHighlightedIndex(-1);
     } else {
-      setHighlightedIndex(filteredPresets.findIndex(([id]) => id === preset))
+      setHighlightedIndex(filteredPresets.findIndex(([id]) => id === preset));
     }
-  }, [queryLower])
+  }, [queryLower]);
 
   useEffect(() => {
-    if (!open) setQuery("")
-  }, [open])
+    if (!open) setQuery("");
+  }, [open]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    onKeyDown?.(e)
+    onKeyDown?.(e);
 
-    if (filteredPresets.length === 0) return
+    if (filteredPresets.length === 0) return;
 
     if (e.key === "ArrowDown") {
-      e.preventDefault()
+      e.preventDefault();
       setHighlightedIndex((prev) =>
-        prev < filteredPresets.length - 1 ? prev + 1 : prev
-      )
+        prev < filteredPresets.length - 1 ? prev + 1 : prev,
+      );
     } else if (e.key === "ArrowUp") {
-      e.preventDefault()
-      setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev))
+      e.preventDefault();
+      setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev));
     } else if (e.key === "Enter") {
-      e.preventDefault()
-      const id = filteredPresets[highlightedIndex]?.[0]
-      if (id) setPreset(id)
+      e.preventDefault();
+      const id = filteredPresets[highlightedIndex]?.[0];
+      if (id) setPreset(id);
     }
-  }
+  };
 
   const handleClear = () => {
-    setPreset(undefined)
-  }
+    setPreset(undefined);
+  };
   const handleRandom = () => {
-    const i = Math.floor(Math.random() * presets.length)
-    setPreset(presets[i]?.[0])
-  }
+    const i = Math.floor(Math.random() * presets.length);
+    setPreset(presets[i]?.[0]);
+  };
 
   return (
     <InputGroup>
@@ -308,8 +310,8 @@ function PresetPickerSearch({
         value={query}
         onKeyDown={handleKeyDown}
         onChange={(e) => {
-          setQuery(e.target.value)
-          onChange?.(e)
+          setQuery(e.target.value);
+          onChange?.(e);
         }}
       />
       <InputGroupAddon align="inline-end">
@@ -345,7 +347,7 @@ function PresetPickerSearch({
         </Tooltip>
       </InputGroupAddon>
     </InputGroup>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -353,7 +355,7 @@ function PresetPickerSearch({
 // ---------------------------------------------------------------------------
 
 interface PresetPickerListProps extends React.ComponentProps<"div"> {
-  card?: typeof PresetPreviewCard
+  card?: typeof PresetPreviewCard;
 }
 
 function PresetPickerList({
@@ -362,27 +364,27 @@ function PresetPickerList({
   ...props
 }: PresetPickerListProps) {
   const { filteredPresets, highlightedIndex, setHighlightedIndex } =
-    usePresetPicker("PresetPickerList")
-  const { preset, setPreset } = usePreset("PresetPickerList")
+    usePresetPicker("PresetPickerList");
+  const { preset, setPreset } = usePreset("PresetPickerList");
 
-  const [mounted, setMounted] = useState(false)
-  const scrollerRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map())
+  const [mounted, setMounted] = useState(false);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   useEffect(() => {
-    const highlightedElement = itemRefs.current.get(highlightedIndex)
+    const highlightedElement = itemRefs.current.get(highlightedIndex);
     if (highlightedElement && scrollerRef.current) {
-      const parent = scrollerRef.current
-      const parentRect = parent.getBoundingClientRect()
-      const elementRect = highlightedElement.getBoundingClientRect()
+      const parent = scrollerRef.current;
+      const parentRect = parent.getBoundingClientRect();
+      const elementRect = highlightedElement.getBoundingClientRect();
 
       if (elementRect.top < parentRect.top + 20) {
-        parent.scrollTop -= parentRect.top + 20 - elementRect.top
+        parent.scrollTop -= parentRect.top + 20 - elementRect.top;
       } else if (elementRect.bottom > parentRect.bottom - 20) {
-        parent.scrollTop += elementRect.bottom - (parentRect.bottom - 20)
+        parent.scrollTop += elementRect.bottom - (parentRect.bottom - 20);
       }
     }
-  }, [highlightedIndex])
+  }, [highlightedIndex]);
 
   return (
     <Scroller className="min-h-0 flex-1" ref={scrollerRef}>
@@ -397,18 +399,18 @@ function PresetPickerList({
               highlighted={index === highlightedIndex}
               preset={id}
               onClick={() => {
-                setPreset(id)
-                setHighlightedIndex(index)
+                setPreset(id);
+                setHighlightedIndex(index);
               }}
               ref={(el) => {
                 if (!mounted && preset === id) {
-                  setMounted(true)
-                  el?.scrollIntoView({ block: "center", behavior: "instant" })
+                  setMounted(true);
+                  el?.scrollIntoView({ block: "center", behavior: "instant" });
                 }
                 if (el) {
-                  itemRefs.current.set(index, el)
+                  itemRefs.current.set(index, el);
                 } else {
-                  itemRefs.current.delete(index)
+                  itemRefs.current.delete(index);
                 }
               }}
             />
@@ -420,21 +422,21 @@ function PresetPickerList({
         )}
       </div>
     </Scroller>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
 // PresetPickerTrigger
 // ---------------------------------------------------------------------------
 
-type PresetPickerTriggerProps = React.ComponentProps<typeof Button>
+type PresetPickerTriggerProps = React.ComponentProps<typeof Button>;
 
 function PresetPickerTrigger({
   className,
   children,
   ...props
 }: PresetPickerTriggerProps) {
-  const { presetName } = usePreset("PresetPickerTrigger")
+  const { presetName } = usePreset("PresetPickerTrigger");
 
   return (
     <SheetTrigger asChild>
@@ -447,7 +449,7 @@ function PresetPickerTrigger({
         )}
       </Button>
     </SheetTrigger>
-  )
+  );
 }
 
 export {
@@ -458,4 +460,4 @@ export {
   PresetPickerSearch,
   PresetPickerList,
   usePresetPicker,
-}
+};

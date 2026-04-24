@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-const BG_COLORS = ["bg-primary", "bg-secondary", "bg-accent", "bg-muted"]
+const BG_COLORS = ["bg-primary", "bg-secondary", "bg-accent", "bg-muted"];
 
 function PresetPreviewDots({ preset }: { preset: string }) {
   return (
@@ -10,12 +10,12 @@ function PresetPreviewDots({ preset }: { preset: string }) {
           key={i}
           className={cn(
             "border-border/50 h-3 w-3 rounded-full border",
-            bgColor
+            bgColor,
           )}
         />
       ))}
     </div>
-  )
+  );
 }
 
-export { PresetPreviewDots }
+export { PresetPreviewDots };

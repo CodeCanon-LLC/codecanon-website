@@ -1,8 +1,8 @@
-import { usePreset, useTheme, usePresetName } from "@codecanon/next-presets"
-import { Card } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
+import { usePreset, useTheme, usePresetName } from "@codecanon/next-presets";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
-const EM_DASH = "—"
+const EM_DASH = "—";
 
 function ActiveBadge() {
   return (
@@ -10,14 +10,14 @@ function ActiveBadge() {
       <span className="text-sm font-bold">{EM_DASH}</span>{" "}
       <span className="text-sm font-bold">active</span>
     </>
-  )
+  );
 }
 
 type PresetCardBaseProps = {
-  preset: string
-  highlighted?: boolean
-  ref?: React.Ref<HTMLDivElement>
-} & Omit<React.ComponentProps<typeof Card>, "ref">
+  preset: string;
+  highlighted?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
+} & Omit<React.ComponentProps<typeof Card>, "ref">;
 
 function PresetPreviewCard({
   preset,
@@ -26,11 +26,11 @@ function PresetPreviewCard({
   className,
   ...props
 }: PresetCardBaseProps) {
-  const { preset: activePreset } = usePreset("PresetPreviewCard")
-  const { colorScheme = "light" } = useTheme()
-  const label = usePresetName(preset)
+  const { preset: activePreset } = usePreset("PresetPreviewCard");
+  const { colorScheme = "light" } = useTheme();
+  const label = usePresetName(preset);
 
-  const active = preset === activePreset
+  const active = preset === activePreset;
 
   return (
     <div
@@ -43,7 +43,7 @@ function PresetPreviewCard({
         highlighted && !active && "ring-accent ring-3",
         "h-49 w-67 max-w-11/12",
         "flex flex-col",
-        className
+        className,
       )}
     >
       <div className="flex justify-center gap-2 border-b p-3 text-center">
@@ -55,7 +55,7 @@ function PresetPreviewCard({
         data-preset={preset}
         className={cn(
           "bg-background text-foreground flex-1 p-3",
-          colorScheme === "dark" && "dark"
+          colorScheme === "dark" && "dark",
         )}
       >
         <div className="flex h-full gap-2">
@@ -66,7 +66,7 @@ function PresetPreviewCard({
                 key={i}
                 className={cn(
                   "h-2 rounded",
-                  i === 1 ? "bg-primary" : "bg-sidebar-accent opacity-50"
+                  i === 1 ? "bg-primary" : "bg-sidebar-accent opacity-50",
                 )}
               />
             ))}
@@ -84,7 +84,7 @@ function PresetPreviewCard({
                   key={i}
                   className={cn(
                     "bg-card border-border rounded border p-2",
-                    i > 2 && "hidden md:block"
+                    i > 2 && "hidden md:block",
                   )}
                 >
                   <div className="bg-card-foreground mb-1 h-1.5 w-3/4 rounded opacity-70" />
@@ -100,7 +100,7 @@ function PresetPreviewCard({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export { PresetPreviewCard }
+export { PresetPreviewCard };

@@ -1,4 +1,4 @@
-import { usePresetPicker } from "@codecanon/next-presets";
+import { usePresetPicker } from "@/components/preset-picker";
 import { Palette } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Button } from "@/components/ui/button";

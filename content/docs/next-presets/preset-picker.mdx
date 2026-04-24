@@ -38,7 +38,7 @@ import {
   PresetPickerThemeToggleGroup,
   PresetPickerSearch,
   PresetPickerList,
-} from "@/components/ui/preset-picker";
+} from "@/components/preset-picker";
 
 <PresetPicker>
   <PresetPickerTrigger />
@@ -65,7 +65,7 @@ import {
 A ready-made button that opens and closes the preset picker sheet. Shows the active preset name and a palette icon.
 
 ```tsx
-import { PresetPickerTrigger } from "@/components/ui/preset-picker";
+import { PresetPickerTrigger } from "@/components/preset-picker";
 
 <PresetPickerTrigger />
 // or with custom content:
@@ -97,7 +97,7 @@ Extends `SheetContent` props. Open state is wired automatically from `PresetPick
 Three-button toggle for switching between system, light, and dark modes. Place it inside `<PresetPickerContent>`.
 
 ```tsx
-import { PresetPickerThemeToggleGroup } from "@/components/ui/preset-picker";
+import { PresetPickerThemeToggleGroup } from "@/components/preset-picker";
 
 <PresetPickerThemeToggleGroup />
 ```
@@ -111,7 +111,7 @@ Accepts standard `div` props. Internally calls `useTheme()` to read and set the 
 Search input with clear and random preset buttons. Handles arrow key and Enter key events for keyboard navigation.
 
 ```tsx
-import { PresetPickerSearch } from "@/components/ui/preset-picker";
+import { PresetPickerSearch } from "@/components/preset-picker";
 
 <PresetPickerSearch />
 ```
@@ -133,8 +133,8 @@ Accepts all `InputGroupInput` props. Must be inside a `<PresetPicker>`.
 Renders the full preset list with live preview cards. Scrolls to the active preset on open.
 
 ```tsx
-import { PresetPickerList } from "@/components/ui/preset-picker";
-import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card";
+import { PresetPickerList } from "@/components/preset-picker";
+import { PresetDockPreviewCard } from "@/components/preset-dock-preview-card";
 
 <PresetPickerList card={PresetDockPreviewCard} />
 ```
@@ -152,7 +152,7 @@ import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
 Hook to access the picker's open/close state from any component inside a `<PresetPicker>`. Useful for building custom triggers.
 
 ```tsx
-import { usePresetPicker } from "@/components/ui/preset-picker";
+import { usePresetPicker } from "@/components/preset-picker";
 
 const { open, modal, query, highlightedIndex, filteredPresets, setOpen, toggleOpen, setQuery, setHighlightedIndex } = usePresetPicker();
 ```
@@ -187,7 +187,7 @@ import {
   PresetDropdownPickerSearch,
   PresetDropdownPickerToolbar,
   PresetDropdownPickerList,
-} from "@/components/ui/preset-dropdown-picker";
+} from "@/components/preset-dropdown-picker";
 
 <PresetDropdownPicker>
   <PresetDropdownPickerTrigger />
@@ -223,7 +223,7 @@ Shows preset count, theme toggle, clear, and random buttons. Accepts standard `d
 <h3>usePresetDropdownPicker()</h3>
 
 ```tsx
-import { usePresetDropdownPicker } from "@/components/ui/preset-dropdown-picker";
+import { usePresetDropdownPicker } from "@/components/preset-dropdown-picker";
 
 const { open, query, setOpen, toggleOpen, setQuery } = usePresetDropdownPicker();
 ```

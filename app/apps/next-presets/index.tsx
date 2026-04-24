@@ -7,7 +7,7 @@ import {
   PresetDropdownPickerSearch,
   PresetDropdownPickerToolbar,
   PresetDropdownPickerTrigger,
-} from "@codecanon/next-presets";
+} from "@/components/preset-dropdown-picker";
 
 function ColorSwatch({ label, variable }: { label: string; variable: string }) {
   return (

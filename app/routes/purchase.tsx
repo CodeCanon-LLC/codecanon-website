@@ -11,7 +11,7 @@ const PAYMENT_LINKS = {
 };
 
 export function meta({ matches }: Route.MetaArgs) {
-  const parentMeta = matches.flatMap((m) => m.meta ?? []);
+  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
   const title = "Purchase — CodeCanon";
   const description =
     "Get lifetime access to CodeCanon libraries. One-time purchase, instant npm access.";

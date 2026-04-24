@@ -166,12 +166,12 @@ pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-dots
 ```
 
 ```tsx
-import { PresetPreviewDots } from "@/components/ui/preset-preview-dots"
+import { PresetPreviewDots } from "@/components/preset-preview-dots"
 
 <PresetPreviewDots preset="violet-bloom" />
 ```
 
-import { PresetPreviewDots } from "@/components/ui/preset-preview-dots"
+import { PresetPreviewDots } from "@/components/preset-preview-dots"
 
 <PresetPreviewDots preset="violet-bloom" />
 
@@ -196,8 +196,8 @@ pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-card
 ```
 
 ```tsx
-import { PresetPreviewCard } from "@/components/ui/preset-preview-card"
-import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
+import { PresetPreviewCard } from "@/components/preset-preview-card"
+import { PresetDockPreviewCard } from "@/components/preset-dock-preview-card"
 
 // Sidebar layout (used in PresetPickerList by default)
 <PresetPreviewCard preset="violet-bloom" highlighted={false} />
@@ -206,8 +206,8 @@ import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
 <PresetDockPreviewCard preset="violet-bloom" highlighted={false} />
 ```
 
-import { PresetPreviewCard } from "@/components/ui/preset-preview-card"
-import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
+import { PresetPreviewCard } from "@/components/preset-preview-card"
+import { PresetDockPreviewCard } from "@/components/preset-dock-preview-card"
 
 <div className="flex gap-4 flex-wrap">
   <PresetPreviewCard preset="violet-bloom" highlighted={false} />
@@ -225,8 +225,8 @@ import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
 Pass `PresetDockPreviewCard` to `PresetPickerList` via the `card` prop to switch the preview style:
 
 ```tsx
-import { PresetPickerList } from "@/components/ui/preset-picker"
-import { PresetDockPreviewCard } from "@/components/ui/preset-dock-preview-card"
+import { PresetPickerList } from "@/components/preset-picker"
+import { PresetDockPreviewCard } from "@/components/preset-dock-preview-card"
 
 <PresetPickerList card={PresetDockPreviewCard} />
 ```

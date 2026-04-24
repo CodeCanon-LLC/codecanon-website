@@ -1,11 +1,11 @@
+import { PresetProvider } from "@codecanon/next-presets";
 import {
   PresetPicker,
   PresetPickerContent,
   PresetPickerList,
   PresetPickerSearch,
   PresetPickerThemeToggleGroup,
-  PresetProvider,
-} from "@codecanon/next-presets";
+} from "@/components/preset-picker";
 import { RootProvider } from "fumadocs-ui/provider/react-router";
 import {
   isRouteErrorResponse,
