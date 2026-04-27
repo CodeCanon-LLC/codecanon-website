@@ -73,10 +73,10 @@ The `keepRatio: true` flag locks the aspect ratio when resizing. `layer.contentS
 
 ## 2. Input layer
 
-The input layer renders an editable `<input>` or `<textarea>` directly on the canvas. It uses the `Component` form so it can call `useWaraqFrame` to push value changes back.
+The input layer renders an editable `<input>` or `<textarea>` directly on the canvas. It uses the `Component` form so it can call `useWaraqDocument` to push value changes back.
 
 ```tsx
-import { useWaraqFrame } from "@codecanon/waraq";
+import { useWaraqDocument } from "@codecanon/waraq";
 import type { LayerType } from "@codecanon/waraq/lib";
 import { IconTextSize } from "@tabler/icons-react";
 import { useState } from "react";
@@ -93,7 +93,7 @@ export const InputLayerType: LayerType<InputLayerData> = {
   icon: <IconTextSize size={16} />,
   Component({ layer }) {
     const [focused, setFocused] = useState(false);
-    const { updateLayer } = useWaraqFrame();
+    const { updateLayer } = useWaraqDocument();
 
     const value = layer.value || "";
     const defaultValue = layer.data?.defaultValue;
@@ -133,7 +133,7 @@ export const InputLayerType: LayerType<InputLayerData> = {
 };
 ```
 
-`useWaraqFrame()` gives access to `updateLayer`, `addLayer`, and the layer array. It can only be called from a component rendered inside `<Waraq>`.
+`useWaraqDocument()` gives access to `updateLayer`, `addLayer`, and the layer array. It can only be called from a component rendered inside `<Waraq>`.
 
 ---
 
@@ -204,7 +204,7 @@ export const ProductLayerType: LayerType<ProductLayerData> = {
 import {
   WaraqProvider,
   WaraqStaticFrame,
-  useWaraqFrame,
+  useWaraqDocument,
 } from "@codecanon/waraq";
 import type { Layer } from "@codecanon/waraq/lib";
 import type { ProductLayerData } from "./price-tag-product-layer-type";
@@ -215,7 +215,7 @@ export function ProductCustomView({
 }: {
   layer: Layer<ProductLayerData>;
 }) {
-  const { updateLayer } = useWaraqFrame();
+  const { updateLayer } = useWaraqDocument();
 
   return (
     <div className="flex size-full flex-row flex-wrap content-start overflow-auto gap-2">

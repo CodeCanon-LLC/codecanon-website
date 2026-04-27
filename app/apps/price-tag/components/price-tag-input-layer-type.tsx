@@ -1,4 +1,4 @@
-import { useWaraqFrame } from "@codecanon/waraq";
+import { useWaraqDocument } from "@codecanon/waraq";
 import type { LayerType } from "@codecanon/waraq/lib";
 import { IconTextSize } from "@tabler/icons-react";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export const InputLayerType: LayerType<InputLayerData> = {
   icon: <IconTextSize size={16} />,
   Component({ layer }) {
     const [focused, setFocued] = useState(false);
-    const { updateLayer } = useWaraqFrame();
+    const { updateLayer } = useWaraqDocument();
 
     const placeholder = layer.data?.placeholder;
     const defaultValue = layer.data?.defaultValue;

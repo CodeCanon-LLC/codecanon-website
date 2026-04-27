@@ -126,12 +126,12 @@ Use the focused hooks inside any component that is a child of `<Waraq>`. Each ho
 
 ```tsx
 "use client"
-import { useWaraqFrame, useWaraqDocument } from "@codecanon/waraq"
+import { useWaraqDocument, useWaraqZoom } from "@codecanon/waraq"
 import { Button } from "@codecanon/waraq/ui"
 
 function MyControls() {
-  const { addLayer, deleteSelected, layers } = useWaraqFrame()
-  const { zoomFit } = useWaraqDocument()
+  const { addLayer, deleteSelected, layers } = useWaraqDocument()
+  const { zoomFit } = useWaraqZoom()
 
   return (
     <div className="flex gap-2">

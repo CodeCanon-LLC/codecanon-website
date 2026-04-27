@@ -1,4 +1,4 @@
-import { useWaraqFrame } from "@codecanon/waraq";
+import { useWaraqDocument } from "@codecanon/waraq";
 import { createAble, DEFAULT_ABLES } from "@codecanon/waraq/lib";
 
 import { IconChevronDown, IconEdit } from "@tabler/icons-react";
@@ -78,7 +78,7 @@ export const InputLayerEditAble = createAble({
     if (!layerId) return null;
 
     const id = useId();
-    const { updateLayer, getLayer } = useWaraqFrame();
+    const { updateLayer, getLayer } = useWaraqDocument();
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const layer = getLayer<InputLayerData>(layerId);

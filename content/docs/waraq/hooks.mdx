@@ -7,15 +7,15 @@ All hooks are imported from `@codecanon/waraq` and must be used inside a `<Waraq
 
 ---
 
-## useWaraqFrame
+## useWaraqDocument
 
-Returns layer operations and canvas frame state. Use this when you need to read or mutate layers, manage selection, or access the frame DOM ref.
+Returns layer operations and canvas layer state. Use this when you need to read or mutate layers.
 
 ```tsx
-import { useWaraqFrame } from "@codecanon/waraq"
+import { useWaraqDocument } from "@codecanon/waraq"
 
 function MyComponent() {
-  const { layers, updateLayer, getLayer, addLayer, deleteSelected } = useWaraqFrame()
+  const { layers, updateLayer, getLayer, addLayer, deleteSelected } = useWaraqDocument()
 }
 ```
 
@@ -24,8 +24,6 @@ function MyComponent() {
 | Property | Type | Description |
 | --- | --- | --- |
 | `layers` | `Layer[]` | All layers in the current design |
-| `layerTypes` | `LayerType[]` | Registered layer type definitions |
-| `selectedLayerCount` | `number` | Number of currently selected layers |
 | `layersHistory` | `HistoryState<Layer[]>` | Undo/redo history object |
 
 ### Layer methods
@@ -37,31 +35,47 @@ function MyComponent() {
 | `updateLayers` | `(items[]) => void` | Batch update multiple layers |
 | `getLayer` | `<T>(id: string) => Layer<T> \| undefined` | Get a layer by ID |
 | `setLayers` | `(layers: Layer[]) => void` | Replace the entire layers array |
-| `select` | `(layerId: string) => Promise<void>` | Programmatically select a layer |
-| `getSelectedLayerIds` | `() => string[]` | IDs of currently selected layers |
-| `setSelectedTargets` | `(els[]) => Promise<void>` | Select by DOM elements |
 
 ### Edit actions
 
 | Method | Description |
 | --- | --- |
-| `unselectAll()` | Clear selection |
 | `deleteSelected()` | Delete selected layers |
 | `duplicate()` | Duplicate selected layers |
 | `toggleVisibility()` | Show/hide selected layers |
 | `bringToFront()` | Move selected layers to top |
 | `sendToBack()` | Move selected layers to bottom |
 | `toggleLock()` | Lock/unlock selected layers |
-| `redraw()` | Force Moveable to recalculate handles |
 
-### Refs
+---
 
-| Ref | Type | Description |
+## useWaraqFrame
+
+Returns canvas frame state: dimensions, background color, and the frame DOM ref. Use this when your component only cares about the canvas frame properties.
+
+```tsx
+import { useWaraqFrame } from "@codecanon/waraq"
+
+function FrameInfo() {
+  const { frameSize, frameBackgroundColor, setFrameSize } = useWaraqFrame()
+
+  return (
+    <div>
+      <span>{frameSize.width} × {frameSize.height}</span>
+    </div>
+  )
+}
+```
+
+### Return value
+
+| Property | Type | Description |
 | --- | --- | --- |
+| `frameSize` | `FrameSize` | Canvas width and height in px |
+| `frameBackgroundColor` | `string` | Canvas background color |
 | `frameRef` | `RefObject<HTMLDivElement>` | The canvas frame DOM element |
-| `selectoRef` | `RefObject<Selecto>` | The multi-select instance |
-| `moveableRef` | `RefObject<Moveable>` | The drag/resize handle instance |
-| `selectedLayerRefs` | `(HTMLElement \| SVGElement)[]` | DOM elements for selected layers |
+| `setFrameSize` | `Dispatch<SetStateAction<FrameSize>>` | Resize the canvas frame |
+| `setFrameBackgroundColor` | `Dispatch<SetStateAction<string>>` | Change canvas background |
 
 ---
 
@@ -88,67 +102,139 @@ function Toolbar() {
 | Property | Type | Description |
 | --- | --- | --- |
 | `tool` | `Tool` | Active tool: `"select"` \| `"move"` \| `"hand"` |
-| `setTool` | `(tool: Tool) => void` | Switch the active tool |
+| `setTool` | `Dispatch<SetStateAction<Tool>>` | Switch the active tool |
 
 ---
 
-## useWaraqDocument
+## useWaraqZoom
 
-Returns document-level state: canvas dimensions, background color, and zoom. Use this when your component only cares about viewport or canvas-level properties.
+Returns zoom level and zoom action methods.
 
 ```tsx
-import { useWaraqDocument } from "@codecanon/waraq"
+import { useWaraqZoom } from "@codecanon/waraq"
 
-function DocumentControls() {
-  const { frameSize, zoom, zoomFit, setFrameBackgroundColor } = useWaraqDocument()
+function ZoomControls() {
+  const { zoom, zoomFit, zoom100 } = useWaraqZoom()
 
   return (
     <div>
-      <span>{frameSize.width} × {frameSize.height}</span>
       <span>Zoom: {Math.round(zoom * 100)}%</span>
       <button onClick={zoomFit}>Fit</button>
+      <button onClick={zoom100}>100%</button>
     </div>
   )
 }
 ```
 
-### State
+### Return value
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `zoom` | `number` | Current zoom level (0.01–2) |
-| `frameSize` | `FrameSize` | Canvas width and height in px |
-| `frameBackgroundColor` | `string` | Canvas background color |
-| `keyboardShortcuts` | `KeyboardShortcut[]` | Active keyboard shortcut definitions |
+| `zoom` | `number` | Current zoom level |
+| `setZoom` | `Dispatch<SetStateAction<number>>` | Set zoom level directly |
+| `zoomIn()` | `() => void` | Increase zoom by one step |
+| `zoomOut()` | `() => void` | Decrease zoom by one step |
+| `zoom100()` | `() => void` | Set zoom to 100% |
+| `zoomFit()` | `() => void` | Fit canvas to viewport |
+| `zoomAndCenter(zoom)` | `(zoom: number) => void` | Set zoom and scroll to center |
+| `scrollCenter()` | `() => void` | Scroll to canvas center without changing zoom |
 
-### Setters
+---
 
-| Method | Description |
-| --- | --- |
-| `setZoom(zoom)` | Set zoom level directly |
-| `setFrameSize(size)` | Resize the canvas frame |
-| `setFrameBackgroundColor(color)` | Change canvas background |
+## useWaraqSelection
 
-### Zoom actions
-
-| Method | Description |
-| --- | --- |
-| `zoomIn()` | Increase zoom by one step |
-| `zoomOut()` | Decrease zoom by one step |
-| `zoom100()` | Set zoom to 100% |
-| `zoomFit()` | Fit canvas to viewport |
-
-### Generic action dispatch
+Returns selection state and selection control methods.
 
 ```tsx
-const { waraqAction } = useWaraqDocument()
+import { useWaraqSelection } from "@codecanon/waraq"
 
-waraqAction("ZOOM_FIT")
-waraqAction("HISTORY_UNDO")
-waraqAction("DELETE_SELECTED")
+function SelectionInfo() {
+  const { selectedLayerCount, unselectAll } = useWaraqSelection()
+
+  return (
+    <div>
+      <span>{selectedLayerCount} selected</span>
+      <button onClick={unselectAll}>Clear</button>
+    </div>
+  )
+}
 ```
 
-See [Types & constants — ActionType](/docs/waraq/types#actiontype) for all available action strings.
+### Return value
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `selectedLayerRefs` | `(HTMLElement \| SVGElement)[]` | DOM elements for selected layers |
+| `selectedLayerCount` | `number` | Number of currently selected layers |
+| `setSelectedTargets` | `(els[]) => Promise<void>` | Select by DOM elements |
+| `getSelectedLayerIds` | `() => string[]` | IDs of currently selected layers |
+| `select` | `(layerId: string) => Promise<void>` | Programmatically select a layer |
+| `unselectAll` | `() => void` | Clear selection |
+
+---
+
+## useWaraqRefs
+
+Returns stable DOM and library refs. These refs never change identity after mount.
+
+```tsx
+import { useWaraqRefs } from "@codecanon/waraq"
+
+function MyComponent() {
+  const { viewerRef, moveableRef } = useWaraqRefs()
+}
+```
+
+### Return value
+
+| Ref | Type | Description |
+| --- | --- | --- |
+| `contentRef` | `RefObject<HTMLDivElement>` | The editor content root element |
+| `viewerRef` | `RefObject<InfiniteViewer>` | The pan/zoom viewer instance |
+| `selectoRef` | `RefObject<Selecto>` | The multi-select instance |
+| `moveableRef` | `RefObject<Moveable>` | The drag/resize handle instance |
+
+---
+
+## useWaraqConfig
+
+Returns static configuration: editor instance ID, registered keyboard shortcuts, and layer type definitions.
+
+```tsx
+import { useWaraqConfig } from "@codecanon/waraq"
+
+function MyComponent() {
+  const { id, layerTypes, keyboardShortcuts } = useWaraqConfig()
+}
+```
+
+### Return value
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Stable editor instance ID |
+| `keyboardShortcuts` | `KeyboardShortcut[]` | Active keyboard shortcut definitions |
+| `layerTypes` | `LayerType[]` | Registered layer type definitions |
+
+---
+
+## useWaraqDispatch
+
+Returns a single action dispatcher for triggering editor actions imperatively.
+
+```tsx
+import { useWaraqDispatch } from "@codecanon/waraq"
+
+function MyButton() {
+  const dispatch = useWaraqDispatch()
+
+  return (
+    <button onClick={() => dispatch("ZOOM_FIT")}>Fit canvas</button>
+  )
+}
+```
+
+The dispatcher accepts an `ActionType` string. See [Types & constants — ActionType](/docs/waraq/types#actiontype) for all available action strings.
 
 ---
 
