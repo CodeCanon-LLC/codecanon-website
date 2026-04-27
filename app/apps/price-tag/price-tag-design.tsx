@@ -7,7 +7,7 @@ import { uuid } from "@/lib/uuid";
 export function PriceTagDesign() {
   const { id: priceTagDesignId = uuid() } = useParams<{ id: string }>();
 
-  const { data: priceTag, isPending } = useQuery({
+  const { data: priceTag = null, isPending } = useQuery({
     queryKey: ["price-tag-design", priceTagDesignId],
     queryFn: () =>
       priceTagDesignId ? getPriceTagDesign(priceTagDesignId) : null,

@@ -423,7 +423,7 @@ export function PriceTagDesigner({
   ...props
 }: {
   priceTagId: string;
-  priceTag?: PriceTag | null;
+  priceTag: PriceTag | null;
   loading?: boolean;
 } & Partial<React.ComponentProps<typeof Waraq>>) {
   const [data, setData] = useLocalStorage<PriceTag>(

@@ -9,7 +9,7 @@ export function PriceTagTemplate() {
     id: string;
   }>();
 
-  const { data: priceTag, isPending } = useQuery({
+  const { data: priceTag = null, isPending } = useQuery({
     queryKey: ["price-tag-template", priceTagTemplateId],
     queryFn: () =>
       priceTagTemplateId ? getPriceTagTemplate(priceTagTemplateId) : null,
