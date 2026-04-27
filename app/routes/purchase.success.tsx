@@ -5,8 +5,10 @@ import { baseOptions } from "@/lib/layout.shared";
 import { getDocsLink } from "@/lib/links";
 import type { Route } from "./+types/purchase.success";
 
-export function meta(_: Route.MetaArgs) {
+export function meta({ matches }: Route.MetaArgs) {
+  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
   return [
+    ...parentMeta,
     { title: "Purchase confirmed — CodeCanon" },
     {
       name: "description",

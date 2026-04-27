@@ -5,8 +5,9 @@ import { baseOptions } from "@/lib/layout.shared";
 import { getNuskaDemoLink } from "@/lib/links";
 import type { Route } from "./+types";
 
-export function meta(_: Route.MetaArgs) {
-  return [{ title: "Nuska" }];
+export function meta({ matches }: Route.MetaArgs) {
+  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
+  return [...parentMeta, { title: "Nuska — CodeCanon" }];
 }
 
 export default function Nuska() {

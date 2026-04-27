@@ -5,8 +5,9 @@ import { baseOptions } from "@/lib/layout.shared";
 import { getWaraqDemoLink, getWaraqPriceTagLink } from "@/lib/links";
 import type { Route } from "./+types";
 
-export function meta(_: Route.MetaArgs) {
-  return [{ title: "Waraq" }];
+export function meta({ matches }: Route.MetaArgs) {
+  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
+  return [...parentMeta, { title: "Waraq — CodeCanon" }];
 }
 
 export default function Waraq() {

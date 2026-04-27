@@ -1,8 +1,9 @@
 import { PriceTagTemplate } from "@/apps/price-tag/price-tag-template";
 import type { Route } from "./+types/template";
 
-export function meta(_: Route.MetaArgs) {
-  return [{ title: "Waraq Price Tag Demo" }];
+export function meta({ matches }: Route.MetaArgs) {
+  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
+  return [...parentMeta, { title: "Waraq Price Tag — CodeCanon" }];
 }
 
 export default function Page() {

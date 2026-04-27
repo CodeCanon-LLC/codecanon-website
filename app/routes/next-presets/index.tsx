@@ -5,8 +5,9 @@ import { baseOptions } from "@/lib/layout.shared";
 import { getNextPresetsDemoLink } from "@/lib/links";
 import type { Route } from "./+types";
 
-export function meta(_: Route.MetaArgs) {
-  return [{ title: "Next Presets" }];
+export function meta({ matches }: Route.MetaArgs) {
+  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
+  return [...parentMeta, { title: "Next Presets — CodeCanon" }];
 }
 
 export default function NextPresets() {
