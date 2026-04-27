@@ -1,4 +1,4 @@
-import { useWaraq } from "@codecanon/waraq";
+import { useWaraqFrame } from "@codecanon/waraq";
 import { IconCheck } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 import type { ProductLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type";
@@ -54,7 +54,7 @@ export function ProductLayerSelect({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 } & React.ComponentProps<typeof PopoverTrigger>) {
-  const { getLayer, updateLayer } = useWaraq();
+  const { getLayer, updateLayer } = useWaraqFrame();
   const layer = useMemo(
     () => getLayer<ProductLayerData>(layerId),
     [layerId, getLayer],
@@ -182,7 +182,7 @@ export function SelectLayerSelect({
   const open = openProp ?? openState;
   const setOpen = combineFuncs(setOpenProp, setOpenState);
 
-  const { updateLayer, getLayer } = useWaraq();
+  const { updateLayer, getLayer } = useWaraqFrame();
   const layer = getLayer<SelectLayerData>(layerId);
   const options = layer?.data?.options || [];
   const currentValue = layer?.value || options[0];

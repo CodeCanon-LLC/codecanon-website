@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/empty";
 import { cn } from "@/lib/cn";
 import type { Product } from "@/types/product";
-import { useWaraq } from "@codecanon/waraq";
+import { useWaraqTool } from "@codecanon/waraq";
 
 export type ProductLayerDisplayStyle =
   | "card"
@@ -60,7 +60,7 @@ export const ProductLayerType: LayerType<ProductLayerData> = {
     const [open, setOpen] = useState(false);
     const displayStyle = layer.data?.displayStyle || "card";
     const products = layer.data?.products || [];
-    const waraq = useWaraq()
+    const { tool } = useWaraqTool()
 
     return (
       <>
@@ -79,7 +79,7 @@ export const ProductLayerType: LayerType<ProductLayerData> = {
             <ProductCardView products={products} />
           )}
         </div>
-        {waraq.tool !== "move" && (
+        {tool !== "move" && (
           <div
             className={cn(
               "transition-opactiy absolute top-0 right-0 z-2 opacity-0 group-hover/layer-product:opacity-100 focus:opacity-100",

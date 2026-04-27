@@ -36,7 +36,7 @@ import {
   ActionToolbarZoom,
   PaneAddLayer,
   PaneLayerTree,
-  useWaraq,
+  useWaraqTool,
   Waraq,
   WaraqBackground,
   WaraqFrame,
@@ -102,7 +102,7 @@ function Header() {
 
 function Toolbar() {
   const showTools = useIsBreakpoint("min-md");
-  const { tool } = useWaraq();
+  const { tool } = useWaraqTool();
 
   return (
     <WaraqToolbar>
