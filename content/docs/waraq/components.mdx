@@ -88,7 +88,7 @@ Renders the current design in a static, non-interactive frame. Useful for thumbn
 A floating panel that can be positioned around the canvas. On mobile it collapses to a bottom drawer.
 
 ```tsx
-<WaraqPanel position="top-right" collapsible>
+<WaraqPanel position="right-start" collapsible>
   <WaraqPane>…</WaraqPane>
 </WaraqPanel>
 ```
@@ -101,7 +101,7 @@ A floating panel that can be positioned around the canvas. On mobile it collapse
 | `defaultCollapsed` | `boolean` | `false` | Start collapsed |
 | `icon` | `React.ComponentType` | — | Icon shown as the drawer trigger on mobile |
 
-`PanelPosition` values: `"top-left"` | `"top-center"` | `"top-right"` | `"center-left"` | `"center-right"` | `"bottom-left"` | `"bottom-center"` | `"bottom-right"`
+`PanelPosition` values: `"left-start"` | `"top"` | `"right-start"` | `"left-end"` | `"bottom"` | `"right-end"`
 
 ---
 
@@ -159,7 +159,7 @@ Content wrapper inside a `WaraqPane` that provides consistent padding and spacin
 A toolbar panel — semantically identical to `WaraqPanel` but styled as a horizontal or vertical toolbar.
 
 ```tsx
-<WaraqToolbar position="top-center">
+<WaraqToolbar position="top">
   <WaraqToolbarGroup>
     <ActionToolbarTool />
   </WaraqToolbarGroup>

@@ -86,7 +86,7 @@ export function ProductCustomDesigner({
       layerTypes={PRODUCT_CUSTOM_LAYER_TYPES}
     >
       {/* Left Panel - Layer Types */}
-      <WaraqPanel title="Layers" position="top-left" icon={PlusIcon}>
+      <WaraqPanel title="Layers" position="left-start" icon={PlusIcon}>
         <WaraqPane>
           <WaraqPaneTitle>Add Product Layer</WaraqPaneTitle>
           <WaraqPaneContent>
@@ -116,7 +116,7 @@ export function ProductCustomDesigner({
       </WaraqStage>
 
       {/* Right Panel - Layer Properties */}
-      <WaraqPanel title="Properties" position="top-right">
+      <WaraqPanel title="Properties" position="right-start">
         <WaraqPane showFor="document">
           <WaraqPaneTitle>Area</WaraqPaneTitle>
           <WaraqPaneContent>

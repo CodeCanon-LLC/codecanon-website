@@ -69,7 +69,7 @@ function Header() {
   const { setTheme } = useTheme();
 
   return (
-    <WaraqToolbar position="top-center">
+    <WaraqToolbar position="top">
       <WaraqToolbarGroup>
         <Button asChild tooltip="Home Page" size="icon" variant="ghost">
           <Link to="/">
@@ -135,7 +135,7 @@ function LayersPanel() {
 
   return (
     <WaraqPanel
-      position="top-left"
+      position="left-start"
       icon={PlusIcon}
       defaultCollapsed={markdown.isMarkdown}
     >
@@ -159,7 +159,7 @@ function PropertiesPanel() {
   const markdown = useMarkdown();
 
   return (
-    <WaraqPanel position="top-right" defaultCollapsed={markdown.isMarkdown}>
+    <WaraqPanel position="right-start" defaultCollapsed={markdown.isMarkdown}>
       <WaraqPane showFor="document">
         <WaraqPaneTitle>Document</WaraqPaneTitle>
         <WaraqPaneContent>

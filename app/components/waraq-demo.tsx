@@ -62,7 +62,7 @@ export default function WaraqDemo() {
         </WaraqToolbarGroup>
       </WaraqToolbar>
 
-      <WaraqPanel position="top-left">
+      <WaraqPanel position="left-start">
         <WaraqPane>
           <WaraqPaneTitle>Add layer</WaraqPaneTitle>
           <WaraqPaneContent>
@@ -81,7 +81,7 @@ export default function WaraqDemo() {
         <WaraqFrame />
       </WaraqStage>
 
-      <WaraqPanel position="top-right">
+      <WaraqPanel position="right-start">
         <WaraqPane showFor="document">
           <WaraqPaneTitle>Document</WaraqPaneTitle>
           <WaraqPaneContent>

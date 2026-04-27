@@ -105,7 +105,7 @@ function Header() {
   const { setTheme } = useTheme();
 
   return (
-    <WaraqToolbar position="top-center">
+    <WaraqToolbar position="top">
       <WaraqToolbarGroup>
         <Button asChild tooltip="Home Page" size="icon" variant="ghost">
           <Link to={getWaraqPriceTagLink()}>
@@ -174,7 +174,7 @@ function PriceTagDesigns() {
   });
 
   return (
-    <WaraqPanel title="Properties" position="top-left">
+    <WaraqPanel title="Properties" position="left-start">
       <WaraqPane>
         <WaraqPaneTitle>Select</WaraqPaneTitle>
         <WaraqPaneContent>
@@ -232,7 +232,7 @@ function LayersPanel(props: React.ComponentProps<typeof WaraqPanel>) {
   }
 
   return (
-    <WaraqPanel title="Layers" position="top-left" icon={PlusIcon} {...props}>
+    <WaraqPanel title="Layers" position="left-start" icon={PlusIcon} {...props}>
       <WaraqPane>
         <WaraqPaneTitle>Add Layer</WaraqPaneTitle>
         <WaraqPaneContent>
@@ -251,7 +251,7 @@ function LayersPanel(props: React.ComponentProps<typeof WaraqPanel>) {
 
 function PropertiesPanel(props: React.ComponentProps<typeof WaraqPanel>) {
   return (
-    <WaraqPanel title="Properties" position="top-right" {...props}>
+    <WaraqPanel title="Properties" position="right-start" {...props}>
       <WaraqPane showFor="document">
         <WaraqPaneTitle>Document</WaraqPaneTitle>
         <WaraqPaneContent>
