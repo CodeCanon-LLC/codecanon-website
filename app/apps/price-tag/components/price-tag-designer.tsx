@@ -36,7 +36,7 @@ import {
   ActionToolbarZoom,
   PaneAddLayer,
   PaneLayerTree,
-  useWaraq,
+  useWaraqTool,
   Waraq,
   WaraqBackground,
   WaraqFrame,
@@ -138,7 +138,7 @@ function Header() {
 
 function Toolbar(props: { hideTools?: boolean }) {
   const showTools = useIsBreakpoint("min-md");
-  const { tool } = useWaraq();
+  const { tool } = useWaraqTool();
 
   return (
     <WaraqToolbar>
@@ -225,7 +225,7 @@ function PriceTagDesigns() {
 }
 
 function LayersPanel(props: React.ComponentProps<typeof WaraqPanel>) {
-  const { tool } = useWaraq();
+  const { tool } = useWaraqTool();
 
   if (tool === "select") {
     return <PriceTagDesigns />;

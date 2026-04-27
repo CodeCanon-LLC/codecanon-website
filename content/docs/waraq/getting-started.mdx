@@ -122,15 +122,16 @@ export default function Editor() {
 
 ## Controlling the editor programmatically
 
-Use the `useWaraq()` hook inside any component that is a child of `<Waraq>`:
+Use the focused hooks inside any component that is a child of `<Waraq>`. Each hook subscribes only to the state it needs, so components re-render only when relevant state changes:
 
 ```tsx
 "use client"
-import { useWaraq } from "@codecanon/waraq"
+import { useWaraqFrame, useWaraqDocument } from "@codecanon/waraq"
 import { Button } from "@codecanon/waraq/ui"
 
 function MyControls() {
-  const { addLayer, deleteSelected, zoomFit, layers } = useWaraq()
+  const { addLayer, deleteSelected, layers } = useWaraqFrame()
+  const { zoomFit } = useWaraqDocument()
 
   return (
     <div className="flex gap-2">

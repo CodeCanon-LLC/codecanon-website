@@ -1,4 +1,4 @@
-import { useWaraq, WaraqProvider, WaraqStaticFrame } from "@codecanon/waraq";
+import { useWaraqFrame, WaraqProvider, WaraqStaticFrame } from "@codecanon/waraq";
 import type { Layer } from "@codecanon/waraq/lib";
 import { Palette } from "lucide-react";
 import type { ProductLayerData } from "@/apps/price-tag/components/price-tag-product-layer-type";
@@ -17,7 +17,7 @@ interface ProductCustomViewProps {
 }
 
 export function ProductCustomView({ layer }: ProductCustomViewProps) {
-  const { updateLayer } = useWaraq();
+  const { updateLayer } = useWaraqFrame();
 
   if (
     !layer.data?.customDesign?.layers.length ||

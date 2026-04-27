@@ -7,15 +7,15 @@ All hooks are imported from `@codecanon/waraq` and must be used inside a `<Waraq
 
 ---
 
-## useWaraq
+## useWaraqFrame
 
-Returns the full `WaraqState` context — the central source of truth for the editor.
+Returns layer operations and canvas frame state. Use this when you need to read or mutate layers, manage selection, or access the frame DOM ref.
 
 ```tsx
-import { useWaraq } from "@codecanon/waraq"
+import { useWaraqFrame } from "@codecanon/waraq"
 
 function MyComponent() {
-  const waraq = useWaraq()
+  const { layers, updateLayer, getLayer, addLayer, deleteSelected } = useWaraqFrame()
 }
 ```
 
@@ -23,30 +23,10 @@ function MyComponent() {
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `id` | `string` | Stable editor instance ID |
-| `zoom` | `number` | Current zoom level (0.01–2) |
-| `frameSize` | `FrameSize` | Canvas width and height in px |
-| `frameBackgroundColor` | `string` | Canvas background color |
 | `layers` | `Layer[]` | All layers in the current design |
 | `layerTypes` | `LayerType[]` | Registered layer type definitions |
-| `tool` | `Tool` | Active tool: `"select"` \| `"move"` \| `"hand"` |
 | `selectedLayerCount` | `number` | Number of currently selected layers |
-| `leftPanelVisible` | `boolean` | Left panel open state |
-| `rightPanelVisible` | `boolean` | Right panel open state |
-| `keyboardShortcuts` | `KeyboardShortcut[]` | Active keyboard shortcut definitions |
 | `layersHistory` | `HistoryState<Layer[]>` | Undo/redo history object |
-
-### Setters
-
-| Method | Description |
-| --- | --- |
-| `setZoom(zoom)` | Set zoom level directly |
-| `setFrameSize(size)` | Resize the canvas frame |
-| `setFrameBackgroundColor(color)` | Change canvas background |
-| `setLayers(layers)` | Replace the entire layers array |
-| `setTool(tool)` | Switch the active tool |
-| `setLeftPanelVisible(v)` | Show/hide the left panel |
-| `setRightPanelVisible(v)` | Show/hide the right panel |
 
 ### Layer methods
 
@@ -56,6 +36,7 @@ function MyComponent() {
 | `updateLayer` | `({ id, ...partial }) => void` | Update a single layer |
 | `updateLayers` | `(items[]) => void` | Batch update multiple layers |
 | `getLayer` | `<T>(id: string) => Layer<T> \| undefined` | Get a layer by ID |
+| `setLayers` | `(layers: Layer[]) => void` | Replace the entire layers array |
 | `select` | `(layerId: string) => Promise<void>` | Programmatically select a layer |
 | `getSelectedLayerIds` | `() => string[]` | IDs of currently selected layers |
 | `setSelectedTargets` | `(els[]) => Promise<void>` | Select by DOM elements |
@@ -72,6 +53,86 @@ function MyComponent() {
 | `sendToBack()` | Move selected layers to bottom |
 | `toggleLock()` | Lock/unlock selected layers |
 | `redraw()` | Force Moveable to recalculate handles |
+
+### Refs
+
+| Ref | Type | Description |
+| --- | --- | --- |
+| `frameRef` | `RefObject<HTMLDivElement>` | The canvas frame DOM element |
+| `selectoRef` | `RefObject<Selecto>` | The multi-select instance |
+| `moveableRef` | `RefObject<Moveable>` | The drag/resize handle instance |
+| `selectedLayerRefs` | `(HTMLElement \| SVGElement)[]` | DOM elements for selected layers |
+
+---
+
+## useWaraqTool
+
+Returns the active tool and its setter. Prefer this hook over a broader hook when you only need to read or change the current tool — it avoids re-rendering on unrelated state changes.
+
+```tsx
+import { useWaraqTool } from "@codecanon/waraq"
+
+function Toolbar() {
+  const { tool, setTool } = useWaraqTool()
+
+  return (
+    <button onClick={() => setTool("hand")}>
+      {tool === "hand" ? "Hand active" : "Switch to hand"}
+    </button>
+  )
+}
+```
+
+### Return value
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `tool` | `Tool` | Active tool: `"select"` \| `"move"` \| `"hand"` |
+| `setTool` | `(tool: Tool) => void` | Switch the active tool |
+
+---
+
+## useWaraqDocument
+
+Returns document-level state: canvas dimensions, background color, zoom, and panel visibility. Use this when your component only cares about viewport or canvas-level properties.
+
+```tsx
+import { useWaraqDocument } from "@codecanon/waraq"
+
+function DocumentControls() {
+  const { frameSize, zoom, zoomFit, setFrameBackgroundColor } = useWaraqDocument()
+
+  return (
+    <div>
+      <span>{frameSize.width} × {frameSize.height}</span>
+      <span>Zoom: {Math.round(zoom * 100)}%</span>
+      <button onClick={zoomFit}>Fit</button>
+    </div>
+  )
+}
+```
+
+### State
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Stable editor instance ID |
+| `zoom` | `number` | Current zoom level (0.01–2) |
+| `frameSize` | `FrameSize` | Canvas width and height in px |
+| `frameBackgroundColor` | `string` | Canvas background color |
+| `leftPanelVisible` | `boolean` | Left panel open state |
+| `rightPanelVisible` | `boolean` | Right panel open state |
+| `keyboardShortcuts` | `KeyboardShortcut[]` | Active keyboard shortcut definitions |
+
+### Setters
+
+| Method | Description |
+| --- | --- |
+| `setZoom(zoom)` | Set zoom level directly |
+| `setFrameSize(size)` | Resize the canvas frame |
+| `setFrameBackgroundColor(color)` | Change canvas background |
+| `setLeftPanelVisible(v)` | Show/hide the left panel |
+| `setRightPanelVisible(v)` | Show/hide the right panel |
 
 ### Zoom actions
 
@@ -93,9 +154,11 @@ function MyComponent() {
 ### Generic action dispatch
 
 ```tsx
-waraq.waraqAction("ZOOM_FIT")
-waraq.waraqAction("HISTORY_UNDO")
-waraq.waraqAction("DELETE_SELECTED")
+const { waraqAction } = useWaraqDocument()
+
+waraqAction("ZOOM_FIT")
+waraqAction("HISTORY_UNDO")
+waraqAction("DELETE_SELECTED")
 ```
 
 See [Types & constants — ActionType](/docs/waraq/types#actiontype) for all available action strings.
@@ -104,11 +167,7 @@ See [Types & constants — ActionType](/docs/waraq/types#actiontype) for all ava
 
 | Ref | Type | Description |
 | --- | --- | --- |
-| `frameRef` | `RefObject<HTMLDivElement>` | The canvas frame DOM element |
 | `viewerRef` | `RefObject<InfiniteViewer>` | The pan/zoom viewer instance |
-| `selectoRef` | `RefObject<Selecto>` | The multi-select instance |
-| `moveableRef` | `RefObject<Moveable>` | The drag/resize handle instance |
-| `selectedLayerRefs` | `(HTMLElement \| SVGElement)[]` | DOM elements for selected layers |
 
 ---
 
