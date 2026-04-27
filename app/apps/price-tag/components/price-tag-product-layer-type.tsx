@@ -60,7 +60,7 @@ export const ProductLayerType: LayerType<ProductLayerData> = {
     const [open, setOpen] = useState(false);
     const displayStyle = layer.data?.displayStyle || "card";
     const products = layer.data?.products || [];
-    const { tool } = useWaraqTool()
+    const { tool } = useWaraqTool();
 
     return (
       <>
@@ -83,7 +83,7 @@ export const ProductLayerType: LayerType<ProductLayerData> = {
           <div
             className={cn(
               "transition-opactiy absolute top-0 right-0 z-2 opacity-0 group-hover/layer-product:opacity-100 focus:opacity-100",
-              open && "opacity-100"
+              open && "opacity-100",
             )}
           >
             <ProductLayerSelect
