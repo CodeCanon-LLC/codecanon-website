@@ -120,6 +120,31 @@ export default function Editor() {
 
 `WaraqData` is plain JSON, so you can serialize it to localStorage, a database, or a URL param.
 
+### Loading data from an API
+
+Pass `null` while your data is in-flight. The editor defers history initialisation until the real value arrives, so undo/redo starts from the correct baseline instead of an empty state:
+
+```tsx
+import { type WaraqData } from "@codecanon/waraq/lib"
+import { useEffect, useState } from "react"
+
+export default function Editor() {
+  const [data, setData] = useState<WaraqData | null>(null)
+
+  useEffect(() => {
+    fetchDesign().then(setData)
+  }, [])
+
+  return (
+    <Waraq data={data} onDataChange={setData}>
+      {/* … */}
+    </Waraq>
+  )
+}
+```
+
+> **`null` vs `undefined`** — `null` means "controlled but loading". `undefined` (i.e. omitting the prop) means uncontrolled, and the editor treats `initialLayers` as the permanent starting state. Always use `null` while waiting for data, never `undefined`.
+
 ## Controlling the editor programmatically
 
 Use the focused hooks inside any component that is a child of `<Waraq>`. Each hook subscribes only to the state it needs, so components re-render only when relevant state changes:

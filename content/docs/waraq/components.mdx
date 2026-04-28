@@ -15,9 +15,9 @@ import { Waraq } from "@codecanon/waraq"
 | --- | --- | --- | --- |
 | `children` | `ReactNode` | — | Editor content |
 | `id` | `string` | auto | Stable ID used for multi-instance support |
-| `data` | `WaraqData \| null` | — | Controlled canvas state |
+| `data` | `WaraqData \| null` | — | Controlled canvas state. Pass `null` while data is loading to defer history initialisation; pass `undefined` (omit the prop) only for uncontrolled usage. |
 | `onDataChange` | `(data: D) => void` | — | Called whenever layers, frame size, or background color change |
-| `initialLayers` | `Layer[]` | `[]` | Uncontrolled initial layers |
+| `initialLayers` | `Layer[]` | `[]` | Uncontrolled initial layers (ignored in controlled mode) |
 | `initialTool` | `Tool` | `"select"` | Starting tool (`"select"`, `"move"`, `"hand"`) |
 | `layerTypes` | `LayerType[]` | built-in types | Custom or additional layer type definitions |
 | `keyboardShortcuts` | `KeyboardShortcut[]` | built-in shortcuts | Extra keyboard shortcuts to register |
