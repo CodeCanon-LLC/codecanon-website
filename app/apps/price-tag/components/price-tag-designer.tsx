@@ -56,7 +56,6 @@ import {
 } from "@codecanon/waraq/lib";
 import { Action, Button } from "@codecanon/waraq/ui";
 import { useQuery } from "@tanstack/react-query";
-import { useLocalStorage } from "@uidotdev/usehooks";
 import {
   CircleQuestionMark,
   FileIcon,
@@ -66,7 +65,7 @@ import {
   SunIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { PRICE_TAG_ABLES } from "@/apps/price-tag/components/price-tag-layer-ables";
 import {
@@ -426,8 +425,7 @@ export function PriceTagDesigner({
   priceTag: PriceTag | null;
   loading?: boolean;
 } & Partial<React.ComponentProps<typeof Waraq>>) {
-  const [data, setData] = useLocalStorage<PriceTag>(
-    `price-tag-template-${priceTagId}`,
+  const [data, setData] = useState<PriceTag>(
     {
       id: priceTagId,
       name: "New Template",
