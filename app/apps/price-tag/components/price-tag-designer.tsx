@@ -425,15 +425,7 @@ export function PriceTagDesigner({
   priceTag: PriceTag | null;
   loading?: boolean;
 } & Partial<React.ComponentProps<typeof Waraq>>) {
-  const [data, setData] = useState<PriceTag>(
-    {
-      id: priceTagId,
-      name: "New Template",
-      frameSize: DEFAULT_FRAME_SIZE,
-      frameBackgroundColor: DEFAULT_FRAME_BACKGROUND_COLOR,
-      layers: [],
-    },
-  );
+  const [data, setData] = useState<PriceTag|null>(null);
 
   /**
    * biome-ignore lint/correctness/useExhaustiveDependencies: this causes the component to
