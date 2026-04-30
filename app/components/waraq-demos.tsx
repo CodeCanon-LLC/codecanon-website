@@ -101,16 +101,13 @@ function Header() {
 }
 
 function Toolbar() {
-  const showTools = useIsBreakpoint("min-md");
   const { tool } = useWaraqTool();
 
   return (
     <WaraqToolbar>
-      {showTools && (
-        <WaraqToolbarGroup>
-          <ActionToolbarTool />
-        </WaraqToolbarGroup>
-      )}
+      <WaraqToolbarGroup>
+        <ActionToolbarTool />
+      </WaraqToolbarGroup>
       {tool !== "select" && (
         <WaraqToolbarGroup>
           <ActionToolbarHistory />
@@ -241,7 +238,16 @@ export function WaraqDemo({
       initialLayers={initialLayers}
     >
       <WaraqBackground />
-      {!markdown.isMarkdown && <Header />}
+      {markdown.isMarkdown ? (
+        <WaraqToolbar position="top">
+          <WaraqToolbarGroup>
+            <ActionPrintDocument variant="ghost" />
+            <ActionDownloadDocument variant="ghost" />
+          </WaraqToolbarGroup>
+        </WaraqToolbar>
+      ) : (
+        <Header />
+      )}
       <LayersPanel />
       <WaraqStage>
         <WaraqFrame />

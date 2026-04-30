@@ -135,17 +135,14 @@ function Header() {
   );
 }
 
-function Toolbar(props: { hideTools?: boolean }) {
-  const showTools = useIsBreakpoint("min-md");
+function Toolbar() {
   const { tool } = useWaraqTool();
 
   return (
     <WaraqToolbar>
-      {showTools && !props.hideTools && (
-        <WaraqToolbarGroup>
-          <ActionToolbarTool />
-        </WaraqToolbarGroup>
-      )}
+      <WaraqToolbarGroup>
+        <ActionToolbarTool />
+      </WaraqToolbarGroup>
 
       {tool !== "select" && (
         <WaraqToolbarGroup>
@@ -154,7 +151,7 @@ function Toolbar(props: { hideTools?: boolean }) {
       )}
 
       <ActionToolbarZoomGroup />
-      
+
       <WaraqKeyboardShortcuts asChild>
         <Button size="icon" variant="ghost" tooltip="Keyboard Shortcuts">
           <CircleQuestionMark className="size-3.5" />
@@ -423,7 +420,7 @@ export function PriceTagDesigner({
   priceTag: PriceTag | null;
   loading?: boolean;
 } & Partial<React.ComponentProps<typeof Waraq>>) {
-  const [data, setData] = useState<PriceTag|null>(null);
+  const [data, setData] = useState<PriceTag | null>(null);
 
   /**
    * biome-ignore lint/correctness/useExhaustiveDependencies: this causes the component to
@@ -465,12 +462,18 @@ export function PriceTagDesignerDemo() {
       layerTypes={PRICE_TAG_LAYER_TYPES}
     >
       <WaraqBackground />
+      <WaraqToolbar position="top">
+        <WaraqToolbarGroup>
+          <ActionPrintDocument variant="ghost" />
+          <ActionDownloadDocument variant="ghost" />
+        </WaraqToolbarGroup>
+      </WaraqToolbar>
       <LayersPanel defaultCollapsed />
       <WaraqStage>
         <WaraqFrame ables={PRICE_TAG_ABLES} />
       </WaraqStage>
       <PropertiesPanel defaultCollapsed />
-      <Toolbar hideTools />
+      <Toolbar />
     </Waraq>
   );
 }

@@ -43,36 +43,32 @@ export const links: Route.LinksFunction = () => [
 
 export function meta() {
   return [
-    { 
+    {
       property: "og:site_name",
-      content: "CodeCanon"
+      content: "CodeCanon",
     },
-    { 
+    {
       property: "og:type",
-      content: "website"
+      content: "website",
     },
     {
       property: "og:image:alt",
       content: "CodeCanon — Software & Consultation",
     },
-    { name: "twitter:card", 
-      content: "summary_large_image" 
-    },
-    { name: "twitter:image", 
-      content: "https://codecanon.dev/assets/og.png" 
-    },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:image", content: "https://codecanon.dev/assets/og.png" },
     {
       name: "twitter:image:alt",
       content: "CodeCanon — Software & Consultation",
     },
     {
       name: "twitter:site",
-      content: "@codecanon"
+      content: "@codecanon",
     },
     {
       name: "twitter:title",
       content: "CodeCanon — Software & Consultation",
-    }
+    },
   ];
 }
 
@@ -83,11 +79,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <meta property="og:image" content="https://codecanon.dev/assets/og.png" />
+        <meta
+          property="og:image"
+          content="https://codecanon.dev/assets/og.png"
+        />
         <meta property="og:image:width" content="2400" />
         <meta property="og:image:height" content="1264" />
-        
-        <meta name="twitter:image" content="https://codecanon.dev/assets/og.png" />
+
+        <meta
+          name="twitter:image"
+          content="https://codecanon.dev/assets/og.png"
+        />
 
         <link
           rel="icon"

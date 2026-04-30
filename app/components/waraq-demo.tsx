@@ -23,6 +23,7 @@ import {
   WaraqToolbarGroup,
 } from "@codecanon/waraq";
 import { type Layer } from "@codecanon/waraq/lib";
+import { PlusIcon } from "lucide-react";
 
 const initialLayers: Layer[] = [
   {
@@ -60,7 +61,11 @@ export default function WaraqDemo() {
         <ActionToolbarZoomGroup />
       </WaraqToolbar>
 
-      <WaraqPanel position="left-start">
+      <WaraqPanel
+        position="left-start"
+        positionMobile="left-end"
+        icon={PlusIcon}
+      >
         <WaraqPane>
           <WaraqPaneTitle>Add layer</WaraqPaneTitle>
           <WaraqPaneContent>
@@ -79,7 +84,7 @@ export default function WaraqDemo() {
         <WaraqFrame />
       </WaraqStage>
 
-      <WaraqPanel position="right-start">
+      <WaraqPanel position="right-start" positionMobile="right-end">
         <WaraqPane showFor="document">
           <WaraqPaneTitle>Document</WaraqPaneTitle>
           <WaraqPaneContent>
