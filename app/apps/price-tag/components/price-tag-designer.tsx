@@ -33,7 +33,7 @@ import {
   ActionTextValue,
   ActionToolbarHistory,
   ActionToolbarTool,
-  ActionToolbarZoom,
+  ActionToolbarZoomGroup,
   PaneAddLayer,
   PaneLayerTree,
   useWaraqTool,
@@ -153,15 +153,13 @@ function Toolbar(props: { hideTools?: boolean }) {
         </WaraqToolbarGroup>
       )}
 
-      <WaraqToolbarGroup>
-        <ActionToolbarZoom />
-
-        <WaraqKeyboardShortcuts asChild>
-          <Button size="icon" variant="ghost" tooltip="Keyboard Shortcuts">
-            <CircleQuestionMark className="size-3.5" />
-          </Button>
-        </WaraqKeyboardShortcuts>
-      </WaraqToolbarGroup>
+      <ActionToolbarZoomGroup />
+      
+      <WaraqKeyboardShortcuts asChild>
+        <Button size="icon" variant="ghost" tooltip="Keyboard Shortcuts">
+          <CircleQuestionMark className="size-3.5" />
+        </Button>
+      </WaraqKeyboardShortcuts>
     </WaraqToolbar>
   );
 }

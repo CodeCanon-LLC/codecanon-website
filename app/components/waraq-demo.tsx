@@ -8,7 +8,7 @@ import {
   ActionSize,
   ActionToolbarHistory,
   ActionToolbarTool,
-  ActionToolbarZoom,
+  ActionToolbarZoomGroup,
   PaneAddLayer,
   PaneLayerTree,
   Waraq,
@@ -57,9 +57,7 @@ export default function WaraqDemo() {
         <WaraqToolbarGroup>
           <ActionToolbarHistory />
         </WaraqToolbarGroup>
-        <WaraqToolbarGroup>
-          <ActionToolbarZoom />
-        </WaraqToolbarGroup>
+        <ActionToolbarZoomGroup />
       </WaraqToolbar>
 
       <WaraqPanel position="left-start">

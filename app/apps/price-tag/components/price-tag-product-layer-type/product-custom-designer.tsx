@@ -29,7 +29,7 @@ import {
   ActionTextValue,
   ActionToolbarHistory,
   ActionToolbarTool,
-  ActionToolbarZoom,
+  ActionToolbarZoomGroup,
   PaneAddLayer,
   PaneLayerTree,
   Waraq,
@@ -302,7 +302,7 @@ export function ProductCustomDesigner({
           <ActionToolbarHistory />
         </WaraqToolbarGroup>
         <WaraqToolbarSeparator />
-        <ActionToolbarZoom />
+        <ActionToolbarZoomGroup />
       </WaraqToolbar>
     </Waraq>
   );

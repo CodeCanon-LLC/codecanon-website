@@ -33,7 +33,7 @@ import {
   ActionTextValue,
   ActionToolbarHistory,
   ActionToolbarTool,
-  ActionToolbarZoom,
+  ActionToolbarZoomGroup,
   PaneAddLayer,
   PaneLayerTree,
   useWaraqTool,
@@ -116,9 +116,7 @@ function Toolbar() {
           <ActionToolbarHistory />
         </WaraqToolbarGroup>
       )}
-      <WaraqToolbarGroup>
-        <ActionToolbarZoom />
-      </WaraqToolbarGroup>
+      <ActionToolbarZoomGroup />
       <WaraqToolbarGroup>
         <WaraqKeyboardShortcuts asChild>
           <Button size="icon" variant="ghost" tooltip="Keyboard Shortcuts">
