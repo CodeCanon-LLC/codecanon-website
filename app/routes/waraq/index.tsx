@@ -3,11 +3,9 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { Page, PageContent } from "@/components/ui/page";
 import { baseOptions } from "@/lib/layout.shared";
 import { getWaraqDemoLink, getWaraqPriceTagLink } from "@/lib/links";
-import type { Route } from "./+types";
 
-export function meta({ matches }: Route.MetaArgs) {
-  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
-  return [...parentMeta, { title: "Waraq — CodeCanon" }];
+export function meta() {
+  return [{ title: "Waraq — CodeCanon" }];
 }
 
 export default function Waraq() {

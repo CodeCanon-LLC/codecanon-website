@@ -13,18 +13,15 @@ import {
   getPurchaseLink,
   getWaraqDemoLink,
 } from "@/lib/links";
-import type { Route } from "./+types/home";
 import packageJson from "@/../package.json";
 
 const WaraqDemo = lazy(() => import("@/components/waraq-demo"));
 
-export function meta({ matches }: Route.MetaArgs) {
-  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
+export function meta() {
   const title = "CodeCanon — Software & Consultation";
   const description =
     "Composable TypeScript libraries and software consultation by CodeCanon LLC. Design editors, version control, and more — for any stack.";
   return [
-    ...parentMeta,
     { title },
     { name: "description", content: description },
     { property: "og:title", content: title },

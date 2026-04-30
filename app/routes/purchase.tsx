@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
-import type { Route } from "./+types/purchase";
 
 const PAYMENT_LINKS = {
   waraq: import.meta.env.VITE_STRIPE_PAYMENT_LINK_WARAQ as string,
@@ -10,13 +9,11 @@ const PAYMENT_LINKS = {
   bundle: import.meta.env.VITE_STRIPE_PAYMENT_LINK_BUNDLE as string,
 };
 
-export function meta({ matches }: Route.MetaArgs) {
-  const parentMeta = matches.flatMap((m) => m?.meta ?? []);
+export function meta() {
   const title = "Purchase — CodeCanon";
   const description =
     "Get lifetime access to CodeCanon libraries. One-time purchase, instant npm access.";
   return [
-    ...parentMeta,
     { title },
     { name: "description", content: description },
     { property: "og:title", content: title },
