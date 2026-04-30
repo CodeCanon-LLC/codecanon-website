@@ -2,6 +2,7 @@ import { LinkIcon } from "lucide-react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { useState, useEffect } from "react";
 
 export function Browser({
   children,
@@ -9,6 +10,12 @@ export function Browser({
   className,
   ...props
 }: React.ComponentProps<"div"> & { link: string }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <div
       className={cn(
@@ -25,7 +32,7 @@ export function Browser({
           to={link}
           className="truncate ml-3 flex-1 rounded-md bg-[#e5e5e5] dark:bg-background/70 px-3 py-1 text-xs text-muted-foreground hover:text-primary hover:underline"
         >
-          {globalThis.location?.origin}
+          {mounted && globalThis.location?.origin}
           {link}
         </Link>
 
