@@ -35,14 +35,12 @@ type ProductId = "waraq" | "nuska";
 const PRODUCTS: {
   id: ProductId;
   name: string;
-  price: number;
   description: string;
   highlights: string[];
 }[] = [
   {
     id: "waraq",
     name: "@codecanon/waraq",
-    price: 149,
     description:
       "Canva-like drag-and-drop design editor for React 19. Composable panels, 50+ action components, Google Fonts, undo/redo, and serializable JSON state.",
     highlights: [
@@ -56,7 +54,6 @@ const PRODUCTS: {
   {
     id: "nuska",
     name: "@codecanon/nuska",
-    price: 99,
     description:
       "Headless git-like version control for any key/value datasource. Commits, branches, diffs, 3-way merge — framework-agnostic with adapters for IndexedDB, PostgreSQL, MongoDB.",
     highlights: [
