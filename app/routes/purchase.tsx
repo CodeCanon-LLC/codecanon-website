@@ -1,7 +1,8 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useTransition } from "react";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PAYMENT_LINKS = {
   waraq: import.meta.env.VITE_STRIPE_PAYMENT_LINK_WARAQ as string,
@@ -79,12 +80,16 @@ interface Prices {
 export default function Purchase() {
   const [selected, setSelected] = useState<Set<ProductId>>(new Set());
   const [prices, setPrices] = useState<Prices | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    fetch(`${PRICES_WORKER_URL}/prices`)
-      .then((r) => r.json())
-      .then((data) => setPrices(data as Prices))
-      .catch(() => {});
+    startTransition(async () => {
+      try {
+        const r = await fetch(`${PRICES_WORKER_URL}/prices`);
+        const data = await r.json();
+        setPrices(data as Prices);
+      } catch {}
+    });
   }, []);
 
   function toggle(id: ProductId) {
@@ -156,14 +161,16 @@ export default function Purchase() {
                     <span className="font-mono font-semibold text-sm leading-none block mb-1.5">
                       {product.name}
                     </span>
-                    {prices !== null && (
+                    {isPending ? (
+                      <Skeleton className="h-8 w-20 mt-1" />
+                    ) : prices !== null ? (
                       <span className="text-2xl font-bold">
                         ${prices[product.id]}
                         <span className="text-sm font-normal text-muted-foreground ml-1">
                           one-time
                         </span>
                       </span>
-                    )}
+                    ) : null}
                   </div>
 
                   {/* Checkbox */}
