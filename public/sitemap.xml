@@ -10,11 +10,8 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
-    <loc>https://codecanon.dev/docs</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
+  <!-- Waraq -->
   <url>
     <loc>https://codecanon.dev/docs/waraq</loc>
     <changefreq>weekly</changefreq>
@@ -36,13 +33,132 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://codecanon.dev/docs/waraq/actions</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/waraq/customization</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/waraq/hooks</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/waraq/performance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/waraq/price-tag</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/waraq/types</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/waraq/ui-components</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Nuska -->
+  <url>
     <loc>https://codecanon.dev/docs/nuska</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://codecanon.dev/docs/nuska/installation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/nuska/getting-started</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/nuska/adapters</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/nuska/engine</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/nuska/products-version-control</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/nuska/react</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/nuska/types</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Next Presets -->
+  <url>
     <loc>https://codecanon.dev/docs/next-presets</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/installation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/getting-started</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/helpers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/live-demo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/preset-picker</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/presets</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/providers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/reduce-bundle-size</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://codecanon.dev/docs/next-presets/types</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
