@@ -43,6 +43,7 @@ jobs:
           echo "VITE_STRIPE_PAYMENT_LINK_WARAQ=${{ secrets.STRIPE_PAYMENT_LINK_WARAQ }}" >> .env
           echo "VITE_STRIPE_PAYMENT_LINK_NUSKA=${{ secrets.STRIPE_PAYMENT_LINK_NUSKA }}" >> .env
           echo "VITE_STRIPE_PAYMENT_LINK_BUNDLE=${{ secrets.STRIPE_PAYMENT_LINK_BUNDLE }}" >> .env
+          echo "VITE_PRICES_WORKER_URL=${{ secrets.PRICES_WORKER_URL }}" >> .env
 
       - name: Install dependencies
         run: bun install
