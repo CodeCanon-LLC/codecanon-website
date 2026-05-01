@@ -27,7 +27,22 @@ export async function loader({ params }: Route.LoaderArgs) {
     path: page.path,
     markdownUrl: getPageMarkdownUrl(page).url,
     pageTree: await source.serializePageTree(source.getPageTree()),
+    title: page.data.title,
+    description: page.data.description,
   };
+}
+
+export function meta({ data }: Route.MetaArgs) {
+  if (!data) return [];
+  const title = `${data.title} — CodeCanon`;
+  return [
+    { title },
+    { name: "description", content: data.description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: data.description },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: data.description },
+  ];
 }
 
 const clientLoader = browserCollections.docs.createClientLoader({
@@ -44,18 +59,6 @@ const clientLoader = browserCollections.docs.createClientLoader({
   ) {
     return (
       <DocsPage toc={toc} tableOfContent={{ style: "clerk" }}>
-        <title>{frontmatter.title} — CodeCanon</title>
-        <meta name="description" content={frontmatter.description} />
-        <meta
-          property="og:title"
-          content={`${frontmatter.title} — CodeCanon`}
-        />
-        <meta property="og:description" content={frontmatter.description} />
-        <meta
-          name="twitter:title"
-          content={`${frontmatter.title} — CodeCanon`}
-        />
-        <meta name="twitter:description" content={frontmatter.description} />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <div className="flex flex-row gap-2 items-center border-b -mt-4 pb-6">
