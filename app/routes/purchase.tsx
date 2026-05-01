@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
@@ -68,10 +68,24 @@ const PRODUCTS: {
   },
 ];
 
-const BUNDLE_PRICE = 199;
+const PRICES_WORKER_URL = import.meta.env.VITE_PRICES_WORKER_URL as string;
+
+interface Prices {
+  waraq: number;
+  nuska: number;
+  bundle: number;
+}
 
 export default function Purchase() {
   const [selected, setSelected] = useState<Set<ProductId>>(new Set());
+  const [prices, setPrices] = useState<Prices | null>(null);
+
+  useEffect(() => {
+    fetch(`${PRICES_WORKER_URL}/prices`)
+      .then((r) => r.json())
+      .then((data) => setPrices(data as Prices))
+      .catch(() => {});
+  }, []);
 
   function toggle(id: ProductId) {
     setSelected((prev) => {
@@ -91,17 +105,19 @@ export default function Purchase() {
   }, [selected]);
 
   const total =
-    selected.has("waraq") && selected.has("nuska")
-      ? BUNDLE_PRICE
-      : selected.has("waraq")
-        ? PRODUCTS[0].price
-        : selected.has("nuska")
-          ? PRODUCTS[1].price
-          : null;
+    prices === null
+      ? null
+      : selected.has("waraq") && selected.has("nuska")
+        ? prices.bundle
+        : selected.has("waraq")
+          ? prices.waraq
+          : selected.has("nuska")
+            ? prices.nuska
+            : null;
 
   const savings =
-    selected.size === 2
-      ? PRODUCTS[0].price + PRODUCTS[1].price - BUNDLE_PRICE
+    prices !== null && selected.size === 2
+      ? prices.waraq + prices.nuska - prices.bundle
       : 0;
 
   return (
@@ -140,12 +156,14 @@ export default function Purchase() {
                     <span className="font-mono font-semibold text-sm leading-none block mb-1.5">
                       {product.name}
                     </span>
-                    <span className="text-2xl font-bold">
-                      ${product.price}
-                      <span className="text-sm font-normal text-muted-foreground ml-1">
-                        one-time
+                    {prices !== null && (
+                      <span className="text-2xl font-bold">
+                        ${prices[product.id]}
+                        <span className="text-sm font-normal text-muted-foreground ml-1">
+                          one-time
+                        </span>
                       </span>
-                    </span>
+                    )}
                   </div>
 
                   {/* Checkbox */}
@@ -203,7 +221,9 @@ export default function Purchase() {
             </span>
             <span className="text-muted-foreground">—</span>
             <span className="text-muted-foreground">
-              You save ${savings} by purchasing both libraries.
+              {savings > 0
+                ? `You save $${savings} by purchasing both libraries.`
+                : "Bundle discount applied."}
             </span>
           </div>
         )}
@@ -221,9 +241,11 @@ export default function Purchase() {
                 "opacity-40 cursor-not-allowed pointer-events-none",
             )}
           >
-            {total !== null
-              ? `Proceed to checkout — $${total}`
-              : "Select a library to continue"}
+            {!checkoutLink
+              ? "Select a library to continue"
+              : total !== null
+                ? `Proceed to checkout — $${total}`
+                : "Proceed to checkout"}
           </a>
 
           <p className="text-xs text-muted-foreground text-center max-w-xs leading-relaxed">

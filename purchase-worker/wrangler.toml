@@ -13,6 +13,10 @@ id = "e681c21e282e4263be2a8dd3b59ea050"
 # Secrets — set via: wrangler secret put <NAME>
 # Required:
 #   STRIPE_WEBHOOK_SECRET  — from Stripe Dashboard > Webhooks > signing secret
+#   STRIPE_SECRET_KEY      — from Stripe Dashboard > API keys
+#   STRIPE_PRICE_ID_WARAQ  — price_xxx
+#   STRIPE_PRICE_ID_NUSKA  — price_xxx
+#   STRIPE_PRICE_ID_BUNDLE — price_xxx
 #   RESEND_API_KEY         — from resend.com
 #   RESEND_FROM_EMAIL      — verified sender, e.g. "CodeCanon <noreply@orders.codecanon.dev>"
 

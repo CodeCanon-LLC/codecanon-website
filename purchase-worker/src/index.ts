@@ -1,6 +1,10 @@
 interface Env {
   TOKENS: KVNamespace;
   STRIPE_WEBHOOK_SECRET: string;
+  STRIPE_SECRET_KEY: string;
+  STRIPE_PRICE_ID_WARAQ: string;
+  STRIPE_PRICE_ID_NUSKA: string;
+  STRIPE_PRICE_ID_BUNDLE: string;
   RESEND_API_KEY: string;
   RESEND_FROM_EMAIL: string;
 }
@@ -17,10 +21,26 @@ interface TokenRecord {
 
 type PackageId = "waraq" | "nuska";
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "https://codecanon.dev",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 // ── Entry point ──────────────────────────────────────────────────────────────
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: CORS_HEADERS });
+    }
+
+    if (request.method === "GET" && url.pathname === "/prices") {
+      return handlePrices(env);
+    }
+
     if (request.method !== "POST") {
       return new Response("Method not allowed", { status: 405 });
     }
@@ -53,6 +73,33 @@ export default {
     return new Response("OK", { status: 200 });
   },
 };
+
+// ── Prices ────────────────────────────────────────────────────────────────────
+
+async function handlePrices(env: Env): Promise<Response> {
+  const [waraq, nuska, bundle] = await Promise.all([
+    fetchStripePrice(env.STRIPE_PRICE_ID_WARAQ, env.STRIPE_SECRET_KEY),
+    fetchStripePrice(env.STRIPE_PRICE_ID_NUSKA, env.STRIPE_SECRET_KEY),
+    fetchStripePrice(env.STRIPE_PRICE_ID_BUNDLE, env.STRIPE_SECRET_KEY),
+  ]);
+
+  return new Response(JSON.stringify({ waraq, nuska, bundle }), {
+    headers: {
+      ...CORS_HEADERS,
+      "Content-Type": "application/json",
+      "Cache-Control": "public, max-age=300",
+    },
+  });
+}
+
+async function fetchStripePrice(priceId: string, secretKey: string): Promise<number> {
+  const res = await fetch(`https://api.stripe.com/v1/prices/${priceId}`, {
+    headers: { Authorization: `Bearer ${secretKey}` },
+  });
+  if (!res.ok) throw new Error(`Stripe API error: ${res.status}`);
+  const data = await res.json() as { unit_amount: number };
+  return data.unit_amount / 100;
+}
 
 // ── Handler ───────────────────────────────────────────────────────────────────
 
