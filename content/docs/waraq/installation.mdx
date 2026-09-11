@@ -31,18 +31,32 @@ yarn add @codecanon/waraq
 
 ## Import the stylesheet
 
-Import the Waraq stylesheet once, at your app root (e.g. `app/layout.tsx` or `main.tsx`).
+Waraq's stylesheet is **not** a pre-compiled Tailwind build. Import it from your Tailwind entry CSS (e.g. `app/globals.css` or `src/index.css`), after `@import "tailwindcss"`:
 
-```ts
-import "@codecanon/waraq/styles.css"
-```
-
-If you are using Tailwind CSS 4 with `@import "tailwindcss"`, place the Waraq import after your own Tailwind import so its utility classes take precedence when needed:
-
-```css title="global.css"
+```css title="globals.css"
 @import "tailwindcss";
 @import "@codecanon/waraq/styles.css";
 ```
+
+The file contains an `@source` directive pointing at Waraq's compiled components, so **your** Tailwind generates the utility classes Waraq needs, in the same `utilities` layer as your own. It does not inject preflight, theme tokens, or a `dark` variant into your app, and it cannot break your own responsive classes.
+
+<Callout type="warn" title="Do not import it from JavaScript">
+`import "@codecanon/waraq/styles.css"` in a `.tsx` file skips your Tailwind pipeline and the editor will render unstyled. Always import it from a CSS file that Tailwind processes.
+</Callout>
+
+### Theme tokens
+
+Waraq components use the standard shadcn/ui theme tokens (`--background`, `--primary`, `--popover`, `--radius`, …) and your app's `dark` variant. Projects set up with `shadcn init` already provide these.
+
+If your project has no shadcn theme yet, import the optional default theme **before** `styles.css`:
+
+```css title="globals.css"
+@import "tailwindcss";
+@import "@codecanon/waraq/theme.css";
+@import "@codecanon/waraq/styles.css";
+```
+
+Skip `theme.css` if you already have a shadcn theme — it would override your palette.
 
 ## Entry points
 

@@ -1,4 +1,3 @@
-@import "@codecanon/waraq/styles.css";
 @import "@codecanon/next-presets/default/codecanon.css";
 @import "@codecanon/next-presets/styles.css";
 
@@ -7,6 +6,7 @@
 @import "@fontsource-variable/geist";
 
 @import "tailwindcss";
+@import "@codecanon/waraq/styles.css";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 
