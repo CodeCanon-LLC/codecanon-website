@@ -81,6 +81,7 @@ export function ProductCustomDesigner({
 }: ProductCustomDesignerProps) {
   return (
     <Waraq
+      maxZoom={4}
       data={data}
       onDataChange={onDataChange}
       layerTypes={PRODUCT_CUSTOM_LAYER_TYPES}
