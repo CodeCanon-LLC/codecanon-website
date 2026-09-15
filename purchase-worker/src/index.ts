@@ -92,12 +92,15 @@ async function handlePrices(env: Env): Promise<Response> {
   });
 }
 
-async function fetchStripePrice(priceId: string, secretKey: string): Promise<number> {
+async function fetchStripePrice(
+  priceId: string,
+  secretKey: string,
+): Promise<number> {
   const res = await fetch(`https://api.stripe.com/v1/prices/${priceId}`, {
     headers: { Authorization: `Bearer ${secretKey}` },
   });
   if (!res.ok) throw new Error(`Stripe API error: ${res.status}`);
-  const data = await res.json() as { unit_amount: number };
+  const data = (await res.json()) as { unit_amount: number };
   return data.unit_amount / 100;
 }
 

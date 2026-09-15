@@ -10,11 +10,11 @@ export function Browser({
   className,
   ...props
 }: React.ComponentProps<"div"> & { link: string }) {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   return (
     <div
